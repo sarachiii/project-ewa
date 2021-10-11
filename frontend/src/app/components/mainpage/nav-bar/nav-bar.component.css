@@ -23,4 +23,11 @@ img.navbar-brand{
 .navbar-toggler:focus{
   box-shadow: 0 0 0 0.1rem white;
 }
-
+.nav-top{
+top: 5px;
+}
+@media only screen and (min-width: 992px) {
+  .nav-top{
+    top: 8px;
+  }
+}
