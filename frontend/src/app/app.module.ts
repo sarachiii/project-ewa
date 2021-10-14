@@ -6,13 +6,17 @@ import { AppComponent } from './app.component';
 import { NavBarComponent } from './components/mainpage/nav-bar/nav-bar.component';
 import { HomeComponent } from './components/mainpage/home/home.component';
 import { ErrorComponent } from './components/error/error.component';
+import { HeaderComponent } from './components/mainpage/header/header.component';
+import { SensorComponent } from './components/mainpage/sensor/sensor.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavBarComponent,
     HomeComponent,
-    ErrorComponent
+    ErrorComponent,
+    HeaderComponent,
+    SensorComponent
   ],
   imports: [
     BrowserModule,
