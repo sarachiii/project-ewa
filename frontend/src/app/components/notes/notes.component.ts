@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, Input} from '@angular/core';
+import {Field} from "../../models/field";
 
 @Component({
   selector: 'app-notes',
@@ -6,10 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./notes.component.css']
 })
 export class NotesComponent implements OnInit {
-
-  constructor() { }
+  @Input() selectedFieldFromNavbar : Field;
 
   ngOnInit(): void {
   }
-
 }
