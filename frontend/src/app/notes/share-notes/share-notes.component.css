@@ -1,0 +1,20 @@
+.backgroundNote{
+  border-radius: 25px;
+  background: var(--cc-yellow);
+}
+
+.vertical-center {
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+}
+
+.btn-success{
+  background-color: var(--cc-green);
+  border-color: var(--cc-green);
+}
+.btn-success:hover {
+  color: #fff;
+  background-color: var(--cc-darkgreen);
+  border-color: var(--cc-darkgreen);
+}

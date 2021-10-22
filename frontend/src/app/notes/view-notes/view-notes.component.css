@@ -1,0 +1,9 @@
+.btn-success{
+  background-color: var(--cc-green);
+  border-color: var(--cc-darkgreen);
+}
+.btn-success:hover {
+  color: #fff;
+  background-color: var(--cc-darkgreen);
+  border-color: var(--cc-darkgreen);
+}

@@ -1,6 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 :root{
-  --cc-green: #A1E86A;
+  --cc-green: #a1e86a;
+  --cc-darkgreen: #90d25d;
+  --cc-yellow: #ffc;
 }
 html, body, app-root {
   height: 100%;

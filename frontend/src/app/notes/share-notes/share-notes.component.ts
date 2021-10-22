@@ -20,7 +20,7 @@ export class ShareNotesComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onAddNote() {
+  onSaveNote() {
     this.unselectedEvent.emit(true);
 
     //save
