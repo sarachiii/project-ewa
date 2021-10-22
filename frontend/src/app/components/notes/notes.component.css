@@ -1,0 +1,10 @@
+.container {
+  margin: 20px auto;
+  color: black;
+  flex-direction: column;
+}
+
+.row{
+  border-radius: 25px;
+  background: #ffc;
+}

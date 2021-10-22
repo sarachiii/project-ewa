@@ -7,7 +7,8 @@ import { NavBarComponent } from './components/mainpage/nav-bar/nav-bar.component
 import { HomeComponent } from './components/mainpage/home/home.component';
 import { ErrorComponent } from './components/error/error.component';
 import { MenuComponent } from './components/mainpage/menu/menu.component';
-import { NotesComponent } from './notes/notes.component';
+import { NotesComponent } from './components/notes/notes.component';
+import { NotesNavbarComponent } from './components/notes-navbar/notes-navbar.component';
 
 @NgModule({
   declarations: [
@@ -15,8 +16,9 @@ import { NotesComponent } from './notes/notes.component';
     NavBarComponent,
     HomeComponent,
     ErrorComponent,
-    MenuComponent
-    NotesComponent
+    MenuComponent,
+    NotesComponent,
+    NotesNavbarComponent
   ],
   imports: [
     BrowserModule,
