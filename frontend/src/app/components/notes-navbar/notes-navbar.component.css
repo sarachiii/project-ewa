@@ -2,32 +2,21 @@
   background-color: var(--cc-green);
   font-weight: bold;
 }
-.nav-link, .navbar-brand{
-  color: white;
-}
 .nav-link{
+  display: inline-block;
+  color: white;
   padding: 16px 8px;
-  text-align: center;
 }
 .nav-link:hover, .nav-link:focus{
   color: var(--bs-dark);
   background-color: white;
 }
-.dropdown-menu{
-  margin-top: -0.25rem;
+.scroll {
+  white-space: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
 }
-img.navbar-brand{
-  height: 50px;
-  filter: brightness(100);
-}
-.navbar-toggler:focus{
-  box-shadow: 0 0 0 0.1rem white;
-}
-.nav-top{
-  top: 5px;
-}
-@media only screen and (min-width: 992px) {
-  .nav-top{
-    top: 8px;
-  }
+.scroll::-webkit-scrollbar{
+  display: none;
 }
