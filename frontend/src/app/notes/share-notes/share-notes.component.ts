@@ -22,6 +22,7 @@ export class ShareNotesComponent implements OnInit {
 
   onAddNote() {
     this.unselectedEvent.emit(true);
+
     //save
     // this.routeTo();
   }
