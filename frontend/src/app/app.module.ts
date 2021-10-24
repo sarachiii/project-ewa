@@ -7,6 +7,8 @@ import { NavBarComponent } from './components/mainpage/nav-bar/nav-bar.component
 import { HomeComponent } from './components/mainpage/home/home.component';
 import { ErrorComponent } from './components/error/error.component';
 import { MenuComponent } from './components/mainpage/menu/menu.component';
+import { LoginComponent } from './components/mainpage/login/login.component';
+import { RegisterComponent } from './components/mainpage/register/register.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +16,9 @@ import { MenuComponent } from './components/mainpage/menu/menu.component';
     NavBarComponent,
     HomeComponent,
     ErrorComponent,
-    MenuComponent
+    LoginComponent,
+    MenuComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
