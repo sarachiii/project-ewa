@@ -20,7 +20,7 @@
     <label class="form-label" ><b>Air temperature:</b></label>
     <div class="form-row__content">
       <img class="allicons" src="assets/temperature-icon-png-17.png" alt="Air temperature">
-      <input class="form-input-qty" type="number" name="quantity-test"  value="2" />
+      <input class="form-input-qty" type="number" name="quantity-test"  placeholder="°C" min="0" max="100" />
     </div>
   </div>
 </form>
@@ -30,7 +30,7 @@
     <label class="form-label" ><b>Soil temperature:</b></label>
     <div class="form-row__content">
       <img class="allicons" src="assets/TEMPERATURE-512.webp" alt="Soil temperature">
-      <input class="form-input-qty" type="number" name="quantity-test" value="1" />
+      <input class="form-input-qty" type="number" name="quantity-test" placeholder="°C" min="0" max="100" />
     </div>
   </div>
 </form>
@@ -40,7 +40,7 @@
     <label class="form-label"><b>Soil Mix id:</b></label>
     <div class="form-row__content">
       <img class="allicons" src="assets/soil-icon-22.png" alt="Soil Mix id ">
-      <input class="form-input-qty" type="number" name="quantity-test" value="1" />
+      <input class="form-input-qty-mix" type="number" name="quantity-test" value="15" />
     </div>
   </div>
 </form>
@@ -50,7 +50,7 @@
       <label class="form-label" ><b>Water Mix id:</b></label>
       <div class="form-row__content">
         <img class="allicons" src="assets/leaf-water-drop-nature-logo-vector-15820097.jpg" alt="Water Mix id">
-        <input class="form-input-qty" type="number" name="quantity-test"  value="2" />
+        <input class="form-input-qty-mix" type="number" name="quantity-test"  value="7" />
       </div>
     </div>
   </form>
@@ -60,7 +60,7 @@
       <label class="form-label" ><b>Exposure:</b></label>
       <div class="form-row__content">
         <img class="allicons" src="assets/images.png" alt="Exposure">
-        <input class="form-input-qty" type="number" name="quantity-test" value="1" />
+        <input class="form-input-qty" type="number" name="quantity-test" placeholder="EV" />
       </div>
     </div>
   </form>
@@ -74,59 +74,70 @@
 <div class="rightitems">
 <form id='rightform'>
 
+  <div class ="greenhouseform">
   <form id='myform6' action='#' class="numbo">
     <div class="form-row-right">
       <label class="form-label" ><b>Air humidity:</b></label>
       <div class="form-row__content">
         <img class="allicons" src="assets/istockphoto-1277328164-612x612.jpg" alt="Air humidity">
-        <input class="form-input-qty" type="number" name="quantity-test"  value="2" />
+        <input class="form-input-qty" type="number" name="quantity-test"  placeholder="%" min="0" max="100" />
       </div>
     </div>
   </form>
+  </div>
 
+  <div class ="greenhouseform">
   <form id='myform7' action='#' class="numbo">
     <div class="form-row-right">
       <label class="form-label" ><b>Soil humidity:</b></label>
       <div class="form-row__content">
         <img class="allicons" src="assets/2591974.png" alt="Soil humidity">
-        <input class="form-input-qty" type="number" name="quantity-test" value="1" />
+        <input class="form-input-qty" type="number" name="quantity-test" placeholder="%" min="0" max="100"/>
       </div>
     </div>
   </form>
+  </div>
 
+
+  <div class ="greenhouseform">
   <form id='myform8' action='#' class="numbo">
     <div class="form-row-right">
       <label class="form-label"><b>Water pH:</b></label>
       <div class="form-row__content">
         <img class="allicons" src="assets/istockphoto-1321656554-170667a.jpg" alt="Water pH">
 <!--        <input class="form-input-qtyminus" type="button" value="-" field="quantity-test" />-->
-        <input class="form-input-qty" type="number" name="quantity-test" value="1" />
+        <input class="form-input-qty" type="number" name="quantity-test" placeholder="pH" min="0" max="100" />
 <!--        <input class="form-input-qtyplus" type="button" value="+" field="quantity-test" />-->
       </div>
     </div>
   </form>
+  </div>
 
+  <div class ="greenhouseform">
   <form id='myform9' action='#' class="numbo">
     <div class="form-row-right">
       <label class="form-label" ><b>Lighting RGB:</b></label>
       <div class="form-row__content">
         <img class="allicons" src="assets/istockphoto-1025681982-170667a.jpg" alt="Lighting RGB">
-        <input class="form-input-qty" type="number" name="quantity-test"  value="2" />
+        <input class="form-input-qty" type="color" name="quantity-test"  value="2" min="0" max="100"/>
       </div>
     </div>
   </form>
+</div>
 
+  <div class ="greenhouseform">
   <form id='myform10' action='#' class="numbo">
     <div class="form-row-right">
       <label class="form-label" ><b>GreenHouse CO2:</b></label>
       <div class="form-row__content">
         <img class="allicons" src="assets/2487554.png" alt="Lighting RGB">
-        <input class="form-input-qty" type="number" name="quantity-test" value="1" />
-      </div>
-    </div>
-  </form>
+        <input class="form-input-qty-mix" type="number" name="quantity-test" value="1" min="0" max="100"/>
+       </div>
+     </div>
+   </form>
+  </div>
+ </form>
 
-</form>
 
 </div>
 </div>

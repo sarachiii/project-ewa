@@ -37,21 +37,30 @@
 
 .Mainform {
   border: 1px solid green;
-  margin-left: 150px;
-  margin-right: 150px;
+  margin-left: 200px;
+  margin-right: 200px;
   height: 1000px;
   background-color: white;
   min-width: 30cm;
 }
 
-
+.greenhouseform{
+  border: 0.5px solid #e2e2e2;
+}
 
 .form-input-qty{
   padding: 0.1em 0.1em;
   width: 80px;
   border-radius: 5px;
+  border: 2px solid #e2e2e2;
 }
 
+.form-input-qty-mix{
+  padding: 0.1em 0.1em;
+  width: 80px;
+  border-radius: 5px;
+  border: 2px solid #ffffff;
+}
 
 button{
   width: 20px;
@@ -69,7 +78,7 @@ button{
 }
 
 .rightitems {
-  margin-top: -34em;
+  margin-top: -34.5em;
 }
 img.allicons{
   height: 40px;
