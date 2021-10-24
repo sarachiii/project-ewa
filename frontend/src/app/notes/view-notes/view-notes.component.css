@@ -1,0 +1,24 @@
+.btn-success{
+  background-color: var(--cc-green);
+  border-color: var(--cc-darkgreen);
+}
+.btn-success:hover {
+  color: #fff;
+  background-color: var(--cc-darkgreen);
+  border-color: var(--cc-darkgreen);
+}
+.size{
+  border-radius: 5px;
+  width: 40px;
+  height: 40px;
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+}
+.button-img{
+  display: block;
+  width: 40px;
+  height: 40px;
+}
+
+

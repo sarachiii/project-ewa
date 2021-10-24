@@ -5,7 +5,8 @@ import { MenuComponent } from "./components/mainpage/menu/menu.component";
 import { ErrorComponent } from "./components/error/error.component";
 import {NotesNavbarComponent} from "./components/notes-navbar/notes-navbar.component";
 import {NotesComponent} from "./components/notes/notes.component";
-
+import {ViewNotesComponent} from "./notes/view-notes/view-notes.component";
+import {ShareNotesComponent} from "./notes/share-notes/share-notes.component";
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
@@ -17,6 +18,10 @@ const routes: Routes = [
       },
     ],
   },
+  {
+    path: 'menu/notes/add', component: ViewNotesComponent,
+    children: [{path: '', component: ShareNotesComponent}],
+  },
   { path: '**', component: ErrorComponent }
 ];
 
@@ -24,4 +29,5 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}
