@@ -1,17 +1,50 @@
 <nav class="navbar navbar-expand-lg p-lg-0">
   <div class="container-lg position-relative">
-    <img class="navbar-brand" src="assets/logo.svg" alt="Green Solutions">
+    <a class="navbar-brand" href="#" routerLink="home"><img class="white-filter" src="assets/logo.svg" alt="Green Solutions"></a>
     <a class="navbar-brand position-absolute nav-top start-50 translate-middle-x" href="#" routerLink="home">Green Solutions</a>
     <button class="navbar-toggler navbar-dark" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse flex-grow-0" id="navbarToggler">
       <ul class="navbar-nav pt-2 pt-lg-0">
+        <li class="nav-item d-lg-none px-2 py-3 d-flex justify-content-between text-white">
+          <div class="d-flex">
+            <div class="nav-user d-inline-block align-self-center">
+              <img class="rounded-circle" src="https://yt3.ggpht.com/fAfB4LQvATPHhF9ou35zv5FZmXVhMtGnW_vZQNpyd_Krkzasu48k53I3UTIxcqNyMioqK4PR0w=s900-c-k-c0x00ffffff-no-rj">
+            </div>
+            <div class="d-inline-block text-center px-2">
+              <span>Sjors Peters</span>
+              <hr class="mb-0 mt-1 text-black">
+              <span class="fs-12">Botanist</span>
+            </div>
+          </div>
+          <a class="align-self-center" href="#" routerLink="settings">
+            <img class="white-filter" src="https://fonts.gstatic.com/s/i/materialiconsoutlined/settings/v18/24px.svg" alt="Settings">
+          </a>
+        </li>
+        <li class="d-lg-none"><hr class="m-0"></li>
         <li class="nav-item">
-          <a class="nav-link" href="#" routerLink="menu">Menu</a>
+          <a class="nav-link" href="#" routerLink="menu" routerLinkActive="nav-link-active">Menu</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#" routerLink="login">Log In</a>
+          <a class="nav-link" href="#" routerLink="login" routerLinkActive="nav-link-active">Log In</a>
+        </li>
+        <li class="nav-item d-lg-none">
+          <a class="nav-link" href="#" routerLink="login">Log Out</a>
+        </li>
+        <li class="nav-item dropdown d-none d-lg-block">
+          <a class="nav-link nav-user dropdown-toggle p-2" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <img class="rounded-circle" src="https://yt3.ggpht.com/fAfB4LQvATPHhF9ou35zv5FZmXVhMtGnW_vZQNpyd_Krkzasu48k53I3UTIxcqNyMioqK4PR0w=s900-c-k-c0x00ffffff-no-rj">
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+            <li class="dropdown-item-text">
+              Sjors Peters
+              <span class="fs-12">Botanist</span>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" routerLink="settings">Settings</a></li>
+            <li><a class="dropdown-item" routerLink="login">Log Out</a></li>
+          </ul>
         </li>
       </ul>
     </div>
