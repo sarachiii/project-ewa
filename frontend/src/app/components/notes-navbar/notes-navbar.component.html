@@ -1,16 +1,15 @@
 <div class="navbar navbar-expand-lg p-lg-0">
   <div class="container-lg justify-content-center">
-    <div class="scroll" *ngFor="let field of scientistFields;" (click)="onSelect(field);">
-      <a class="nav-link text-uppercase" href="#" routerLink="{{field.name}}"
-         [ngClass]="{'active': field.name === selectedField.name}">
-        {{field.name}}</a>
+      <div *ngFor="let field of scientistFields;" (click)="onSelect(field);">
+        <a class="nav-link text-uppercase" href="#" routerLink="{{field.name}}"
+           [ngClass]="{'active': field.name === selectedField.name}">{{field.name}}</a>
     </div>
   </div>
 </div>
 
 <ng-container>
   <app-notes
-    [selectedFieldFromNavbar] = "selectedField">
+    [selectedFieldFromNavbar]="selectedField">
   </app-notes>
 </ng-container>
 
