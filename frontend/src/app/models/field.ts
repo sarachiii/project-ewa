@@ -1,7 +1,16 @@
 export class Field  {
-  public name: string;
+  private _name: string;
 
   constructor(name: string = "") {
-    this.name = name;
+    this._name = name;
+  }
+
+  get name(): string {
+    return this._name;
+  }
+
+  set name(value: string) {
+    this._name = value;
   }
 }
+
