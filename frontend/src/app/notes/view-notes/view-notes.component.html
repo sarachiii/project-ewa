@@ -1,5 +1,7 @@
 <div *ngIf="createNote === false; else addNote">
-  <button type="button" class="btn btn-success" (click)="onCreateNote(false)">Create Note</button>
+  <button *ngIf="mobile == true;" type="button" class="btn btn-success size" (click)="onCreateNote(false)">
+    <img class="button-img" src="https://icon-library.com/images/compose-icon/compose-icon-1.jpg" alt="add note"></button>
+  <button *ngIf="mobile == false;" type="button" class="btn btn-success" (click)="onCreateNote(false)">Create Note</button>
 </div>
 <ng-template #addNote>
   <ng-container>

@@ -1,6 +1,7 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {ViewNotesComponent} from "../view-notes/view-notes.component";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-share-notes',
@@ -10,8 +11,13 @@ import {ViewNotesComponent} from "../view-notes/view-notes.component";
 export class ShareNotesComponent implements OnInit {
 
   @Output() unselectedEvent = new EventEmitter();
+  teamNumber: String | undefined;
+  username: String | undefined;
+  text: String | undefined;
+
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute) {
+    //private http: HttpClient
     setInterval(() => {
       this.currentDate()
     }, 1000)
@@ -20,10 +26,19 @@ export class ShareNotesComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onSaveNote() {
-    this.unselectedEvent.emit(true);
+  onReturnToNotes() {
+    if (confirm("Are you sure you want to discard unsaved changes?")) {
+      this.unselectedEvent.emit(true);
+    }
+  }
 
-    //save
+  onSaveNote(postData: { date: string; teamNumber: string; text: String; username: String }) {
+    // this.this.post('localhost:8080/note/add.json', postData)
+    //   .subscribe(responseData => {
+    //     console.log(responseData);
+    //   });
+    console.log(postData);
+    this.unselectedEvent.emit(true);
     // this.routeTo();
   }
 

@@ -11,7 +11,7 @@ const routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'menu', component: MenuComponent},
   {
-    path: 'notes/add', component: ViewNotesComponent,
+    path: 'menu/notes/add', component: ViewNotesComponent,
     children: [{path: '', component: ShareNotesComponent}],
   },
   {path: '**', component: ErrorComponent},
