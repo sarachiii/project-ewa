@@ -12,6 +12,8 @@ import { NotesNavbarComponent } from './components/notes-navbar/notes-navbar.com
 import { ShareNotesComponent } from './components/share-notes/share-notes.component';
 import { ViewNotesComponent } from './notes/view-notes/view-notes.component';
 import { SensorComponent } from './components/mainpage/sensor/sensor.component';
+import { LoginComponent } from './components/mainpage/login/login.component';
+import { RegisterComponent } from './components/mainpage/register/register.component';
 import {FormsModule} from "@angular/forms";
 
 @NgModule({
@@ -25,7 +27,9 @@ import {FormsModule} from "@angular/forms";
     NotesNavbarComponent,
     ShareNotesComponent,
     ViewNotesComponent,
-    SensorComponent
+    SensorComponent,
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,

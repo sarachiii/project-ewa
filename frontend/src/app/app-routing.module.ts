@@ -8,11 +8,15 @@ import {NotesComponent} from "./components/notes/notes.component";
 import {ViewNotesComponent} from "./notes/view-notes/view-notes.component";
 import {ShareNotesComponent} from "./components/share-notes/share-notes.component";
 import { SensorComponent} from "./components/mainpage/sensor/sensor.component";
+import { LoginComponent } from './components/mainpage/login/login.component';
+import { RegisterComponent } from './components/mainpage/register/register.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'menu', component: MenuComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
   { path: 'sensors', component: SensorComponent},
   { path: 'notes', component: NotesNavbarComponent, children: [
       {
