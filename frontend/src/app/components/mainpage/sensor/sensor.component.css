@@ -1,0 +1,87 @@
+/*.plus-minus-input {*/
+/*  -webkit-align-items: center;*/
+/*  -ms-flex-align: center;*/
+/*  align-items: center;*/
+/*}*/
+
+/*.plus-minus-input .input-group-field {*/
+/*  text-align: center;*/
+/*  margin-left: 1rem;*/
+/*  margin-right: 0.5rem;*/
+/*  padding: 1rem;*/
+/*}*/
+
+/*.plus-minus-input .input-group-field::-webkit-inner-spin-button,*/
+/*.plus-minus-input .input-group-field ::-webkit-outer-spin-button {*/
+/*  -webkit-appearance: none;*/
+/*  appearance: none;*/
+/*}*/
+
+/*.plus-minus-input .input-group-button .circle {*/
+/*  border-radius: 50%;*/
+/*  padding: 0.5em 0.5em;*/
+/*}*/
+
+.Header {
+  text-align: center;
+  justify-content: center;
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 20cm;
+}
+
+.Mainpage{
+  background-color: #e8ffcf;
+}
+
+.Mainform {
+  border: 1px solid green;
+  margin-left: 200px;
+  margin-right: 200px;
+  height: 1000px;
+  background-color: white;
+  min-width: 30cm;
+}
+
+.greenhouseform{
+  border: 0.5px solid #e2e2e2;
+}
+
+.form-input-qty{
+  padding: 0.1em 0.1em;
+  width: 80px;
+  border-radius: 5px;
+  border: 2px solid #e2e2e2;
+}
+
+.form-input-qty-mix{
+  padding: 0.1em 0.1em;
+  width: 80px;
+  border-radius: 5px;
+  border: 2px solid #ffffff;
+}
+
+button{
+  width: 20px;
+}
+
+.form-row-left{
+  margin-top: 1cm;
+  margin-left: 9cm;
+
+}
+
+.form-row-right {
+  margin-left: 19cm;
+  margin-top: 1cm;
+}
+
+.rightitems {
+  margin-top: -34.5em;
+}
+img.allicons{
+  height: 40px;
+}
+
+
