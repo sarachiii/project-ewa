@@ -6,7 +6,7 @@ import { ErrorComponent } from "./components/error/error.component";
 import {NotesNavbarComponent} from "./components/notes-navbar/notes-navbar.component";
 import {NotesComponent} from "./components/notes/notes.component";
 import {ViewNotesComponent} from "./notes/view-notes/view-notes.component";
-import {ShareNotesComponent} from "./notes/share-notes/share-notes.component";
+import {ShareNotesComponent} from "./components/share-notes/share-notes.component";
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
@@ -14,13 +14,12 @@ const routes: Routes = [
   { path: 'notes', component: NotesNavbarComponent, children: [
       {
         path: ':field',
-        component: NotesComponent
+        component: NotesComponent,
+        children: [
+          { path: 'add', component: ShareNotesComponent }
+        ]
       },
     ],
-  },
-  {
-    path: 'menu/notes/add', component: ViewNotesComponent,
-    children: [{path: '', component: ShareNotesComponent}],
   },
   { path: '**', component: ErrorComponent }
 ];

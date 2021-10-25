@@ -1,15 +1,16 @@
-<div class="navbar navbar-expand-lg p-lg-0">
-  <div class="container-lg justify-content-center">
+<div class="h-100 d-flex flex-column">
+  <div class="navbar navbar-expand-lg p-lg-0 flex-grow-0 flex-shrink-1">
+    <div class="container-lg justify-content-center">
       <div *ngFor="let field of scientistFields;" (click)="onSelect(field);">
         <a class="nav-link text-uppercase" routerLinkActive="active" routerLink="/notes/{{field.name}}">{{field.name}}</a>
+      </div>
     </div>
   </div>
+
+  <ng-container >
+    <app-notes class="flex-grow-1 flex-shrink-1"
+      [selectedFieldFromNavbar]="selectedField">
+    </app-notes>
+  </ng-container>
 </div>
-
-<ng-container>
-  <app-notes
-    [selectedFieldFromNavbar]="selectedField">
-  </app-notes>
-</ng-container>
-
 

@@ -1,6 +1,6 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {ViewNotesComponent} from "../view-notes/view-notes.component";
+import {ViewNotesComponent} from "../../notes/view-notes/view-notes.component";
 import {HttpClient} from "@angular/common/http";
 
 @Component({

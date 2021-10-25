@@ -9,7 +9,7 @@ import { ErrorComponent } from './components/error/error.component';
 import { MenuComponent } from './components/mainpage/menu/menu.component';
 import { NotesComponent } from './components/notes/notes.component';
 import { NotesNavbarComponent } from './components/notes-navbar/notes-navbar.component';
-import { ShareNotesComponent } from './notes/share-notes/share-notes.component';
+import { ShareNotesComponent } from './components/share-notes/share-notes.component';
 import { ViewNotesComponent } from './notes/view-notes/view-notes.component';
 import {FormsModule} from "@angular/forms";
 
