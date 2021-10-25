@@ -9,16 +9,23 @@
   padding: 16px 8px;
   text-align: center;
 }
-.nav-link:hover, .nav-link:focus{
+.nav-link:hover, .nav-link:focus, .nav-link-active{
   color: var(--bs-dark);
   background-color: white;
+}
+.nav-user > img{
+  height: 40px;
+  width: 40px;
+  object-fit: cover;
+}
+.dropdown-toggle::after{
+  vertical-align: 0;
 }
 .dropdown-menu{
   margin-top: -0.25rem;
 }
-img.navbar-brand{
-  height: 50px;
-  filter: brightness(100);
+.navbar-brand > img{
+  height: 40px;
 }
 .navbar-toggler:focus{
   box-shadow: 0 0 0 0.1rem white;
@@ -30,4 +37,10 @@ top: 5px;
   .nav-top{
     top: 8px;
   }
+}
+.white-filter{
+  filter: brightness(100);
+}
+.fs-12{
+  font-size: 12px;
 }
