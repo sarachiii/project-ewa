@@ -1,0 +1,13 @@
+.chart-airHumidity{
+  display: inline-block;
+  width: 400px;
+  height: 400px;
+  float: left;
+}
+.chart-airTemperature{
+  display: inline-block;
+  width: 400px;
+  height: 400px;
+  float: right;
+  padding: 30px;
+}
