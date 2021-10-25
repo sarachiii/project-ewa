@@ -11,7 +11,6 @@ import { ResultsComponent } from './components/mainpage/results/results.componen
 import { NotesComponent } from './components/notes/notes.component';
 import { NotesNavbarComponent } from './components/notes-navbar/notes-navbar.component';
 import { ShareNotesComponent } from './components/share-notes/share-notes.component';
-import { ViewNotesComponent } from './notes/view-notes/view-notes.component';
 import { SensorComponent } from './components/mainpage/sensor/sensor.component';
 import { LoginComponent } from './components/mainpage/login/login.component';
 import { RegisterComponent } from './components/mainpage/register/register.component';
@@ -29,7 +28,6 @@ import { ChartsModule } from 'ng2-charts';
     NotesComponent,
     NotesNavbarComponent,
     ShareNotesComponent,
-    ViewNotesComponent,
     SensorComponent,
     LoginComponent,
     RegisterComponent

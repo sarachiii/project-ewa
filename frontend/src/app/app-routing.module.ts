@@ -6,7 +6,6 @@ import { ErrorComponent } from "./components/error/error.component";
 import {ResultsComponent} from "./components/mainpage/results/results.component";
 import {NotesNavbarComponent} from "./components/notes-navbar/notes-navbar.component";
 import {NotesComponent} from "./components/notes/notes.component";
-import {ViewNotesComponent} from "./notes/view-notes/view-notes.component";
 import {ShareNotesComponent} from "./components/share-notes/share-notes.component";
 import { SensorComponent} from "./components/mainpage/sensor/sensor.component";
 import { LoginComponent } from './components/mainpage/login/login.component';
