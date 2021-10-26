@@ -1,6 +1,5 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {Workfield} from "../../models/workfield";
-import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-notes',
@@ -8,20 +7,14 @@ import {ActivatedRoute, Router} from "@angular/router";
   styleUrls: ['./notes.component.css']
 })
 export class NotesComponent implements OnInit {
+  createNote = false;
+
   @Input() selectedWorkfieldFromNavbar : Workfield;
 
-  createNote = false;
-  mobile: boolean | undefined;
-
-  constructor(private router: Router, private activatedRoute: ActivatedRoute) {
+  constructor() {
   }
 
   ngOnInit(): void {
-    if (window.innerWidth < 992) {
-      this.mobile = true;
-    } else if (window.innerWidth > 992){
-      this.mobile = false;
-    }
   }
 
   onCreateNote(createNote: boolean) {
