@@ -7,12 +7,14 @@ package nl.hva.backend.models;
  */
 
 public class Note {
+    public String workfield;
     public String teamNumber;
     public String userName;
     public String date;
     public String text;
 
-    public Note(String teamNumber, String userName, String date, String text) {
+    public Note(String workfield, String teamNumber, String userName, String date, String text) {
+        this.workfield = workfield;
         this.teamNumber = teamNumber;
         this.userName = userName;
         this.date = date;
