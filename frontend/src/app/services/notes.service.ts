@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
-import {Field} from "../models/field";
+import {Workfield} from "../models/workfield";
 
 @Injectable({
   providedIn: 'root'
 })
 export class NotesService {
-  public fields: Field[] = [];
+  public workfields: Workfield[] = [];
 
   constructor() { }
 
-  public findAll(): Field[]{
-    return this.fields;
+  public findAll(): Workfield[]{
+    return this.workfields;
   }
 
-  public findByName(name: string): Field | null {
-    return this.fields.find(field => field.name === name) || null;
+  public findByName(name: string): Workfield | null {
+    return this.workfields.find(field => field.name === name) || null;
   }
 }
