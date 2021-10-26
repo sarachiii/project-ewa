@@ -54,10 +54,4 @@ export class ShareNotesComponent implements OnInit {
     });
     return dateFormat;
   }
-
-  // routeTo(): void {
-  //   console.log("testttt")
-  //   this.router.navigate(['../../notes/view-notes'], {relativeTo: this.activatedRoute.parent})
-  //     .catch(reason => console.error(reason));
-  // }
 }

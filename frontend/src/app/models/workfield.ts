@@ -1,4 +1,4 @@
-export class Field  {
+export class Workfield {
   private _name: string;
 
   constructor(name: string = "") {

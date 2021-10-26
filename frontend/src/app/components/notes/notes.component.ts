@@ -1,5 +1,5 @@
 import {Component, OnInit, Input} from '@angular/core';
-import {Field} from "../../models/field";
+import {Workfield} from "../../models/workfield";
 import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
@@ -8,7 +8,7 @@ import {ActivatedRoute, Router} from "@angular/router";
   styleUrls: ['./notes.component.css']
 })
 export class NotesComponent implements OnInit {
-  @Input() selectedFieldFromNavbar : Field;
+  @Input() selectedWorkfieldFromNavbar : Workfield;
 
   createNote = false;
   mobile: boolean | undefined;
@@ -17,14 +17,11 @@ export class NotesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (window.innerWidth < 992) { // 768px portrait
+    if (window.innerWidth < 992) {
       this.mobile = true;
     } else if (window.innerWidth > 992){
       this.mobile = false;
     }
-    // var width = window.innerWidth;
-    // this.mobile = width < 992;
-
   }
 
   onCreateNote(createNote: boolean) {
