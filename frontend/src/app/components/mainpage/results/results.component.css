@@ -8,6 +8,10 @@
   display: inline-block;
   width: 400px;
   height: 400px;
-  float: right;
+  float: left;
+}
+.background{
+  background-color: rgba(227, 214, 214, 0.28);
+  border-radius: 50px;
   padding: 30px;
 }
