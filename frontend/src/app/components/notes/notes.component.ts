@@ -1,5 +1,6 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit, Input, ViewChild} from '@angular/core';
 import {Workfield} from "../../models/workfield";
+import {NgxMasonryComponent, NgxMasonryOptions} from "ngx-masonry";
 
 @Component({
     selector: 'app-notes',
@@ -11,13 +12,26 @@ export class NotesComponent implements OnInit {
 
     @Input() selectedWorkfieldFromNavbar: Workfield;
 
-    constructor() {
-    }
+  @ViewChild(NgxMasonryComponent) masonry: NgxMasonryComponent;
+  masonryOptions: NgxMasonryOptions;
+
+  constructor() {
+    this.masonryOptions = {
+      percentPosition: true,
+      horizontalOrder: true,
+    };
+  }
 
     ngOnInit(): void {
     }
 
-    onCreateNote(createNote: boolean) {
-        this.createNote = !createNote;
-    }
+  // Update masonry after change
+  reloadMasonry(): void {
+    this.masonry?.reloadItems();
+    this.masonry?.layout();
+  }
+
+  onCreateNote(createNote: boolean) {
+    this.createNote = !createNote;
+  }
 }
