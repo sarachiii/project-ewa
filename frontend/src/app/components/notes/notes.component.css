@@ -45,10 +45,19 @@
   .card-columns {
     column-count: 3;
   }
+  .top{
+    top: 325px;
+  }
 }
 
 @media only screen and (max-width: 992px) {
   .card-columns {
     column-count: 1;
   }
+  .top{
+    top: 275px;
+  }
 }
+
+
+

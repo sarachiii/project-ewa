@@ -31,12 +31,13 @@ export class ShareNotesComponent implements OnInit {
     }
   }
 
-  onSaveNote(postData: { date: string; teamNumber: string; text: String; username: String }) {
+  onSaveNote(postData: { title: String; date: string; text: String; username: String }) {
     // this.this.post('localhost:8080/note/add.json', postData)
     //   .subscribe(responseData => {
     //     console.log(responseData);
     //   });
     console.log(postData);
+    console.log("missing team")
     this.unselectedEvent.emit(true);
     // this.routeTo();
   }

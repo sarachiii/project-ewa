@@ -165,16 +165,16 @@
   </div>
 
   <div class="position-absolute bottom-0 end-0 p-5" [ngClass]="{'d-none': selectedWorkfieldFromNavbar.name !== 'botany'}" *ngIf="createNote === false; else addNote;">
-    <button type="button" class="btn btn-success size d-lg-none shadow" (click)="onCreateNote(false)">
+    <button type="button" class="btn btn-success size d-lg-none shadow fixed-bottom mb-3 mr-3" (click)="onCreateNote(false)">
       <img class="button-img" src="https://icon-library.com/images/compose-icon/compose-icon-1.jpg" alt="add note">
     </button>
-    <button type="button" class="btn btn-success d-none d-lg-block shadow" (click)="onCreateNote(false)">
+    <button type="button" class="btn btn-success d-none d-lg-block shadow fixed-bottom mb-3 mr-3" (click)="onCreateNote(false)">
       Create Note
     </button>
   </div>
   <ng-template #addNote>
     <ng-container>
-      <app-share-notes class="position-absolute w-100 top-50 start-0 translate-middle-y"
+      <app-share-notes class="position-absolute w-100 top start-0 translate-middle-y"
                        (unselectedEvent)="onCreateNote($event)">
       </app-share-notes>
       <!--   <router-outlet></router-outlet>      route werkt nog niet helemaal goed-->

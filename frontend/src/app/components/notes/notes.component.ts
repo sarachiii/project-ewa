@@ -2,22 +2,22 @@ import {Component, OnInit, Input} from '@angular/core';
 import {Workfield} from "../../models/workfield";
 
 @Component({
-  selector: 'app-notes',
-  templateUrl: './notes.component.html',
-  styleUrls: ['./notes.component.css']
+    selector: 'app-notes',
+    templateUrl: './notes.component.html',
+    styleUrls: ['./notes.component.css']
 })
 export class NotesComponent implements OnInit {
-  createNote = false;
+    createNote = false;
 
-  @Input() selectedWorkfieldFromNavbar : Workfield;
+    @Input() selectedWorkfieldFromNavbar: Workfield;
 
-  constructor() {
-  }
+    constructor() {
+    }
 
-  ngOnInit(): void {
-  }
+    ngOnInit(): void {
+    }
 
-  onCreateNote(createNote: boolean) {
-    this.createNote = !createNote;
-  }
+    onCreateNote(createNote: boolean) {
+        this.createNote = !createNote;
+    }
 }
