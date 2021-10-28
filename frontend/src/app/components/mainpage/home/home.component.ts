@@ -34,8 +34,62 @@ export class HomeComponent implements OnInit  {
       data: {
         labels: ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sept', 'oct', 'nov', 'dec'],
         datasets: [{
-          label: '# of Votes',
+          label: 'Air Humidity in numbers',
           data: [12, 19, 3, 5, 2, 3, 6, 2, 3, 8],
+          backgroundColor: [
+            'rgba(130,174,28,0.24)'
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+
+        }
+      }
+    });
+    var myChart = new Chart("airTemperature", {
+      type: 'line',
+      data: {
+        labels: ['13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00', '24:00'],
+        datasets: [{
+          label: 'Air temperature in C',
+          data: [28, 27, 29, 30, 29, 26, 28, 29, 30, 28],
+          backgroundColor: [
+            'rgba(130,174,28,0.24)'
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+
+        }
+      }
+    });
+    var myChart = new Chart("soilTemperature", {
+      type: 'bar',
+      data: {
+        labels: ['13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00', '24:00'],
+        datasets: [{
+          label: 'Soil temperature in C',
+          data: [28, 27, 29, 30, 29, 26, 28, 29, 30, 28],
           backgroundColor: [
             'rgba(255, 99, 132, 0.2)',
             'rgba(54, 162, 235, 0.2)',
@@ -53,6 +107,51 @@ export class HomeComponent implements OnInit  {
             'rgba(255, 159, 64, 1)'
           ],
           borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+
+        }
+      }
+    });
+    var myChart = new Chart("soilHumidity", {
+      type: 'line',
+      data: {
+        labels: ['13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00', '24:00'],
+        datasets: [{
+          label: 'Soil humidity in C',
+          data: [28, 27, 29, 30, 29, 26, 28, 29, 30, 28],
+          backgroundColor: [
+            'rgba(130,174,28,0.24)',
+          ],
+          borderColor: [
+            'rgb(130,174,28)',
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+
+        }
+      }
+    });
+    var myChart = new Chart("soilmix", {
+      type: 'line',
+      data: {
+        labels: ['13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00', '24:00'],
+        datasets: [{
+          label: 'Soil humidity in C',
+          data: [28, 27, 29, 30, 29, 26, 28, 29, 30, 28],
+          backgroundColor: [
+            'rgba(130,174,28,0.24)'
+          ],
+          borderColor: [
+            'rgb(130,174,28)',
+
+          ],
+          borderWidth: 2
         }]
       },
       options: {
