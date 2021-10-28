@@ -37,6 +37,7 @@
 }
 
 .card{
+  margin: 20px;
   display: inline-block !important;
 }
 
