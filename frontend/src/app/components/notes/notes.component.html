@@ -1,6 +1,5 @@
 <div class="container position-relative h-100">
-  <h1 class="p-4 text-dark text-center">Notes of {{selectedWorkfieldFromNavbar.name}}</h1>
-  <div class="row" data-masonry='{"percentPosition": true, "itemSelector": ".col" }'>
+  <div class="row pt-5" data-masonry='{"percentPosition": true, "itemSelector": ".col" }'>
     <div class="col col-sm-6 col-lg-4 mb-4">
       <div class="card shadow">
         <div class="card-header">
@@ -165,7 +164,7 @@
     </div>
   </div>
 
-  <div class="position-absolute bottom-0 end-0 p-5" *ngIf="createNote === false; else addNote">
+  <div class="position-absolute bottom-0 end-0 p-5" [ngClass]="{'d-none': selectedWorkfieldFromNavbar.name !== 'botany'}" *ngIf="createNote === false; else addNote;">
     <button type="button" class="btn btn-success size d-lg-none shadow" (click)="onCreateNote(false)">
       <img class="button-img" src="https://icon-library.com/images/compose-icon/compose-icon-1.jpg" alt="add note">
     </button>
