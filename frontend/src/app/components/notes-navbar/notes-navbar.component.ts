@@ -10,10 +10,10 @@ import {ActivatedRoute, Params, Router} from "@angular/router";
 export class NotesNavbarComponent implements OnInit {
 
   selectedWorkfield: Workfield = <Workfield>{};
-  private _scientistFields: Workfield[] = [];
+  private _workfields: Workfield[] = [];
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute) {
-    this._scientistFields = [
+    this._workfields = [
       new Workfield("agronomy"),
       new Workfield("botany"),
       new Workfield("geology"),
@@ -30,6 +30,13 @@ export class NotesNavbarComponent implements OnInit {
           this.selectedWorkfield.name = params['field'];
         }
       );
+
+    this.activatedRoute
+      .firstChild?.params
+      .subscribe((params: Params) => {
+        this.selectedWorkfield =
+          this.workfields.find(workfield => workfield.name == params.field)
+      });
   }
 
   onSelect(workfield: Workfield): void {
@@ -41,7 +48,7 @@ export class NotesNavbarComponent implements OnInit {
     this.selectedWorkfield = workfield;
   }
 
-  get scientistFields(): Workfield[] {
-    return this._scientistFields;
+  get workfields(): Workfield[] {
+    return this._workfields;
   }
 }

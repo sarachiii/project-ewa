@@ -1,13 +1,8 @@
 .container {
-  /*margin: 20px auto;*/
   color: black;
   flex-direction: column;
 }
 
-.row{
-  border-radius: 25px;
-  background: #ffc;
-}
 .btn-success{
   background-color: var(--cc-green);
   border-color: var(--cc-darkgreen);
@@ -25,13 +20,34 @@
   padding: 0;
   margin: 0;
 }
-.btn-pos{
 
-}
 .button-img{
   display: block;
   width: 40px;
   height: 40px;
 }
 
+.card-header{
+  background-color: #e3d3b1;
+  font-weight: bold;
+}
 
+.card-body{
+  background-color: #FFFFCC;
+}
+
+.card{
+  display: inline-block !important;
+}
+
+@media only screen and (min-width: 992px) {
+  .card-columns {
+    column-count: 3;
+  }
+}
+
+@media only screen and (max-width: 992px) {
+  .card-columns {
+    column-count: 1;
+  }
+}
