@@ -23,6 +23,7 @@
     "bootstrap": "^5.1.2",
     "chart.js": "^2.9.4",
     "jquery": "^3.6.0",
+    "masonry-layout": "^4.2.2",
     "ng2-charts": "^2.4.3",
     "rxjs": "~6.6.0",
     "tslib": "^2.3.0",
