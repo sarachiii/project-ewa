@@ -1,6 +1,6 @@
 <div class="container position-relative h-100">
-  <div class="row pt-5" data-masonry='{"percentPosition": true, "itemSelector": ".col" }'>
-    <div class="col col-sm-6 col-lg-4 mb-4">
+  <ngx-masonry [options]="masonryOptions" [ordered]="true" class="mx-auto pt-lg-3 row justify-content-center">
+    <div ngxMasonryItem class="masonry-item p-2 col col-md-6 col-lg-4 col-xl-3">
       <div class="card shadow">
         <div class="card-header">
           Here comes the title
@@ -18,7 +18,7 @@
         </div>
       </div>
     </div>
-    <div class="col col-sm-6 col-lg-4 mb-4">
+    <div ngxMasonryItem class="masonry-item p-2 col col-md-6 col-lg-4 col-xl-3">
       <div class="card shadow">
         <div class="card-header">
           Here comes the title
@@ -38,7 +38,7 @@
         </div>
       </div>
     </div>
-    <div class="col col-sm-6 col-lg-4 mb-4">
+    <div ngxMasonryItem class="masonry-item p-2 col col-md-6 col-lg-4 col-xl-3">
       <div class="card shadow">
         <div class="card-header">
           Here comes the title
@@ -61,7 +61,7 @@
         </div>
       </div>
     </div>
-    <div class="col col-sm-6 col-lg-4 mb-4">
+    <div ngxMasonryItem class="masonry-item p-2 col col-md-6 col-lg-4 col-xl-3">
       <div class="card shadow">
         <div class="card-header">
           Here comes the title
@@ -81,48 +81,7 @@
         </div>
       </div>
     </div>
-    <div class="col col-sm-6 col-lg-4 mb-4">
-      <div class="card shadow">
-        <div class="card-header">
-          Here comes the title
-        </div>
-        <div class="card-body">
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-          <div class="row text-muted">
-            <div class="col-6">
-              Author
-            </div>
-            <div class="text-end col-6">
-              2 days ago
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col col-sm-6 col-lg-4 mb-4">
-      <div class="card shadow">
-        <div class="card-header">
-          Here comes the title
-        </div>
-        <div class="card-body">
-          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis vestibulum id ante in
-            scelerisque. Phasellus varius suscipit sapien in dapibus. Sed eu quam eget nibh laoreet vehicula a in
-            magna.
-            Nam aliquam massa nec metus laoreet, ut tincidunt nisi auctor. Vivamus posuere arcu ut lobortis
-            sollicitudin. Phasellus a metus leo. Fusce a sem nec urna sodales commodo. Etiam aliquet nunc non molestie
-            feugiat. Aliquam pretium egestas tortor, eget vulputate odio varius id. Duis a pharetra turpis. </p>
-          <div class="row text-muted">
-            <div class="col-6">
-              Author
-            </div>
-            <div class="text-end col-6">
-              2 days ago
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col col-sm-6 col-lg-4 mb-4">
+    <div ngxMasonryItem class="masonry-item p-2 col col-md-6 col-lg-4 col-xl-3">
       <div class="card shadow">
         <div class="card-header">
           Here comes the title
@@ -142,27 +101,7 @@
         </div>
       </div>
     </div>
-    <div class="col col-sm-6 col-lg-4 mb-4">
-      <div class="card shadow">
-        <div class="card-header">
-          Here comes the title
-        </div>
-        <div class="card-body">
-          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis vestibulum id ante in
-            scelerisque. Phasellus varius suscipit sapien in dapibus. Sed eu quam eget nibh laoreet vehicula a in
-            magna. </p>
-          <div class="row text-muted">
-            <div class="col-6">
-              Author
-            </div>
-            <div class="text-end col-6">
-              2 days ago
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  </ngx-masonry>
 
   <div class="position-absolute bottom-0 end-0 p-5" [ngClass]="{'d-none': selectedWorkfieldFromNavbar.name !== 'botany'}" *ngIf="createNote === false; else addNote;">
     <button type="button" class="btn btn-success size d-lg-none shadow" (click)="onCreateNote(false)">

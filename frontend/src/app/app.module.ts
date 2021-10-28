@@ -14,8 +14,10 @@ import { ShareNotesComponent } from './components/share-notes/share-notes.compon
 import { SensorComponent } from './components/mainpage/sensor/sensor.component';
 import { LoginComponent } from './components/mainpage/login/login.component';
 import { RegisterComponent } from './components/mainpage/register/register.component';
-import {FormsModule} from "@angular/forms";
+import { FormsModule } from "@angular/forms";
 import { ChartsModule } from 'ng2-charts';
+import { NgxMasonryModule } from "ngx-masonry";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
@@ -37,6 +39,8 @@ import { ChartsModule } from 'ng2-charts';
     AppRoutingModule,
     FormsModule,
     ChartsModule,
+    NgxMasonryModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
