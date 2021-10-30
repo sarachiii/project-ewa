@@ -2,8 +2,10 @@
   <ngx-masonry [options]="masonryOptions" [ordered]="true" class="mx-auto pt-lg-3 row justify-content-center">
     <div ngxMasonryItem class="masonry-item p-2 col col-md-6 col-lg-4 col-xl-3">
       <div class="card shadow">
-        <div class="card-header">
+        <div class="card-header position-relative">
           Here comes the title
+          <span class="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger p-2">
+            <span class="visually-hidden">unread messages</span></span>
         </div>
         <div class="card-body">
           <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>

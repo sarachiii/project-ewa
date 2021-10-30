@@ -1,6 +1,7 @@
 import {Component, OnInit, Input, ViewChild} from '@angular/core';
 import {Workfield} from "../../models/workfield";
 import {NgxMasonryComponent, NgxMasonryOptions} from "ngx-masonry";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
     selector: 'app-notes',
@@ -15,7 +16,7 @@ export class NotesComponent implements OnInit {
   @ViewChild(NgxMasonryComponent) masonry: NgxMasonryComponent;
   masonryOptions: NgxMasonryOptions;
 
-  constructor() {
+  constructor(private router: Router, private activatedRoute: ActivatedRoute) {
     this.masonryOptions = {
       percentPosition: true,
       horizontalOrder: true,
@@ -23,6 +24,8 @@ export class NotesComponent implements OnInit {
   }
 
     ngOnInit(): void {
+      this.router.navigate(['botany'], {relativeTo: this.activatedRoute})
+        .catch(reason => console.error(reason));
     }
 
   // Update masonry after change
