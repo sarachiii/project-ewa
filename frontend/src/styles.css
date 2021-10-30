@@ -1,8 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 :root{
-  --cc-green: #a1e86a;
-  --cc-darkgreen: #90d25d;
+  --cc-green: #A4DA22;
+  --cc-darkgreen: #83ae1b;
   --cc-yellow: #ffc;
+  --cc-green-rgb: 164, 218, 34;
 }
 html, body, app-root {
   height: 100%;
@@ -10,4 +11,14 @@ html, body, app-root {
 app-root {
   display: flex;
   flex-flow: column;
+}
+.white-filter{
+  filter: brightness(100) !important;
+}
+.btn-primary{
+  background-color: var(--cc-green) !important;
+  border-color: var(--cc-green) !important;
+}
+.btn-primary:focus, .form-control:focus{
+  box-shadow: 0 0 0 0.25rem rgb(var(--cc-green-rgb), 0.5) !important;
 }
