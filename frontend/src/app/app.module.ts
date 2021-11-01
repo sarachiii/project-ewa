@@ -9,6 +9,7 @@ import { ErrorComponent } from './components/error/error.component';
 import { MenuComponent } from './components/mainpage/menu/menu.component';
 import { LoginComponent } from './components/mainpage/login/login.component';
 import { RegisterComponent } from './components/mainpage/register/register.component';
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { RegisterComponent } from './components/mainpage/register/register.compo
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

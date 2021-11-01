@@ -5,13 +5,13 @@ import { MenuComponent } from "./components/mainpage/menu/menu.component";
 import { ErrorComponent } from "./components/error/error.component";
 import { LoginComponent } from './components/mainpage/login/login.component';
 import { RegisterComponent } from './components/mainpage/register/register.component';
+import {AuthGuardService} from "./services/auth-guard.service";
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
-  { path: 'menu', component: MenuComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
+  { path: 'home', component: HomeComponent ,canActivate:[AuthGuardService]},
+  { path: 'menu', component: MenuComponent ,canActivate:[AuthGuardService]},
+  { path: 'login', component: LoginComponent  },
   { path: '**', component: ErrorComponent }
 ];
 

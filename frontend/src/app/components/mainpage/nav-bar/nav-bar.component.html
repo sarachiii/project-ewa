@@ -8,10 +8,12 @@
     <div class="collapse navbar-collapse flex-grow-0" id="navbarToggler">
       <ul class="navbar-nav pt-2 pt-lg-0">
         <li class="nav-item">
-          <a class="nav-link" href="#" routerLink="menu">Menu</a>
+          <a *ngIf="logingService.isUserLoggedIn()" class="nav-link" href="#" routerLink="menu">Menu</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#" routerLink="login">Log In</a>
+          <a *ngIf="!logingService.isUserLoggedIn()" class="nav-link" href="#" routerLink="login">Log In</a>
+          <a *ngIf="logingService.isUserLoggedIn()" (click)="logingService.logOut()" class="nav-link" href="#" routerLink="login">Log Out</a>
+
         </li>
       </ul>
     </div>
