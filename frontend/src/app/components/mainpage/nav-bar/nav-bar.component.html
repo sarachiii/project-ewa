@@ -1,33 +1,41 @@
 <nav class="navbar navbar-expand-lg p-lg-0">
-  <div class="container-lg position-relative">
-    <a class="navbar-brand" href="#" routerLink="home"><img class="white-filter" src="assets/logo.svg" alt="Green Solutions"></a>
-    <a class="navbar-brand position-absolute nav-top start-50 translate-middle-x" href="#" routerLink="home">Green Solutions</a>
-    <button class="navbar-toggler navbar-dark" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse flex-grow-0" id="navbarToggler">
-      <ul class="navbar-nav pt-2 pt-lg-0">
-        <li class="nav-item d-lg-none px-2 py-3 d-flex justify-content-between text-white">
+  <div class="container-lg px-0 px-lg-12">
+    <div class="d-flex justify-content-between w-100 px-12">
+
+      <a class="navbar-brand" href="#" routerLink="dashboard"><img class="white-filter pe-2" src="assets/logo.svg" alt="Climate Cleanup"><span class="align-middle">Climate Cleanup</span></a>
+      <button class="navbar-toggler navbar-dark" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+    <div class="collapse navbar-collapse ms-lg-auto" id="navbarToggler">
+      <ul class="navbar-nav ms-lg-auto pt-2 pt-lg-0">
+        <li class="nav-item d-lg-none px-2 py-3 d-flex justify-content-between text-white mx-12">
           <div class="d-flex">
             <div class="nav-user d-inline-block align-self-center">
               <img class="rounded-circle" src="https://yt3.ggpht.com/fAfB4LQvATPHhF9ou35zv5FZmXVhMtGnW_vZQNpyd_Krkzasu48k53I3UTIxcqNyMioqK4PR0w=s900-c-k-c0x00ffffff-no-rj">
             </div>
-            <div class="d-inline-block text-center px-2">
+            <div class="d-inline-block px-3">
               <span>Sjors Peters</span>
               <hr class="mb-0 mt-1 text-black">
-              <span class="fs-12">Botanist</span>
+              <span class="fs-14">Botanist</span>
             </div>
           </div>
-          <a class="align-self-center" href="#" routerLink="settings">
-            <img class="white-filter" src="https://fonts.gstatic.com/s/i/materialiconsoutlined/settings/v18/24px.svg" alt="Settings">
-          </a>
         </li>
-        <li class="d-lg-none"><hr class="m-0"></li>
+        <li class="d-lg-none"><hr class="my-0 mx-12"></li>
         <li class="nav-item">
-          <a class="nav-link" href="#" routerLink="menu" routerLinkActive="nav-link-active">Menu</a>
+          <a class="nav-link" href="#" routerLink="dashboard" routerLinkActive="nav-link-active">Dashboard</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#" routerLink="login" routerLinkActive="nav-link-active">Log In</a>
+          <a class="nav-link" href="#" routerLink="sensors" routerLinkActive="nav-link-active">Sensors</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" routerLink="notes" routerLinkActive="nav-link-active">Notes</a>
+        </li>
+        <li class="nav-item d-lg-none">
+          <a class="nav-link" href="#" routerLink="teams" routerLinkActive="nav-link-active">Teams</a>
+        </li>
+        <li class="nav-item d-lg-none">
+          <a class="nav-link" href="#" routerLink="settings" routerLinkActive="nav-link-active">Settings</a>
         </li>
         <li class="nav-item d-lg-none">
           <a class="nav-link" href="#" routerLink="login">Log Out</a>
@@ -36,14 +44,17 @@
           <a class="nav-link nav-user dropdown-toggle p-2" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <img class="rounded-circle" src="https://yt3.ggpht.com/fAfB4LQvATPHhF9ou35zv5FZmXVhMtGnW_vZQNpyd_Krkzasu48k53I3UTIxcqNyMioqK4PR0w=s900-c-k-c0x00ffffff-no-rj">
           </a>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+          <ul class="dropdown-menu dropdown-menu-end mt-0" aria-labelledby="userDropdown">
             <li class="dropdown-item-text">
               Sjors Peters
-              <span class="fs-12">Botanist</span>
+              <div class="fs-14">
+                <span id="expertise">Botanist</span><span *ngIf="false"> &#183; <span id="userRole">__userRole__</span></span>
+              </div>
             </li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" routerLink="settings">Settings</a></li>
-            <li><a class="dropdown-item" routerLink="login">Log Out</a></li>
+            <li><hr class="dropdown-divider opacity-100 mx-2"></li>
+            <li><a class="dropdown-item fw-bold" routerLink="teams">Teams</a></li>
+            <li><a class="dropdown-item fw-bold" routerLink="settings">Settings</a></li>
+            <li><a class="dropdown-item fw-bold" routerLink="login">Log Out</a></li>
           </ul>
         </li>
       </ul>
