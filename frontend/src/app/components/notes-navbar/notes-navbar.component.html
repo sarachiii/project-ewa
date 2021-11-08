@@ -3,7 +3,7 @@
     <div class="container-lg justify-content-center">
       <div *ngFor="let workfield of workfields;" (click)="onSelect(workfield);">
         <a class="nav-link text-uppercase" routerLinkActive="nav-link-active"
-           routerLink="/notes/{{workfield.name}}">{{workfield.name}}
+           routerLink="/notes/{{workfield}}">{{workfield}}
         </a>
       </div>
     </div>

@@ -1,19 +1,17 @@
 import { Injectable } from '@angular/core';
-import {Workfield} from "../models/workfield";
+
+/**
+ * This is the notes service.
+ *
+ * @author Sarah Chrzanowska-Buth
+ */
 
 @Injectable({
   providedIn: 'root'
 })
 export class NotesService {
-  public workfields: Workfield[] = [];
 
-  constructor() { }
-
-  public findAll(): Workfield[]{
-    return this.workfields;
+  constructor() {
   }
 
-  public findByName(name: string): Workfield | null {
-    return this.workfields.find(field => field.name === name) || null;
-  }
 }

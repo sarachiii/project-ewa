@@ -1,103 +1,21 @@
+<p *ngIf="notes.length < 1">There are no notes yet! :(</p>
 <div class="container position-relative h-100">
-  <ngx-masonry [options]="masonryOptions" [ordered]="true" class="mx-auto pt-lg-3 row justify-content-center">
-    <div ngxMasonryItem class="masonry-item p-2 col col-md-6 col-lg-4 col-xl-3">
+ <ngx-masonry *ngIf="notes.length >= 1" [options]="masonryOptions" [ordered]="true" class="mx-auto pt-lg-3 row justify-content-center">
+    <div ngxMasonryItem *ngFor="let note of sortedNotes" class="masonry-item p-2 col col-md-6 col-lg-4 col-xl-3">
       <div class="card shadow">
         <div class="card-header position-relative">
-          Here comes the title
-          <span class="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger p-2">
+          {{note.title}}
+          <span *ngIf="note.onRead == false" class="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger p-2">
             <span class="visually-hidden">unread messages</span></span>
         </div>
         <div class="card-body">
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+          <p class="card-text">{{note.noteText}}</p>
           <div class="row text-muted">
             <div class="col-6">
-              Author
+              {{note.user.name}}
             </div>
             <div class="text-end col-6">
-              2 days ago
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div ngxMasonryItem class="masonry-item p-2 col col-md-6 col-lg-4 col-xl-3">
-      <div class="card shadow">
-        <div class="card-header">
-          Here comes the title
-        </div>
-        <div class="card-body">
-          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis vestibulum id ante in
-            scelerisque. Phasellus varius suscipit sapien in dapibus. Sed eu quam eget nibh laoreet vehicula a in
-            magna. </p>
-          <div class="row text-muted">
-            <div class="col-6">
-              Author
-            </div>
-            <div class="text-end col-6">
-              2 days ago
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div ngxMasonryItem class="masonry-item p-2 col col-md-6 col-lg-4 col-xl-3">
-      <div class="card shadow">
-        <div class="card-header">
-          Here comes the title
-        </div>
-        <div class="card-body">
-          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis vestibulum id ante in
-            scelerisque. Phasellus varius suscipit sapien in dapibus. Sed eu quam eget nibh laoreet vehicula a in
-            magna.
-            Nam aliquam massa nec metus laoreet, ut tincidunt nisi auctor. Vivamus posuere arcu ut lobortis
-            sollicitudin. Phasellus a metus leo. Fusce a sem nec urna sodales commodo. Etiam aliquet nunc non molestie
-            feugiat. Aliquam pretium egestas tortor, eget vulputate odio varius id. Duis a pharetra turpis. </p>
-          <div class="row text-muted">
-            <div class="col-6">
-              Author
-            </div>
-            <div class="text-end col-6">
-              2 days ago
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div ngxMasonryItem class="masonry-item p-2 col col-md-6 col-lg-4 col-xl-3">
-      <div class="card shadow">
-        <div class="card-header">
-          Here comes the title
-        </div>
-        <div class="card-body">
-          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis vestibulum id ante in
-            scelerisque. Phasellus varius suscipit sapien in dapibus. Sed eu quam eget nibh laoreet vehicula a in
-            magna. </p>
-          <div class="row text-muted">
-            <div class="col-6">
-              Author
-            </div>
-            <div class="text-end col-6">
-              2 days ago
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div ngxMasonryItem class="masonry-item p-2 col col-md-6 col-lg-4 col-xl-3">
-      <div class="card shadow">
-        <div class="card-header">
-          Here comes the title
-        </div>
-        <div class="card-body">
-          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis vestibulum id ante in
-            scelerisque. Phasellus varius suscipit sapien in dapibus. Sed eu quam eget nibh laoreet vehicula a in
-            magna. </p>
-          <div class="row text-muted">
-            <div class="col-6">
-              Author
-            </div>
-            <div class="text-end col-6">
-              2 days ago
+              {{note.timestamp}}
             </div>
           </div>
         </div>
@@ -105,7 +23,7 @@
     </div>
   </ngx-masonry>
 
-  <div class="position-absolute bottom-0 end-0 p-5" [ngClass]="{'d-none': selectedWorkfieldFromNavbar.name !== 'botany'}" *ngIf="createNote === false; else addNote;">
+  <div class="position-absolute bottom-0 end-0 p-5" [ngClass]="{'d-none': selectedWorkfieldFromNavbar !== loggedInUser.workfield}" *ngIf="createNote === false; else addNote;">
     <button type="button" class="btn btn-success size d-lg-none shadow fixed-bottom mb-3 mr-3" (click)="onCreateNote(false)">
       <img class="button-img" src="https://icon-library.com/images/compose-icon/compose-icon-1.jpg" alt="add note">
     </button>
