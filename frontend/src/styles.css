@@ -5,20 +5,37 @@
   --cc-yellow: #ffc;
   --cc-green-rgb: 164, 218, 34;
 }
-html, body, app-root {
+html,
+body,
+app-root {
   height: 100%;
 }
 app-root {
   display: flex;
   flex-flow: column;
 }
-.white-filter{
+.white-filter {
   filter: brightness(100) !important;
 }
-.btn-primary{
+.btn-primary,
+.btn-primary:hover,
+.btn-outline-primary,
+.btn-outline-primary.active,
+.btn-outline-primary:hover {
   background-color: var(--cc-green) !important;
   border-color: var(--cc-green) !important;
+  color: white !important;
 }
-.btn-primary:focus, .form-control:focus{
+.btn-outline-primary {
+  background-color: white !important;
+  color: var(--bs-body-color) !important;
+}
+.btn-primary:hover {
+  background-color: var(--cc-darkgreen) !important;
+  border-color: var(--cc-darkgreen) !important;
+}
+.btn-primary:focus,
+.btn-outline-primary:focus,
+.form-control:focus {
   box-shadow: 0 0 0 0.25rem rgb(var(--cc-green-rgb), 0.5) !important;
 }

@@ -17,6 +17,9 @@ import { ShareNotesComponent } from './components/share-notes/share-notes.compon
 import { SensorComponent } from './components/mainpage/sensor/sensor.component';
 import { LoginComponent } from './components/mainpage/login/login.component';
 import { RegisterComponent } from './components/mainpage/register/register.component';
+import { SettingsComponent } from './components/settings/settings.component';
+import { AccountComponent } from './components/settings/account/account.component';
+import { AppearanceComponent } from './components/settings/appearance/appearance.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +34,10 @@ import { RegisterComponent } from './components/mainpage/register/register.compo
     ShareNotesComponent,
     SensorComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    SettingsComponent,
+    AccountComponent,
+    AppearanceComponent
   ],
   imports: [
     BrowserModule,
