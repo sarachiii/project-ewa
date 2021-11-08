@@ -10,7 +10,7 @@ import { SensorComponent} from "./components/mainpage/sensor/sensor.component";
 import { LoginComponent } from './components/mainpage/login/login.component';
 import { SettingsComponent } from "./components/settings/settings.component";
 import { AccountComponent } from "./components/settings/account/account.component";
-import { AppearanceComponent } from "./components/settings/appearance/appearance.component";
+import {PreferencesComponent} from "./components/settings/preferences/preferences.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -31,7 +31,7 @@ const routes: Routes = [
   { path: 'settings', component: SettingsComponent, children: [
       { path: '', redirectTo: 'account', pathMatch: 'full' },
       { path: 'account', component: AccountComponent },
-      { path: 'appearance', component: AppearanceComponent }
+      { path: 'preferences', component: PreferencesComponent }
     ]
   },
   { path: '**', component: ErrorComponent }

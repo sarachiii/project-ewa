@@ -19,7 +19,7 @@ import { LoginComponent } from './components/mainpage/login/login.component';
 import { RegisterComponent } from './components/mainpage/register/register.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { AccountComponent } from './components/settings/account/account.component';
-import { AppearanceComponent } from './components/settings/appearance/appearance.component';
+import { PreferencesComponent } from './components/settings/preferences/preferences.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +37,7 @@ import { AppearanceComponent } from './components/settings/appearance/appearance
     RegisterComponent,
     SettingsComponent,
     AccountComponent,
-    AppearanceComponent
+    PreferencesComponent
   ],
   imports: [
     BrowserModule,
