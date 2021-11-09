@@ -14,15 +14,15 @@ export class Note {
   public title: string;
   public timestamp: string;
   public noteText: string;
-  public onRead: boolean;
+  public isRead: boolean;
 
-  constructor(user: User, id: number, title: string, timestamp: string, noteText: string, onRead: boolean) {
+  constructor(user: User, id: number, title: string, timestamp: string, noteText: string, isRead: boolean) {
     this.user = user;
     this.id = id;
     this.title = title;
     this.timestamp = timestamp;
     this.noteText = noteText;
-    this.onRead = onRead;
+    this.isRead = isRead;
   }
 
   public static generateNoteOfLoggedInUser(id = 0, userId = 0): Note {
@@ -62,7 +62,7 @@ export class Note {
     let textLength = sampleText.length;
     let randomLength = Math.floor(Math.random() * textLength);
     let noteText = sampleText.slice(0, randomLength)
-    let note = new Note(user, id, title, timestamp, noteText, false)
+    let note = new Note(user, id, title, timestamp, noteText, true)
 
     return note;
   }

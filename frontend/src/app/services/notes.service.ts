@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
+import {BehaviorSubject, Subject} from "rxjs";
 
 /**
  * This is the notes service.
@@ -11,7 +12,14 @@ import { Injectable } from '@angular/core';
 })
 export class NotesService {
 
+  private visitedPage: Subject<boolean> = new BehaviorSubject<boolean>(false);
+  currentVisitedPage = this.visitedPage.asObservable();
+
   constructor() {
+  }
+
+  updateVisitedPage(visited: boolean) {
+    this.visitedPage.next(visited);
   }
 
 }

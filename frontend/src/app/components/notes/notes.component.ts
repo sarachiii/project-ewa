@@ -4,6 +4,7 @@ import {NgxMasonryComponent, NgxMasonryOptions} from "ngx-masonry";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Note} from "../../models/note";
 import {User} from "../../models/user";
+import {NotesService} from "../../services/notes.service";
 
 /**
  * This is the notes component. It takes care of showing the notes on the notes page. It shows the newest notes first and than the older ones.
@@ -17,6 +18,7 @@ import {User} from "../../models/user";
   styleUrls: ['./notes.component.css']
 })
 export class NotesComponent implements OnInit {
+  isVisited: boolean = false;
   createNote: boolean = false;
   notes: Note[] = [];
   loggedInUser: User;
@@ -32,7 +34,7 @@ export class NotesComponent implements OnInit {
   @ViewChild(NgxMasonryComponent) masonry: NgxMasonryComponent;
   masonryOptions: NgxMasonryOptions;
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute) {
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private notesService: NotesService) {
     this.masonryOptions = {
       percentPosition: true,
       horizontalOrder: true,
@@ -47,6 +49,8 @@ export class NotesComponent implements OnInit {
   ngOnInit(): void {
     this.router.navigate([this.loggedInUser.workfield], {relativeTo: this.activatedRoute}) //the initial notes page is equal to the workfield of the user
       .catch(reason => console.error(reason));
+    this.isVisited = true;
+    this.notesService.updateVisitedPage(this.isVisited);
     this.selectedWorkfieldFromNavbar = this.loggedInUser.workfield;
     // this.notes = this.notes.filter(note => this.selectedWorkfieldFromNavbar == note.user.workfield) //TODO: filteren van notes per workfield werkend krijgen
   }

@@ -30,7 +30,7 @@
         </li>
         <li class="nav-item">
           <a class="nav-link position-relative" href="#" routerLink="notes" routerLinkActive="nav-link-active">Notes
-            <span class="position-absolute start translate-middle-x badge border border-light rounded-circle bg-danger p-1"><span class="visually-hidden">unread messages</span></span></a>
+            <span *ngIf="visitedPage == false" class="position-absolute start translate-middle-x badge border border-light rounded-circle bg-danger p-1"><span class="visually-hidden">unread messages</span></span></a>
         </li>
         <li class="nav-item d-lg-none">
           <a class="nav-link" href="#" routerLink="teams" routerLinkActive="nav-link-active">Teams</a>
