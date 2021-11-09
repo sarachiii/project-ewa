@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule} from './app-routing.module';
 import { FormsModule } from "@angular/forms";
+import { ReactiveFormsModule } from "@angular/forms";
 import { ChartsModule } from 'ng2-charts';
 
 import { AppComponent } from './app.component';
@@ -43,7 +44,8 @@ import { PreferencesComponent } from './components/settings/preferences/preferen
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    ChartsModule,
+    ReactiveFormsModule,
+    ChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
