@@ -20,7 +20,7 @@ export class User {
 
   public static generateLoggedInUser(userId = 0) {
     let workField = Workfield.BOTANY;
-    let name = "Sjors";
+    let name = "You";
     return new User(userId, name, workField);
   }
 

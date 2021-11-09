@@ -21,12 +21,13 @@ export class NotesComponent implements OnInit {
   isVisited: boolean = false;
   createNote: boolean = false;
   notes: Note[] = [];
+  filteredNotes: Note[] = [];
   loggedInUser: User;
   userID: number = 1000;
   noteId: number = 1;
 
   public get sortedNotes(): Note[] {
-    return this.notes.sort((a, b) => new Date(b.timestamp).getDate() - new Date(a.timestamp).getDate());
+    return this.filteredNotes.sort((a, b) => new Date(b.timestamp).getDate() - new Date(a.timestamp).getDate());
   }
 
   @Input() selectedWorkfieldFromNavbar: Workfield;
@@ -52,13 +53,17 @@ export class NotesComponent implements OnInit {
     this.isVisited = true;
     this.notesService.updateVisitedPage(this.isVisited);
     this.selectedWorkfieldFromNavbar = this.loggedInUser.workfield;
-    // this.notes = this.notes.filter(note => this.selectedWorkfieldFromNavbar == note.user.workfield) //TODO: filteren van notes per workfield werkend krijgen
+    this.filteredNotes = this.notes.filter(note => this.selectedWorkfieldFromNavbar == note.user.workfield); //the notes are filtered by workfield and are shown on the correct page
   }
 
-  // Update masonry after change
-  reloadMasonry(): void {
-    this.masonry?.reloadItems();
-    this.masonry?.layout();
+  ngOnChanges(): void {
+    this.masonryOptions = {
+      percentPosition: true,
+      horizontalOrder: true,
+    };
+    this.filteredNotes = this.notes.filter(note => this.selectedWorkfieldFromNavbar == note.user.workfield);
+    // this.masonry?.reloadItems(); //reload masonry items after change
+    // this.masonry?.layout();
   }
 
   onCreateNote(createNote: boolean) {
