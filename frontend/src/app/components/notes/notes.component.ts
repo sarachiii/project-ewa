@@ -39,8 +39,8 @@ export class NotesComponent implements OnInit {
       percentPosition: true,
       horizontalOrder: true,
     };
-    this.loggedInUser = User.generateLoggedInUser(this.userID++); //generates a random logged in user
-    this.notes.push(Note.generateNoteOfLoggedInUser(this.noteId++)); //make a note for the logged in user
+    this.loggedInUser = User.generateLoggedInUser(this.userID); //generates a random logged in user
+    this.notes.push(Note.generateNoteOfLoggedInUser(this.noteId++, this.userID++)); //make a note for the logged in user
     for (let i = 0; i < 10; i++) {
       this.notes.push(Note.generateNote(this.noteId++, this.userID++)); //generate 10 random notes with random users
     }

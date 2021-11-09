@@ -18,7 +18,7 @@ export class NotesService {
   constructor() {
   }
 
-  updateVisitedPage(visited: boolean) {
+  updateVisitedPage(visited: boolean) { //  This method sets the boolean for if the notes page was visited by the user or not
     this.visitedPage.next(visited);
   }
 
