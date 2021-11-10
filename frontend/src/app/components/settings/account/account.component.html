@@ -5,20 +5,20 @@
     <div class="row">
       <div class="col-md-6 my-2">
         <label for="firstName" class="form-label fw-bold">First name</label>
-        <input type="text" [ngClass]="firstName.valid ? 'is-valid' : 'is-invalid'"
+        <input type="text" [ngClass]="{'is-valid': firstName.valid && firstName.dirty, 'is-invalid': firstName.invalid}"
                class="form-control py-2" id="firstName" formControlName="firstName"
                placeholder="Enter your first name" required>
-        <div class="invalid-feedback">
-          First name is required
+        <div *ngIf="firstName.invalid" class="invalid-feedback">
+          <ng-container *ngIf="firstName.errors.required">First name is required</ng-container>
         </div>
       </div>
       <div class="col-md-6 my-2">
         <label for="lastName" class="form-label fw-bold">Last name</label>
-        <input type="text" [ngClass]="lastName.valid ? 'is-valid' : 'is-invalid'"
+        <input type="text" [ngClass]="{'is-valid': lastName.valid && lastName.dirty, 'is-invalid': lastName.invalid}"
                class="form-control py-2" id="lastName" formControlName="lastName"
                placeholder="Enter your last name" required>
-        <div class="invalid-feedback">
-          Last name is required
+        <div *ngIf="lastName.invalid" class="invalid-feedback">
+          <ng-container *ngIf="lastName.errors.required">Last name is required</ng-container>
         </div>
       </div>
     </div>
@@ -67,41 +67,76 @@
     <div class="row">
       <div class="col-md-6 my-2">
         <label for="emailAddress" class="form-label fw-bold">Email address</label>
-        <input type="email" [ngClass]="emailAddress.valid ? 'is-valid' : 'is-invalid'"
+        <input type="email"
+               [ngClass]="{'is-valid': emailAddress.valid && emailAddress.dirty, 'is-invalid': emailAddress.invalid}"
                class="form-control py-2" id="emailAddress" placeholder="name@example.com"
                formControlName="emailAddress" required>
-        <div class="invalid-feedback">
-          <ng-container *ngIf="emailAddress.errors?.required">Email is required</ng-container>
-
-          <ng-container *ngIf="emailAddress.errors?.email">Email is invalid<br>Format: name@example.com</ng-container>
+        <div *ngIf="emailAddress.invalid" class="invalid-feedback">
+          <ng-container *ngIf="emailAddress.errors.required">Email is required</ng-container>
+          <ng-container *ngIf="emailAddress.errors.email">Email is invalid<br>Format: name@example.com</ng-container>
         </div>
       </div>
     </div>
     <!--Password-->
-    <div formGroupName="password">
-      <!--Current or new password-->
-      <div class="row">
-        <div class="col-md-6 my-2">
-          <label for="password" class="form-label fw-bold">Password</label>
-          <input type="password" class="form-control py-2" id="password" placeholder="Current or new password"
-                 formControlName="currentOrNewPassword">
+    <div class="row">
+      <div class="col-md-6 my-2">
+        <label for="password" class="form-label fw-bold">Password</label>
+        <input type="password"
+               [ngClass]="{'is-valid': password.valid && password.dirty, 'is-invalid': password.invalid && password.dirty}"
+               class="form-control py-2" id="password" placeholder="Enter your password"
+               formControlName="password" required>
+        <div *ngIf="password.invalid && password.dirty" class="invalid-feedback">
+          <ng-container *ngIf="password.errors.required">Password is required</ng-container>
+          <ng-container *ngIf="password.errors.misMatch && password.value">Password is wrong</ng-container>
         </div>
       </div>
-      <!--Repeat password-->
+    </div>
+    <div formGroupName="newPassword">
+      <!--New password-->
       <div class="row">
         <div class="col-md-6 my-2">
-          <label for="repeatPassword" class="form-label fw-bold">Repeat password</label>
-          <input type="password" class="form-control py-2" id="repeatPassword" placeholder="Repeat new password"
-                 formControlName="repeatPassword">
+          <label for="newPassword" class="form-label fw-bold">New password</label>
+          <input type="password"
+                 [ngClass]="{'is-valid':  newPassword.valid && newPassword.value, 'is-invalid': newPassword.invalid && newPassword.dirty || (newPasswordForm.invalid && confirmPassword.value)}"
+                 class="form-control py-2" id="newPassword" placeholder="Enter new password"
+                 formControlName="password">
+          <div *ngIf="newPasswordForm.invalid || newPassword.invalid && newPassword.dirty" class="invalid-feedback">
+            <ng-container *ngIf="newPasswordForm.invalid && !newPassword.value">New password is required</ng-container>
+            <ng-container *ngIf="newPassword.invalid && newPassword.dirty">
+              Password needs to meet the following criteria:
+              <ul>
+                <li *ngIf="newPassword.errors?.length">Must at least 8 characters long</li>
+                <li *ngIf="newPassword.errors?.upperCase">Must have at least 1 uppercase character</li>
+                <li *ngIf="newPassword.errors?.lowerCase">Must have at least 1 lowercase character</li>
+                <li *ngIf="newPassword.errors?.illegalChars">May only contain these special characters: (!@#$%&_=+?~-)
+                </li>
+              </ul>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <!--Confirm new password-->
+      <div class="row">
+        <div class="col-md-6 my-2">
+          <label for="confirmPassword" class="form-label fw-bold">Confirm new password</label>
+          <input
+            [ngClass]="{'is-valid': newPasswordForm.valid && confirmPassword.value, 'is-invalid': newPasswordForm.invalid && (newPassword.value || confirmPassword.value)}"
+            type="password" class="form-control py-2" id="confirmPassword" placeholder="Repeat new password"
+            formControlName="confirmPassword">
+          <div *ngIf="newPasswordForm.invalid" class="invalid-feedback">
+            <ng-container *ngIf="newPasswordForm.errors?.misMatch else badPassword">Passwords do not match
+            </ng-container>
+            <ng-template #badPassword>Password does not meet criteria</ng-template>
+          </div>
         </div>
       </div>
     </div>
     <div class="row">
       <div class="col-md-6 offset-md-6 my-2">
         <button type="submit" class="btn btn-primary fw-bold float-end ms-2"
-                [disabled]="!accountForm.valid || !accountForm.dirty || !accountForm.touched">SAVE
+                [disabled]="accountForm.pristine">SAVE
         </button>
-        <button type="button" class="btn btn-outline-danger fw-bold float-end" (click)="onCancel()">CANCEL</button>
+        <button type="button" class="btn btn-outline-danger fw-bold float-end" (click)="onReset()">CANCEL</button>
       </div>
     </div>
   </form>
