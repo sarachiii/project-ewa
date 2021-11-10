@@ -91,7 +91,7 @@
         </div>
       </div>
     </div>
-    <div formGroupName="newPassword">
+    <div [formGroup]="newPasswordForm">
       <!--New password-->
       <div class="row">
         <div class="col-md-6 my-2">
@@ -134,7 +134,7 @@
     <div class="row">
       <div class="col-md-6 offset-md-6 my-2">
         <button type="submit" class="btn btn-primary fw-bold float-end ms-2"
-                [disabled]="accountForm.pristine">SAVE
+                [disabled]="accountForm.pristine && !(newPassword.value || confirmPassword.value)">SAVE
         </button>
         <button type="button" class="btn btn-outline-danger fw-bold float-end" (click)="onReset()">CANCEL</button>
       </div>

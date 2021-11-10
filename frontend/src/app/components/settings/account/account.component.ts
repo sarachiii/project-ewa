@@ -12,6 +12,7 @@ export class AccountComponent implements OnInit {
   user: User;
   copyUser: User = <User>{};
   accountForm: FormGroup;
+  newPasswordForm: FormGroup;
 
   constructor(private fb: FormBuilder) {
     this.user = new User(0, Role.ADMIN, "Botanist", "Sjors", "Peters",
@@ -22,6 +23,7 @@ export class AccountComponent implements OnInit {
 
     // TODO: Should accountForm be initialised before this method is called?
     this.accountFormInit();
+    this.newPasswordFormInit();
   }
 
   private accountFormInit(): void {
@@ -30,12 +32,15 @@ export class AccountComponent implements OnInit {
       lastName: new FormControl('', Validators.required),
       profilePicture: new FormControl(''),
       emailAddress: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [Validators.required, PasswordValidator.with(this.user?.password).current]),
-      newPassword: new FormGroup({
-        password: new FormControl('', PasswordValidator.pattern),
-        confirmPassword: new FormControl('')
-      }, PasswordValidator.newGroup)
+      password: new FormControl('', [Validators.required, PasswordValidator.with(this.user?.password).current])
     });
+  }
+
+  private newPasswordFormInit(): void {
+    this.newPasswordForm = new FormGroup({
+      password: new FormControl('', PasswordValidator.pattern),
+      confirmPassword: new FormControl('')
+    }, PasswordValidator.newGroup);
   }
 
   get firstName() {
@@ -54,10 +59,6 @@ export class AccountComponent implements OnInit {
     return this.accountForm.get('password');
   }
 
-  get newPasswordForm() {
-    return this.accountForm.get('newPassword');
-  }
-
   get newPassword() {
     return this.newPasswordForm.get('password');
   }
@@ -73,7 +74,9 @@ export class AccountComponent implements OnInit {
 
   onReset() {
     this.accountForm.reset();
+    this.newPasswordForm.reset();
     this.accountFormInit();
+    this.newPasswordFormInit();
     this.accountForm.patchValue(this.copyUser);
   }
 
