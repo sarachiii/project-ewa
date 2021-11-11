@@ -1,34 +1,36 @@
 <div class="container px-0 my-2">
   <h2 class="fw-bold">Preferences</h2>
-  <div class="row">
-    <div class="col-md-6 my-2">
-      <label for="languagePicker" class="form-label fw-bold">Language</label>
-      <select id="languagePicker" class="form-select py-2">
-        <option disabled hidden>Choose a language</option>
-        <option value="en_UK" selected>English</option>
-        <option value="nl_NL">Dutch</option>
-      </select>
+  <form [formGroup]="prefsForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col-md-6 my-2">
+        <label for="languagePicker" class="form-label fw-bold">Language</label>
+        <select formControlName="language" id="languagePicker" class="form-select py-2">
+          <option disabled hidden>Choose a language</option>
+          <option value="en_GB" selected>English</option>
+          <option value="nl_NL">Dutch</option>
+        </select>
+      </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-md-6 my-2">
-      <label for="appearance" class="form-label fw-bold">Appearance</label>
-      <div id="appearance">
-        <div class="form-check form-switch">
-          <input class="form-check-input" type="checkbox" role="switch" id="colorblindness">
-          <label class="form-check-label" for="colorblindness">Colorblind</label>
-        </div>
-        <div class="form-check form-switch">
-          <input class="form-check-input" type="checkbox" role="switch" id="darkMode">
-          <label class="form-check-label" for="darkMode">Dark mode</label>
+    <div class="row">
+      <div class="col-md-6 my-2">
+        <label for="appearance" class="form-label fw-bold">Appearance</label>
+        <div id="appearance">
+          <div class="form-check form-switch">
+            <input formControlName="colorblindness" class="form-check-input" type="checkbox" role="switch" id="colorblindness">
+            <label class="form-check-label" for="colorblindness">Colorblind</label>
+          </div>
+          <div class="form-check form-switch">
+            <input formControlName="darkMode" class="form-check-input" type="checkbox" role="switch" id="darkMode">
+            <label class="form-check-label" for="darkMode">Dark mode</label>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-md-6 offset-md-6 my-2">
-      <button class="btn btn-primary fw-bold float-end ms-2">SAVE</button>
-      <button class="btn btn-outline-danger fw-bold float-end">CANCEL</button>
+    <div class="row">
+      <div class="col-md-6 offset-md-6 my-2">
+        <button type="submit" class="btn btn-primary fw-bold float-end ms-2">SAVE</button>
+        <button type="button" class="btn btn-outline-danger fw-bold float-end" (click)="onReset()">CANCEL</button>
+      </div>
     </div>
-  </div>
+  </form>
 </div>

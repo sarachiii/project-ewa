@@ -20,3 +20,14 @@
 .btn:hover .green-filter {
   transition: 0.15s filter ease-in-out, 0.15s -webkit-filter ease-in-out;
 }
+@media (min-width: 768px) {
+  .w-md-100 {
+    width: 100% !important;
+  }
+}
+@media (max-width: 768px) {
+  .position-md-absolute {
+    position: absolute !important;
+  }
+}
+
