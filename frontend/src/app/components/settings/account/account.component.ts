@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Role, User } from "../../../models/user";
 import { PasswordValidator } from "../../../validators/password.validator";
 
@@ -14,11 +14,11 @@ export class AccountComponent implements OnInit {
   accountForm: FormGroup;
   newPasswordForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor() {
     this.user = new User(0, Role.ADMIN, "Botanist", "Sjors", "Peters",
       "https://yt3.ggpht.com/fAfB4LQvATPHhF9ou35zv5FZmXVhMtGnW_vZQNpyd_Krkzasu48k53I3UTIxcqNyMioqK4PR0w=s900-c-k-c0x00ffffff-no-rj",
       "sjors.peters@climatecleanup.org", "password1");
-    this.copyUser = Object.assign(this.copyUser, this.user);
+    this.copyUser = Object.assign<User, User>(this.copyUser, this.user);
     this.copyUser.password = '';
 
     // TODO: Should accountForm be initialised before this method is called?
@@ -26,21 +26,9 @@ export class AccountComponent implements OnInit {
     this.newPasswordFormInit();
   }
 
-  private accountFormInit(): void {
-    this.accountForm = new FormGroup({
-      firstName: new FormControl('', Validators.required),
-      lastName: new FormControl('', Validators.required),
-      profilePicture: new FormControl(''),
-      emailAddress: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [Validators.required, PasswordValidator.with(this.user?.password).current])
-    });
-  }
-
-  private newPasswordFormInit(): void {
-    this.newPasswordForm = new FormGroup({
-      password: new FormControl('', PasswordValidator.pattern),
-      confirmPassword: new FormControl('')
-    }, PasswordValidator.newGroup);
+  ngOnInit(): void {
+    // get logged in user
+    this.onReset();
   }
 
   get firstName() {
@@ -67,9 +55,25 @@ export class AccountComponent implements OnInit {
     return this.newPasswordForm.get('confirmPassword');
   }
 
-  ngOnInit(): void {
-    // get logged in user
-    this.onReset();
+  get isEmptyPasswordForm(): boolean {
+    return !this.newPassword.value && !this.confirmPassword.value;
+  }
+
+  private accountFormInit(): void {
+    this.accountForm = new FormGroup({
+      firstName: new FormControl('', Validators.required),
+      lastName: new FormControl('', Validators.required),
+      profilePicture: new FormControl(''),
+      emailAddress: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', [Validators.required, control => PasswordValidator.matches(control, this.user?.password)])
+    });
+  }
+
+  private newPasswordFormInit(): void {
+    this.newPasswordForm = new FormGroup({
+      password: new FormControl('', PasswordValidator.pattern),
+      confirmPassword: new FormControl('')
+    }, PasswordValidator.matches);
   }
 
   onReset() {
@@ -82,11 +86,15 @@ export class AccountComponent implements OnInit {
 
   onSubmit() {
     console.log(this.accountForm.value)
+    console.log(this.newPasswordForm.errors)
     this.firstName.markAsDirty();
     this.lastName.markAsDirty();
     this.emailAddress.markAsDirty();
     this.password.markAsDirty();
-    if (this.accountForm.valid) {
+    if (this.accountForm.valid && this.newPasswordForm.valid) {
+      if(!this.isEmptyPasswordForm) {
+        //TODO: Include new password
+      }
       // TODO: stuff with frontend service and backend
     } else {
       // stuff fail
