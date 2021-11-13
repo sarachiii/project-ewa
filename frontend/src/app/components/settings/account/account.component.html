@@ -26,8 +26,8 @@
     <div class="row">
       <div class="col-md my-2">
         <label for="profilePicture" class="form-label fw-bold">Profile picture</label>
-        <div id="profilePicture">
-          <img class="rounded-circle me-2 pe-auto" [src]="copyUser.profilePicture"
+        <div id="profilePicture" formGroupName="pictureForm">
+          <img class="rounded-circle me-2 pe-auto" [src]="user.profilePicture"
                alt="Profile picture" data-bs-toggle="modal" data-bs-target="#profilePictureModal">
           <button type="button" class="btn btn-primary fw-bold ms-2" data-bs-toggle="modal"
                   data-bs-target="#profilePictureModal">
@@ -43,17 +43,23 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                  <div class="mb-3 d-flex justify-content-center">
+                    <img class="rounded-circle w-50" [src]="user.profilePicture" alt="Profile picture">
+                  </div>
                   <div class="mb-3">
                     <label for="profilePictureFile" class="col-form-label fw-bold">Select a local file</label>
-                    <input type="file" class="form-control" id="profilePictureFile">
+                    <div class="input-group">
+                      <input type="file" class="form-control" id="profilePictureFile" formControlName="file">
+                      <button type="button" class="btn btn-primary" (click)="onClear()">Clear</button>
+                    </div>
                   </div>
                   <div class="mb-3">
                     <label for="profilePictureUrl" class="col-form-label fw-bold">Or enter URL</label>
-                    <input type="url" class="form-control" id="profilePictureUrl" formControlName="profilePicture">
+                    <input type="url" class="form-control" id="profilePictureUrl" formControlName="url">
                   </div>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-outline-danger fw-bold" data-bs-dismiss="modal">Cancel</button>
+                  <button type="button" class="btn btn-outline-danger fw-bold" data-bs-dismiss="modal" (click)="onClear(true)">Cancel</button>
                   <button type="button" class="btn btn-primary fw-bold" data-bs-dismiss="modal">OK</button>
                 </div>
               </div>
@@ -97,12 +103,13 @@
         <div class="col-md-6 my-2">
           <label for="newPassword" class="form-label fw-bold">New password</label>
           <input type="password"
-                 [ngClass]="{'is-valid':  newPassword.valid && newPassword.value, 'is-invalid': newPassword.invalid && newPassword.dirty || (newPasswordForm.invalid && confirmPassword.value)}"
+                 [ngClass]="{'is-valid': newPasswordForm.valid && newPassword.valid, 'is-invalid': newPasswordForm.invalid && (newPassword.value || confirmPassword.value)}"
                  class="form-control py-2" id="newPassword" placeholder="Enter new password"
                  formControlName="password">
-          <div *ngIf="newPasswordForm.invalid || newPassword.invalid && newPassword.dirty" class="invalid-feedback">
+          <div *ngIf="newPasswordForm.invalid || newPassword.invalid" class="invalid-feedback">
             <ng-container *ngIf="newPasswordForm.invalid && !newPassword.value">New password is required!</ng-container>
-            <ng-container *ngIf="newPassword.invalid && newPassword.dirty">
+            <ng-container *ngIf="newPasswordForm.invalid && newPassword.valid">Confirm your new password!</ng-container>
+            <ng-container *ngIf="newPassword.invalid && newPassword.value">
               Password needs to meet the following criteria:
               <ul>
                 <li *ngIf="newPassword.errors?.length">Must at least 8 characters long</li>
@@ -121,7 +128,7 @@
         <div class="col-md-6 my-2">
           <label for="confirmPassword" class="form-label fw-bold">Confirm new password</label>
           <input
-            [ngClass]="{'is-valid': newPasswordForm.valid && confirmPassword.value, 'is-invalid': newPasswordForm.invalid && (newPassword.value || confirmPassword.value)}"
+            [ngClass]="{'is-valid': newPasswordForm.valid && confirmPassword.valid, 'is-invalid': newPasswordForm.invalid && (newPassword.value || confirmPassword.value)}"
             type="password" class="form-control py-2" id="confirmPassword" placeholder="Repeat new password"
             formControlName="confirmPassword">
           <div *ngIf="newPasswordForm.invalid" class="invalid-feedback">
@@ -136,7 +143,7 @@
     <div class="row">
       <div class="col-md-6 offset-md-6 my-2">
         <button type="submit" class="btn btn-primary fw-bold float-end ms-2"
-                [disabled]="accountForm.pristine && isEmptyPasswordForm">SAVE
+                [disabled]="accountForm.pristine && newPasswordForm.invalid">SAVE
         </button>
         <button type="button" class="btn btn-outline-danger fw-bold float-end" (click)="onReset()">CANCEL</button>
       </div>

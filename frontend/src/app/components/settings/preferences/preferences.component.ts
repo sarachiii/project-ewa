@@ -15,7 +15,7 @@ export class PreferencesComponent implements OnInit {
   languages: any;
 
   constructor() {
-    this.user = new User(0, Role.ADMIN, "Botanist", "Sjors", "Peters",
+    this.user = new User(0,0, Role.ADMIN, "Botanist", "Sjors", "Peters",
       "https://yt3.ggpht.com/fAfB4LQvATPHhF9ou35zv5FZmXVhMtGnW_vZQNpyd_Krkzasu48k53I3UTIxcqNyMioqK4PR0w=s900-c-k-c0x00ffffff-no-rj",
       "sjors.peters@climatecleanup.org", "password1");
     this.copyPrefs = Object.assign<Preferences, Preferences>(this.copyPrefs, this.user.preferences);
