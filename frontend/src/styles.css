@@ -15,6 +15,9 @@ app-root {
   display: flex;
   flex-flow: column;
 }
+.object-fit-cover {
+  object-fit: cover !important;
+}
 .white-filter {
   filter: brightness(100) !important;
 }

@@ -20,15 +20,15 @@ export class AccountComponent implements OnInit {
     this.user = this.settingsService.findById(this.settingsService.loggedInUser().id);
     // TODO: NotificationService
 
+    this.copyUser = Object.assign<User, User>(this.copyUser, this.user);
+
     // TODO: Should accountForm be initialised before this method is called?
     this.accountFormInit();
     this.newPasswordFormInit();
   }
 
   ngOnInit(): void {
-    // get logged in user
-    this.copyUser = Object.assign<User, User>(this.copyUser, this.user);
-    this.copyUser.password = '';
+    // Reset has all the initial values
     this.onReset();
   }
 
@@ -77,7 +77,7 @@ export class AccountComponent implements OnInit {
         url: new FormControl('')
       }, requireOneDisableAll),
       emailAddress: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [Validators.required, passwordValidator(this.user.password)])
+      password: new FormControl('', [Validators.required, passwordValidator(this.copyUser.password)])
     });
   }
 
@@ -103,37 +103,50 @@ export class AccountComponent implements OnInit {
     this.accountFormInit();
     this.newPasswordFormInit();
     this.accountForm.patchValue(this.copyUser);
+    this.password.reset('');
   }
 
   onSubmit() {
-    console.log(this.accountForm.value);
-    console.log(this.newPasswordForm.errors);
+    // Re-evaluate the password
+    this.password.setValidators([Validators.required, passwordValidator(this.copyUser.password)])
+    this.password.updateValueAndValidity();
+
+    // Update user if form is (still) valid
+    if (this.accountForm.valid) {
+      // Combine values into an updated user
+      let updatedUser = <User>{...this.copyUser, ...this.accountForm.value};
+
+      // A new valid password has been supplied replace old password
+      if (this.newPasswordForm.valid) {
+        updatedUser.password = this.newPassword.value;
+      }
+
+      // If file chosen upload it else choose url as image
+      if (this.file.value && this.file.enabled) {
+        console.log(this.file)
+        // updatedUser.profilePicture = this.file.value;
+        // TODO: upload file somewhere and use link as path OR start a file server?
+      } else if (this.url.value && this.url.enabled) {
+        // TODO: requiredtypes, fetch image check mimetype, validator
+        updatedUser.profilePicture = this.url.value;
+      }
+
+      // Update the user
+      this.settingsService.save(Object.assign<User, User>(this.copyUser, updatedUser));
+
+      // TODO: stuff with frontend service and backend UserController
+    }
+
+    // Mark the fields as dirty to show visual validity
     this.firstName.markAsDirty();
     this.lastName.markAsDirty();
     this.emailAddress.markAsDirty();
     this.password.markAsDirty();
-    if (this.accountForm.valid) {
-      let updatedUser = <User>{...this.accountForm.value};
-      if (this.newPasswordForm.valid) {
-        updatedUser.password = this.newPassword.value;
-        // Update validity with new password
-        this.password.updateValueAndValidity();
-      }
-      if (this.file.value && this.file.enabled) {
-        console.log(this.file)
-        // updatedUser.profilePicture = this.file.value;
-        // upload file somewhere and use link as path
-      } else if (this.url.value && this.url.enabled) {
-        // TODO: requiredtypes, fetch image check mimetype
-        updatedUser.profilePicture = this.url.value;
-      }
-      Object.assign<User, User>(this.user, updatedUser)
-      console.log(this.settingsService.findAll()[0])
-      console.log('here',this.settingsService.loggedInUser());
-      // TODO: stuff with frontend service and backend
-      console.log(this.password);
-    } else {
-      // stuff fail
-    }
+  }
+
+  onDelete() {
+    // Remove the profile picture
+    this.pictureForm.reset({file: '', url: ''});
+    this.copyUser.profilePicture = '';
   }
 }

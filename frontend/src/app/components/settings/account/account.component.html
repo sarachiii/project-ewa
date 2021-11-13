@@ -27,13 +27,15 @@
       <div class="col-md my-2">
         <label for="profilePicture" class="form-label fw-bold">Profile picture</label>
         <div id="profilePicture" formGroupName="pictureForm">
-          <img class="rounded-circle me-2 pe-auto" [src]="user.profilePicture"
-               alt="Profile picture" data-bs-toggle="modal" data-bs-target="#profilePictureModal">
+          <div class="image d-inline-block rounded-circle me-2 pe-auto">
+            <img class="rounded-circle object-fit-cover w-100 h-100" [src]="url.value || copyUser.profilePicture || 'assets/images/default_avatar.svg'"
+                 alt="Profile picture" data-bs-toggle="modal" data-bs-target="#profilePictureModal">
+          </div>
           <button type="button" class="btn btn-primary fw-bold ms-2" data-bs-toggle="modal"
                   data-bs-target="#profilePictureModal">
             Change
           </button>
-          <button type="button" class="btn btn-outline-danger fw-bold ms-2">Delete</button>
+          <button type="button" class="btn btn-outline-danger fw-bold ms-2" (click)="onDelete()">Delete</button>
           <div class="modal fade" id="profilePictureModal" tabindex="-1" aria-labelledby="ppModalLabel"
                aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
@@ -43,18 +45,20 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                  <div class="mb-3 d-flex justify-content-center">
-                    <img class="rounded-circle w-50" [src]="user.profilePicture" alt="Profile picture">
-                  </div>
                   <div class="mb-3">
+                    <div class="image rounded-circle d-block mx-auto">
+                      <img class="rounded-circle object-fit-cover w-100 h-100" [src]="file.value || url.value || copyUser.profilePicture || 'assets/images/default_avatar.svg'" alt="Profile picture">
+                    </div>
+                  </div>
+                  <!--<div class="mb-3">
                     <label for="profilePictureFile" class="col-form-label fw-bold">Select a local file</label>
                     <div class="input-group">
                       <input type="file" class="form-control" id="profilePictureFile" formControlName="file">
-                      <button type="button" class="btn btn-primary" (click)="onClear()">Clear</button>
+                      <button type="button" class="btn btn-primary" (click)="onClear()" [disabled]="file.disabled">Clear</button>
                     </div>
-                  </div>
+                  </div>-->
                   <div class="mb-3">
-                    <label for="profilePictureUrl" class="col-form-label fw-bold">Or enter URL</label>
+                    <label for="profilePictureUrl" class="col-form-label fw-bold">Enter URL</label>
                     <input type="url" class="form-control" id="profilePictureUrl" formControlName="url">
                   </div>
                 </div>

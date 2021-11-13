@@ -16,10 +16,9 @@ export class User {
   emailAddress: string;
   password: string;
   profilePicture: string;
-  preferences: Preferences;
 
   constructor(userId: number, teamId: number, role: Role, specialty: string, firstName: string, lastName: string,
-              emailAddress: string, password: string, profilePicture?: string, preferences?: Preferences) {
+              emailAddress: string, password: string, profilePicture?: string) {
     this.id = userId;
     this.teamId = teamId;
     this.role = role;
@@ -29,6 +28,5 @@ export class User {
     this.emailAddress = emailAddress;
     this.password = password;
     this.profilePicture = profilePicture || '';
-    this.preferences = preferences || new Preferences(userId);
   }
 }

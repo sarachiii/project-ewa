@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
 import { DAO } from "./interfaces/dao";
-import {Role, User} from "../models/user";
+import { Role, User } from "../models/user";
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class UserService implements DAO<User> {
   protected users: User[]
 
@@ -14,6 +12,7 @@ export class UserService implements DAO<User> {
     this.users.push(new User(0,0, Role.ADMIN, "Botanist", "Sjors", "Peters",
       "sjors.peters@climatecleanup.org", "password1",
       "https://yt3.ggpht.com/fAfB4LQvATPHhF9ou35zv5FZmXVhMtGnW_vZQNpyd_Krkzasu48k53I3UTIxcqNyMioqK4PR0w=s900-c-k-c0x00ffffff-no-rj"));
+    localStorage.setItem('userId', this.users[0].id.toString())
   }
 
   findAll(): User[] {
@@ -44,8 +43,9 @@ export class UserService implements DAO<User> {
   }
 
   // Temporary logged in user
-  loggedInUser(): User {
-    return this.users[0];
+  loggedInUser(): User | null {
+    let id = parseInt(localStorage.getItem('userId'));
+    return this.findById(id);
   }
 
   // TODO: Rest get users should use min and max, which will be provided outside a service maybe with a subject

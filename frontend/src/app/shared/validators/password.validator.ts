@@ -6,15 +6,9 @@ export function passwordValidator(password?: string): ValidatorFn {
     if (control instanceof FormControl) {
       if (!password) throw new TypeError('No password supplied for FormControl');
       let password2 = control.value;
-      console.log(password, password2)
       passwordsMatch = password == password2;
     } else if (control instanceof FormGroup) {
       passwordsMatch = Object.keys(control.controls).every((key, i , keys) => control.get(key).value === control.get(keys[0]).value);
-      console.log(passwordsMatch)
-      // try {
-      //   password = control.get('password').value;
-      //   password2 = control.get('confirmPassword').value;
-      // } catch (error) { console.log(error); }
     } else { // object keys every same as array[0]
       // FormArray
       return null;
