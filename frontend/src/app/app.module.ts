@@ -10,7 +10,6 @@ import { NavBarComponent } from './components/mainpage/nav-bar/nav-bar.component
 import { HomeComponent } from './components/mainpage/home/home.component';
 import { ErrorComponent } from './components/error/error.component';
 import { MenuComponent } from './components/mainpage/menu/menu.component';
-import { ResultsComponent } from './components/mainpage/results/results.component';
 import { NotesComponent } from './components/notes/notes.component';
 import { NotesNavbarComponent } from './components/notes-navbar/notes-navbar.component';
 import { ShareNotesComponent } from './components/share-notes/share-notes.component';
@@ -25,7 +24,6 @@ import { RegisterComponent } from './components/mainpage/register/register.compo
     HomeComponent,
     ErrorComponent,
     MenuComponent,
-    ResultsComponent,
     NotesComponent,
     NotesNavbarComponent,
     ShareNotesComponent,
