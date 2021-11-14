@@ -13,16 +13,21 @@ export class PreferencesComponent implements OnInit {
   copyPrefs: Preferences = <Preferences>{};
   prefsForm: FormGroup;
   languages: Array<{ [key: string]: string }>;
+  prefsSaving: boolean;
 
   constructor(protected settingsService: SettingsService) {
     //this.copyPrefs = Object.assign<Preferences, Preferences>(this.copyPrefs, this.user.preferences);
-    Object.assign<Preferences, Preferences>(this.copyPrefs, this.settingsService.getPrefs())
+    // Object.assign<Preferences, Preferences>(this.copyPrefs, this.settingsService.getPrefs())
     this.languages = [{ 'code': 'en_GB', 'lang': 'English'}, { 'code': 'nl_NL', 'lang': 'Dutch'}]
+    this.prefsSaving = false;
     this.prefsFormInit();
   }
 
   ngOnInit(): void {
-    this.onReset();
+    this.settingsService.getPrefs().subscribe(prefs => {
+      Object.assign<Preferences, Preferences>(this.copyPrefs, prefs);
+      this.onReset();
+    })
   }
 
   get language() {
@@ -39,18 +44,27 @@ export class PreferencesComponent implements OnInit {
 
   private prefsFormInit() {
     this.prefsForm = new FormGroup({
-      language: new FormControl('', Validators.required),
+      languageCode: new FormControl('', Validators.required),
       colorblindness: new FormControl(''),
       darkMode: new FormControl('')
     })
   }
 
   onSubmit(): void {
-    console.log(this.prefsForm.value)
+    console.log(this.prefsForm.value);
     if (this.prefsForm.valid) {
       let updatedPrefs: Preferences = <Preferences>{ ...this.copyPrefs, ...this.prefsForm.value }
-      this.settingsService.savePrefs(updatedPrefs);
-      // TODO: Talk to service to talk with the backend
+
+      this.prefsSaving = true;
+      this.settingsService.savePrefs(updatedPrefs)
+        .then(result => {
+          console.log(result);
+          Object.assign(this.copyPrefs, result);
+        }).catch(e => {
+          console.log(e);
+        }).finally(() => {
+          this.prefsSaving = false;
+        });
     }
   }
 

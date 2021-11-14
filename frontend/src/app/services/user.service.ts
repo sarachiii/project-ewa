@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
-import { DAO } from "./interfaces/dao";
+import { CRUDService } from "./interfaces/crud.service";
 import { Role, User } from "../models/user";
 
 @Injectable()
-export class UserService implements DAO<User> {
+export class UserService implements CRUDService<User> {
   protected users: User[]
 
   constructor() {
     this.users = [];
     // Temporarily used as logged in user
-    this.users.push(new User(0,0, Role.ADMIN, "Botanist", "Sjors", "Peters",
+    this.users.push(new User(1,0, Role.ADMIN, "Botanist", "Sjors", "Peters",
       "sjors.peters@climatecleanup.org", "password1",
       "https://yt3.ggpht.com/fAfB4LQvATPHhF9ou35zv5FZmXVhMtGnW_vZQNpyd_Krkzasu48k53I3UTIxcqNyMioqK4PR0w=s900-c-k-c0x00ffffff-no-rj"));
     localStorage.setItem('userId', this.users[0].id.toString())

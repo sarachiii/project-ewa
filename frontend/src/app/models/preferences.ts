@@ -5,14 +5,14 @@ export enum LanguageCode {
 
 export class Preferences {
   userId: number;
-  language: LanguageCode;
+  languageCode: LanguageCode;
   colorblindness: boolean;
   darkMode: boolean;
   private static readonly _langCodes = Object.values(LanguageCode);
 
-  constructor(userId?: number, language?: LanguageCode, colorblindness?: boolean, darkMode?: boolean) {
+  constructor(userId?: number, languageCode?: LanguageCode, colorblindness?: boolean, darkMode?: boolean) {
     this.userId = userId || 0;
-    this.language = language || LanguageCode.en_GB;
+    this.languageCode = languageCode || LanguageCode.en_GB;
     this.colorblindness = colorblindness || false;
     this.darkMode = darkMode || false;
   }
