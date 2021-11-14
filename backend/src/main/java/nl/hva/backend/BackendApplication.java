@@ -23,7 +23,7 @@ public class BackendApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         /**FIND ALL NOTES*/
-//        logger.info("all notes -> {}", repository.findAll());
+        logger.info("all notes -> {}", repository.findAll());
 
         /**INSERTING OR UPDATING A NOTE*/
 //        LocalDateTime ldt = LocalDateTime.now();

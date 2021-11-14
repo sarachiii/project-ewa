@@ -14,9 +14,12 @@ public class NotesRepository {
     @PersistenceContext
     EntityManager entityManager;
 
+    public List<Note> notes;
+
     public List<Note> findAll() {
         TypedQuery<Note> namedQuery = entityManager.createNamedQuery("find_all_notes", Note.class);
-        return namedQuery.getResultList();
+        notes = namedQuery.getResultList();
+        return notes;
     }
 
     public Note findNoteById(int noteId) {
