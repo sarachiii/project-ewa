@@ -16,6 +16,7 @@ public class NotesRepository {
 
     public List<Note> notes;
 
+
     public List<Note> findAll() {
         TypedQuery<Note> namedQuery = entityManager.createNamedQuery("find_all_notes", Note.class);
         notes = namedQuery.getResultList();

@@ -20,7 +20,6 @@ textarea {
   font-style: italic;
   background-image: linear-gradient(#e3d3b1 .1em, var(--cc-yellow) .1em); /*background line*/
   background-size: 100% 2em; /*multiple lines*/
-  border: 0; /*no textarea border*/
   font-size: 16px;
   padding: 9px 20px 0 20px; /*places text on the line correct !not when scrolling*/
 }
@@ -55,10 +54,14 @@ textarea {
 }
 
 .titleColor {
-  border: 0; /*no textarea border*/
   color: #AB7878; /*Text color*/
   font-style: italic;
   background-color: #e3d3b1;
   font-weight: bold;
   width: 90%;
+}
+
+.form-control {
+  border: none;
+  border-radius: 0;
 }

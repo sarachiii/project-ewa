@@ -13,7 +13,7 @@ export class NotesService {
   public notes: Note[] = [];
   resourceUrl: string = "";
 
-  constructor(private http: HttpClient, private datepipe: DatePipe) {
+  constructor(private http: HttpClient) {
     this.resourceUrl = environment.BACKEND_URL + "/notes"
     // Change allNotes() to botanyNotes() to see difference.
     this.allNotes();
@@ -26,7 +26,7 @@ export class NotesService {
 
   allNotes(): void {
     this.restGetNotes().subscribe((notes: Note[]) => {
-      let notesArray = notes.map(note => Note.copyConstructor(note, this.datepipe));
+      let notesArray = notes.map(note => Note.copyConstructor(note));
       for (let i = 0; i < notes.length; i++) {
         this.notes.push(notesArray[i]);
       }
@@ -35,7 +35,7 @@ export class NotesService {
 
   botanyNotes(): void {
     this.restGetNotes().subscribe((notes: Note[]) => {
-      let notesArray = notes.map(note => Note.copyConstructor(note, this.datepipe));
+      let notesArray = notes.map(note => Note.copyConstructor(note));
       for (let i = 0; i < notes.length; i++) {
         if (notesArray[i].workfield == 'B') this.notes.push(notesArray[i]);
       }
@@ -49,5 +49,15 @@ export class NotesService {
       console.error(`Backend returned code ${error.status}, body was: `, error.error);
     }
     return throwError('Something bad happened; please try again later.');
+  }
+
+  addNote(note: Note) {
+    this.restPostNote(note).toPromise().then(scooter => {
+      this.notes.push(scooter);
+    });
+  }
+
+  restPostNote(note): Observable<Note> {
+    return this.http.post<Note>(this.resourceUrl + "/add", note);
   }
 }
