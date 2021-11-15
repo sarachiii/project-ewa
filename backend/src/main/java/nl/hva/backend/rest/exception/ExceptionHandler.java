@@ -30,6 +30,18 @@ class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
     }
+    @ExceptionHandler(alreadyExist.class)
+    public final ResponseEntity<ExceptionResponse> handelUserExist(Exception ex , WebRequest wb){
+        String path = ((ServletWebRequest)wb).getRequest().getRequestURI();
+
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                403,
+                "Dublicate user",
+                ex.getMessage(),
+                path);
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+    }
 
 
 }

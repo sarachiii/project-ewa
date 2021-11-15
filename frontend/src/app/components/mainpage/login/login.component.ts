@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router,ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import {AuthenticationService} from "../../../services/authentication.service";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-login',
@@ -10,23 +11,42 @@ import {AuthenticationService} from "../../../services/authentication.service";
 export class LoginComponent implements OnInit {
   username="";
   password="";
+  loginErrorMessage= "";
   invalidLogin= false;
 
   constructor(
     protected router : Router,
-    protected activivatedRouter: ActivatedRoute,
-    protected authentocationService :AuthenticationService) { }
+    protected authentocationService :AuthenticationService,
+    protected http :HttpClient) { }
 
   ngOnInit(): void {
   }
 
-  checkLogin(){
-    if(this.authentocationService.authenticate(this.username,this.password)){
-      this.router.navigate(['home']);
-      this.invalidLogin= false
-    }else {
-      this.invalidLogin= true;
-    }
+  async checkLogin(){
+    const check = await this.authentocationService.authenticate(this.username,this.password).then(data=>{
+      console.log(data)
+      if (data) {
+        this.loginErrorMessage= "";
+        sessionStorage.setItem('username',this.username);
+        this.router.navigate(['home']);
+        this.invalidLogin = false;
+      }else {
+        this.loginErrorMessage = "Check the username and the password please!"
+        this.invalidLogin = true
+      }
+    });
+
+
+    // console.log(c)
+    // this.http.post<any>(environment.hostUrl+"/login",{username:this.username,password:this.password}).subscribe((data)=>{
+    //   console.log(data)
+    // })
+    // if(this.authentocationService.authenticate(this.username,this.password)){
+    //   this.router.navigate(['home']);
+    //   this.invalidLogin= false
+    // }else {
+    //   this.invalidLogin= true;
+    // }
 
   }
    // onRegister(){

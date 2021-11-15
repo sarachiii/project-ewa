@@ -8,14 +8,20 @@
         <img src="assets/logo.svg" id="icon" alt="User Icon" />
       </div>
 
+
       <!-- Login Form -->
       <form>
+
+        <!-- Error Message -->
+        <p *ngIf="loginErrorMessage.length>0">
+          {{loginErrorMessage}}
+        </p>
         <input type="text" id="login" class="fadeIn second" name="login" placeholder="login" [(ngModel)]="username">
 
         <input type="password" id="password" class="fadeIn third" name="login" placeholder="password" [(ngModel)]="password">
         <input type="submit" class="fadeIn fourth" value="Log In" (click)="checkLogin()">
         <br>
-        <input type="checkbox" id="rememberMe" value="Log In" value="">
+        <input type="checkbox" id="rememberMe" value="Log In" >
         <label for="rememberMe">Remember Me</label>
 
     </form>

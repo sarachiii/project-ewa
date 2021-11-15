@@ -1,27 +1,25 @@
 import { Injectable } from '@angular/core';
+import {HttpClient}from'@angular/common/http';
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
 
-  constructor() {
-
-
+  constructor(protected http :HttpClient) {
   }
 
-  authenticate(username : any, password: any) {
-    if (username === "team2" && password === "2021") {
-      sessionStorage.setItem('username', username)
-      return true;
-    } else {
-      return false;
-    }
+  authenticate(username : String, password:String) :Promise<boolean|void> {
+
+    const request = this.http.post<boolean>(environment.hostUrl+"/login",{username:username,password:password}).toPromise().catch(error=>{
+      console.log(error.error)
+    })
+    return Promise.resolve(request);
   }
 
   isUserLoggedIn() {
     let user = sessionStorage.getItem('username')
-    console.log(!(user === null))
     return !(user === null)
   }
 

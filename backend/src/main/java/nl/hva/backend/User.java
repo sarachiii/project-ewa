@@ -1,6 +1,8 @@
 package nl.hva.backend;
 
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.*;
 
 @Entity
@@ -11,29 +13,33 @@ public class User {
     @GeneratedValue
     @Column(name = "user_id")
     private Long id;
-
     @Column
     private String username;
+    @Column
+    private String email;
     @Column
     private String firstname;
     @Column
     private String lastname;
     @Column
     private String password;
-    @Column
+    @Column(name = "work_field")
     private String workfield;
-
+    @Column(name = "team_leader")
+    private String teamleader;
 
     public User() {
     }
+
     public User (String username,String password){
-        super();
+        this();
         this.username= username;
         this.password = password;
     }
-    public User(String username, String firstname, String lastname, String password, String workfield) {
-        super();
+    public User(String username,String email, String firstname, String lastname, String password, String workfield) {
+        this();
         this.username = username;
+        this.email = email;
         this.firstname = firstname;
         this.lastname = lastname;
         this.password = password;
@@ -59,6 +65,14 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getFirstname() {
@@ -93,4 +107,11 @@ public class User {
         this.workfield = workfield;
     }
 
+    public String getTeamleader() {
+        return teamleader;
+    }
+
+    public void setTeamleader(String teamleader) {
+        this.teamleader = teamleader;
+    }
 }

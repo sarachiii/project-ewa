@@ -18,7 +18,16 @@
     color: #cccccc;
   }
 
+p{
+  width: 85%;
+  font-size: 17px;
+  color: red;
+  border: red solid 1px;
 
+  display: inline-block;
+
+
+}
 
   /* STRUCTURE */
 
