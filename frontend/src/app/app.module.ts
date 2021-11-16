@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule} from './app-routing.module';
 import { FormsModule } from "@angular/forms";
@@ -38,6 +39,7 @@ import { RegisterComponent } from './components/mainpage/register/register.compo
     AppRoutingModule,
     FormsModule,
     ChartsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
