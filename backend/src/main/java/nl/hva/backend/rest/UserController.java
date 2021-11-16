@@ -24,50 +24,60 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-    public List<User> usersList;
-
-
     @GetMapping("users")
     public List<User> getUsersList(){
-        this.usersList = this.userRepository.findAll();
         return this.userRepository.findAll();
     }
     @GetMapping("users/{id}")
-    public User getUsersList(@PathVariable Long id){
+    public User getUsersById(@PathVariable Long id){
+        User user = this.userRepository.findUserById(id);
+        if (user == null) {
+            throw new ResourceNotFound("No user with this id ");
+        }
         return this.userRepository.findUserById(id);
     }
+
     @PostMapping("users")
     public ResponseEntity<User> createUser(@RequestBody User u){
        boolean check = false;
        for (User user :userRepository.findAll()) {
-            if (user.getUsername().equals(u.getUsername())){
-                check = true;
-            }
+           if (user.getUsername().equals(u.getUsername())) {
+               check = true;
+               break;
+           }
         }
        if(!check){
            User saveUser = userRepository.save(u);
            URI location  = ServletUriComponentsBuilder.fromCurrentRequest().path("{id}").buildAndExpand(saveUser.getId()).toUri();
-//           return ResponseEntity.ok().build();
            return ResponseEntity.created(location).body(saveUser);
        }else {
            throw new alreadyExist("the user is already in the database");
        }
     }
 
-
-
-/*    @GetMapping("login/{id}")
-    public Optional<User> getUserById(@PathVariable Long id){
-        Optional<User> user =this.userRepository.findById(id);
-
-        if (user.isPresent()){
-            return user;
+    @DeleteMapping("users/{id}")
+    public ResponseEntity<Boolean> deleteUser(@PathVariable Long id){
+        if (this.userRepository.existsById(id)){
+            this.userRepository.deleteById(id);
+            return ResponseEntity.ok(true);
         }else {
-            //TODO
-            // throw exception not found if user not exist instate of returning null
-            return null;
+            throw new ResourceNotFound("no user with this id exist to be deleted");
         }
-    }*/
+
+    }
+    @PutMapping("users/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user){
+        User userToUpdate = this.userRepository.findUserById(id);
+        if (this.userRepository.existsById(id)){
+            user.setId(id);
+            this.userRepository.save(user);
+            URI location  = ServletUriComponentsBuilder.fromCurrentRequest().path("{id}").buildAndExpand(userToUpdate.getId()).toUri();
+            return ResponseEntity.created(location).body(userToUpdate);
+        }else {
+            throw new ResourceNotFound("there is no user with this id");
+        }
+
+    }
     @GetMapping("login/{username}")
     public User getUserByUsername(@PathVariable String username){
         User user =this.userRepository.findByUsername(username);

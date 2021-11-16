@@ -24,14 +24,15 @@ export class LoginComponent implements OnInit {
 
   async checkLogin(){
     const check = await this.authentocationService.authenticate(this.username,this.password).then(data=>{
-      console.log(data)
       if (data) {
         this.loginErrorMessage= "";
         sessionStorage.setItem('username',this.username);
         this.router.navigate(['home']);
         this.invalidLogin = false;
+      }else if(data == undefined){
+        this.loginErrorMessage="No account with this username!"
       }else {
-        this.loginErrorMessage = "Check the username and the password please!"
+        this.loginErrorMessage = "The password and the username does not match!"
         this.invalidLogin = true
       }
     });
