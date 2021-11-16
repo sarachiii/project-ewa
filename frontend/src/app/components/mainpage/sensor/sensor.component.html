@@ -18,11 +18,15 @@
             </div>
           </div>
           <div class="col">
-            <button class="btn btn-primary fw-bold" type="button" id="submit">SUBMIT</button>
+            <button (click)="onSuccess('Data saved successfully')" class="btn btn-primary fw-bold" type="button" id="submit">SUBMIT </button>
           </div>
+          <simple-notifications></simple-notifications>
+<!--          <div class="col">-->
+<!--            <button (click)="onCreatePost('test')" class="btn btn-primary fw-bold" type="button" id="submit">SUBMIT </button>-->
+<!--          </div>-->
         </div>
       </div>
-    </div>
+      </div>
   </div>
   <!--Sensors Modules-->
   <div id="sensors" class="row justify-content-center py-3">
@@ -43,4 +47,5 @@
       </div>
     </div>
   </div>
+
 </div>

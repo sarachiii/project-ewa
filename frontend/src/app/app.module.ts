@@ -18,6 +18,10 @@ import { ShareNotesComponent } from './components/share-notes/share-notes.compon
 import { SensorComponent } from './components/mainpage/sensor/sensor.component';
 import { LoginComponent } from './components/mainpage/login/login.component';
 import { RegisterComponent } from './components/mainpage/register/register.component';
+import {HttpClientModule} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
+import {SimpleNotificationsModule} from "angular2-notifications";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
@@ -39,7 +43,9 @@ import { RegisterComponent } from './components/mainpage/register/register.compo
     AppRoutingModule,
     FormsModule,
     ChartsModule,
-    HttpClientModule
+    HttpClientModule,
+    SimpleNotificationsModule.forRoot(),
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
