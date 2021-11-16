@@ -2,8 +2,7 @@ package nl.hva.backend.repository;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import nl.hva.backend.User;
-import org.springframework.http.ResponseEntity;
+import nl.hva.backend.model.User;
 import org.springframework.stereotype.Repository;
 
 @Repository

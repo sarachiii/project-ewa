@@ -1,17 +1,14 @@
 package nl.hva.backend.rest;
 
-import ch.qos.logback.core.joran.event.BodyEvent;
 import nl.hva.backend.model.Login;
 import nl.hva.backend.rest.exception.ResourceNotFound;
 import nl.hva.backend.rest.exception.alreadyExist;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import nl.hva.backend.User;
+import nl.hva.backend.model.User;
 import nl.hva.backend.repository.UserRepository;
-import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;

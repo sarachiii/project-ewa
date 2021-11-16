@@ -1,4 +1,4 @@
-package nl.hva.backend;
+package nl.hva.backend.model;
 
 
 import com.fasterxml.jackson.annotation.JsonView;
