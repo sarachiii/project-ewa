@@ -17,6 +17,7 @@ export class Note {
   }
 
   static copyConstructor(note: Note): Note {
+    //TODO: reformat the timestamp to a readable string
     return Object.assign(new Note(note.noteId, note.userId, note.workfield, note.timestamp, note.title, note.noteText));
   }
 }

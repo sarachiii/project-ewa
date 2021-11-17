@@ -1,9 +1,8 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {Workfield} from "../../models/workfield";
 import {NgxMasonryComponent, NgxMasonryOptions} from "ngx-masonry";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Note} from "../../models/note";
-import {User} from "../../models/user";
 import {NotesService} from "../../services/notes.service";
 
 /**
@@ -22,9 +21,6 @@ export class NotesComponent implements OnInit {
   createNote: boolean = false;
   notes: Note[] = [];
   filteredNotes: Note[] = [];
-  loggedInUser: User;
-  userID: number = 1000;
-  noteId: number = 1;
 
   public get sortedNotes(): Note[] {
     return this.filteredNotes.sort((a, b) => new Date(b.timestamp).getDate() - new Date(a.timestamp).getDate());
@@ -40,20 +36,17 @@ export class NotesComponent implements OnInit {
       percentPosition: true,
       horizontalOrder: true,
     };
-    this.loggedInUser = User.generateLoggedInUser(this.userID); //generates a random logged in user
-    this.notes.push(Note.generateNoteOfLoggedInUser(this.noteId++, this.userID++)); //make a note for the logged in user
-    for (let i = 0; i < 10; i++) {
-      this.notes.push(Note.generateNote(this.noteId++, this.userID++)); //generate 10 random notes with random users
-    }
   }
 
   ngOnInit(): void {
-    this.router.navigate([this.loggedInUser.workfield], {relativeTo: this.activatedRoute}) //the initial notes page is equal to the workfield of the user
+    //TODO: set the workfield to the workfield of the logged in user
+    this.router.navigate(["botany"], {relativeTo: this.activatedRoute}) //the initial notes page is equal to the workfield of the user
       .catch(reason => console.error(reason));
     this.isVisited = true;
     this.notesService.updateVisitedPage(this.isVisited);
-    this.selectedWorkfieldFromNavbar = this.loggedInUser.workfield;
-    this.filteredNotes = this.notes.filter(note => this.selectedWorkfieldFromNavbar == note.user.workfield); //the notes are filtered by workfield and are shown on the correct page
+    this.selectedWorkfieldFromNavbar = Workfield.BOTANY; //TODO: set the workfield to the workfield of the logged in user
+    this.notes = this.notesService.notes;
+    this.filteredNotes = this.notes.filter(note => this.selectedWorkfieldFromNavbar.charAt(0) == note.workfield.toLocaleLowerCase().charAt(0)); //the notes are filtered by workfield and are shown on the correct page
   }
 
   ngOnChanges(): void {
@@ -61,9 +54,7 @@ export class NotesComponent implements OnInit {
       percentPosition: true,
       horizontalOrder: true,
     };
-    this.filteredNotes = this.notes.filter(note => this.selectedWorkfieldFromNavbar == note.user.workfield);
-    // this.masonry?.reloadItems(); //reload masonry items after change
-    // this.masonry?.layout();
+    this.filteredNotes = this.notes.filter(note => this.selectedWorkfieldFromNavbar.charAt(0) == note.workfield.toLocaleLowerCase().charAt(0));
   }
 
   onCreateNote(createNote: boolean) {

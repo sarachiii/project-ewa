@@ -3,18 +3,22 @@
  <ngx-masonry *ngIf="sortedNotes.length >= 1" [options]="masonryOptions" [ordered]="true" class="mx-auto pt-lg-3 row justify-content-center">
     <div ngxMasonryItem *ngFor="let note of sortedNotes" class="masonry-item p-2 col col-md-6 col-lg-4 col-xl-3">
       <div class="card shadow">
-        <div class="card-header position-relative" [ngClass]="{'highlight-header': loggedInUser.userId == note.user.userId}">
+<!--        <div class="card-header position-relative" [ngClass]="{'highlight-header': loggedInUser.userId == note.user.userId}">-->
+        <div class="card-header position-relative">
           {{note.title}}
-          <span *ngIf="note.isRead == false" class="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger p-2">
+<!--          <span *ngIf="note.isRead == false" class="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger p-2">-->
+          <span class="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger p-2">
             <span class="visually-hidden">unread messages</span>
           </span>
-          <a id="edit-screen"><img *ngIf="loggedInUser.userId == note.user.userId" src="assets/edit.svg" class="float-end"></a>
+<!--          <a id="edit-screen"><img *ngIf="loggedInUser.userId == note.user.userId" src="assets/edit.svg" class="float-end"></a>-->
+          <a id="edit-screen"><img src="assets/edit.svg" class="float-end"></a>
         </div>
         <div class="card-body">
           <p class="card-text">{{note.noteText}}</p>
           <div class="row text-muted">
             <div class="col-6">
-              <{{note.user.name}}>
+              {{note.userId}}
+              <!-- TODO: set the username instead of userid-->
             </div>
             <div class="text-end col-6">
               {{note.timestamp}}
@@ -25,7 +29,8 @@
     </div>
   </ngx-masonry>
 
-  <div class="position-absolute bottom-0 end-0 p-5" [ngClass]="{'d-none': selectedWorkfieldFromNavbar !== loggedInUser.workfield}" *ngIf="createNote === false; else addNote;">
+<!--  <div class="position-absolute bottom-0 end-0 p-5" [ngClass]="{'d-none': selectedWorkfieldFromNavbar !== loggedInUser.workfield}" *ngIf="createNote === false; else addNote;">-->
+  <div class="position-absolute bottom-0 end-0 p-5" *ngIf="createNote === false; else addNote;">
     <button type="button" class="btn btn-success size d-lg-none shadow fixed-bottom mb-3 mr-3" (click)="onCreateNote(false)">
       <img class="button-img" src="https://icon-library.com/images/compose-icon/compose-icon-1.jpg" alt="add note">
     </button>
@@ -38,7 +43,6 @@
       <app-share-notes class="position-absolute w-100 top start-0 translate-middle-y"
                        (unselectedEvent)="onCreateNote($event)">
       </app-share-notes>
-      <!--   <router-outlet></router-outlet>      route werkt nog niet helemaal goed-->
     </ng-container>
   </ng-template>
 </div>
