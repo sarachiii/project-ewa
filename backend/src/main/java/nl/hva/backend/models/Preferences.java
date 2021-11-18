@@ -23,6 +23,11 @@ public class Preferences {
     @Column(name = "dark_mode")
     private Boolean darkMode;
 
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "user_id")
+    private User user;
+
     public enum LanguageCode {
         en_GB("en_GB"),
         nl_NL("nl_NL");

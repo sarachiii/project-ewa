@@ -29,7 +29,7 @@ const routes: Routes = [
       },
     ],
   },
-  { path: 'settings', component: SettingsComponent, children: [
+  { path: 'settings', component: SettingsComponent, canActivate: [AuthGuardService], children: [
       { path: '', redirectTo: 'account', pathMatch: 'full' },
       { path: 'account', component: AccountComponent },
       { path: 'preferences', component: PreferencesComponent }

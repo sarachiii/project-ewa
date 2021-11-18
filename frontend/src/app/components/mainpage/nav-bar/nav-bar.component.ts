@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthenticationService} from "../../../services/authentication.service";
+import {WebStorageService} from "../../../services/storage/web-storage.service";
 
 @Component({
   selector: 'app-nav-bar',
@@ -8,9 +9,17 @@ import {AuthenticationService} from "../../../services/authentication.service";
 })
 export class NavBarComponent implements OnInit {
 
-  constructor(public loginService:AuthenticationService) { }
+  constructor(protected webStorageService: WebStorageService) { }
 
   ngOnInit(): void {
+  }
+
+  isLoggedIn(): boolean {
+    return this.webStorageService.has('userId');
+  }
+
+  logOut(): void {
+    this.webStorageService.clear();
   }
 
 }

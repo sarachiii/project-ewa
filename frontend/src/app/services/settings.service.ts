@@ -8,21 +8,25 @@ import {shareReplay} from "rxjs/operators";
 @Injectable()
 export class SettingsService extends UserService {
   // prefsList: Preferences[];
-  private readonly resourceUrl: string = 'http://localhost:8084';
   preferences: Preferences;
 
   // TODO: Add StorageService to save the preferences in the localStorage or sessionStorage
   // TODO: Perhaps separate SettingsService and PreferencesService to manage preferences site wide
-  constructor(private httpClient: HttpClient) {
-    super();
+  constructor(protected httpClient: HttpClient) {
+    super(httpClient);
     // this.prefsList = [];
     // this.prefsList.push(new Preferences(this.loggedInUser().id));
 
     // console.log(this.prefsList)
   }
 
-  getPrefs(): Observable<Preferences> {
-    return this.httpClient.get<Preferences>(`${this.resourceUrl}/users/preferences?id=${this.loggedInUser().id}`)
+  updateProfile(id: number, accountForm: { [ key: string]: string }): Observable<boolean> {
+    console.log(accountForm)
+    return this.httpClient.put<boolean>(`${this.resourceUrl}/users/${id}/account`, accountForm);
+  }
+
+  getPrefs(id: number): Observable<Preferences> {
+    return this.httpClient.get<Preferences>(`${this.resourceUrl}/users/preferences?id=${id}`)
   }
 
   savePrefs(prefs: Preferences): Promise<Preferences> {

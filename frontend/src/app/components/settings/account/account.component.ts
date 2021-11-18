@@ -4,6 +4,7 @@ import { User } from "../../../models/user";
 import { SettingsService } from "../../../services/settings.service";
 import { passwordPatternValidator, passwordValidator} from "../../../shared/validators/password.validator";
 import { requireOneDisableAll } from "../../../shared/validators/custom.validator";
+import {WebStorageService} from "../../../services/storage/web-storage.service";
 
 @Component({
   selector: 'app-account',
@@ -13,24 +14,35 @@ import { requireOneDisableAll } from "../../../shared/validators/custom.validato
 export class AccountComponent implements OnInit {
   user: User;
   copyUser: User = <User>{};
+  // TODO: change name to profileForm
   accountForm: FormGroup;
   newPasswordForm: FormGroup;
 
-  constructor(protected settingsService: SettingsService) {
-    this.user = this.settingsService.findById(this.settingsService.loggedInUser().id);
-    // TODO: NotificationService
+  constructor(protected settingsService: SettingsService,
+              protected webStorageService: WebStorageService) {
 
-    this.copyUser = Object.assign<User, User>(this.copyUser, this.user);
+    // TODO: NotificationService
 
     // TODO: Should accountForm be initialised before this method is called?
     this.accountFormInit();
     this.newPasswordFormInit();
+
   }
 
   ngOnInit(): void {
     // Reset has all the initial values
-    this.onReset();
+    this.settingsService.getUserById(this.webStorageService.getAsNumber('userId')).subscribe(value => {
+      this.user = value;
+
+      console.log(value)
+
+      this.copyUser = Object.assign<User, User>(this.copyUser, this.user);
+
+      this.onReset();
+    });
   }
+
+
 
   get firstName() {
     return this.accountForm.get('firstName');
@@ -77,7 +89,7 @@ export class AccountComponent implements OnInit {
         url: new FormControl('')
       }, requireOneDisableAll),
       emailAddress: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [Validators.required, passwordValidator(this.copyUser.password)])
+      password: new FormControl('')
     });
   }
 
@@ -85,7 +97,7 @@ export class AccountComponent implements OnInit {
     this.newPasswordForm = new FormGroup({
       password: new FormControl('', [passwordPatternValidator, Validators.required]),
       confirmPassword: new FormControl('', Validators.required)
-    }, [passwordValidator()]);
+    }, passwordValidator());
   }
 
   onClear(clearUrl?: boolean) {
@@ -104,6 +116,7 @@ export class AccountComponent implements OnInit {
     this.newPasswordFormInit();
     this.accountForm.patchValue(this.copyUser);
     this.password.reset('');
+    this.password.setValidators([Validators.required, passwordValidator(this.copyUser.password)]);
   }
 
   onSubmit() {
@@ -132,7 +145,12 @@ export class AccountComponent implements OnInit {
       }
 
       // Update the user
-      this.settingsService.save(Object.assign<User, User>(this.copyUser, updatedUser));
+      //this.settingsService.save(Object.assign<User, User>(this.copyUser, updatedUser));
+      this.settingsService.updateProfile(this.webStorageService.getAsNumber('userId'),
+        {...this.accountForm.value, newPasswordForm: this.newPasswordForm.value }).subscribe(e=>{
+        console.log(e)
+      }, error => {
+        console.log(error)})
 
       // TODO: stuff with frontend service and backend UserController
     }

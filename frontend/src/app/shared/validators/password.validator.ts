@@ -4,7 +4,7 @@ export function passwordValidator(password?: string): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     let passwordsMatch: boolean;
     if (control instanceof FormControl) {
-      if (!password) throw new TypeError('No password supplied for FormControl');
+      if (typeof password != "string") throw new TypeError('No password supplied for FormControl');
       let password2 = control.value;
       passwordsMatch = password == password2;
     } else if (control instanceof FormGroup) {

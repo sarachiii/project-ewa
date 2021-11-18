@@ -7,16 +7,14 @@ import java.time.LocalDateTime;
  *
  * @author Mohamad Hassan
  */
-public class ExceptionResponse {
-
+public class ExceptionResponse<T> {
     private LocalDateTime timestamp;
     private int status;
-    private String error;
+    private T error;
     private String message;
     private String path;
 
-
-    public ExceptionResponse(int status, String error, String message, String path) {
+    public ExceptionResponse(int status, T error, String message, String path) {
         this.timestamp = LocalDateTime.now();
         this.status = status;
         this.error = error;
@@ -24,21 +22,20 @@ public class ExceptionResponse {
         this.path = path;
     }
 
-
     public LocalDateTime getTimestamp() {
         return timestamp;
-    }
-
-    public String getMessage() {
-        return message;
     }
 
     public int getStatus() {
         return status;
     }
 
-    public String getError() {
+    public T getError() {
         return error;
+    }
+
+    public String getMessage() {
+        return message;
     }
 
     public String getPath() {
@@ -49,16 +46,16 @@ public class ExceptionResponse {
         this.timestamp = timestamp;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
     public void setStatus(int status) {
         this.status = status;
     }
 
-    public void setError(String error) {
+    public void setError(T error) {
         this.error = error;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public void setPath(String path) {
