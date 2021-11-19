@@ -1,16 +1,14 @@
-export class Workfield {
-  private _name: string;
+/**
+ * This is the workfield class, it contains the enum with all the workfiels
+ *
+ * @author Sarah Chrzanowska-Buth
+ */
 
-  constructor(name: string = "") {
-    this._name = name;
-  }
-
-  get name(): string {
-    return this._name;
-  }
-
-  set name(value: string) {
-    this._name = value;
-  }
+export enum Workfield {
+  AGRONOMY = "agronomy",
+  BOTANY = "botany",
+  GEOLOGY = "geology",
+  HYDROLOGY = "hydrology",
+  CLIMATE_SCIENCE = "climate-science"
 }
 

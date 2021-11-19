@@ -1,101 +1,27 @@
+<p *ngIf="sortedNotes.length < 1">There are no notes yet! :(</p>
 <div class="container position-relative h-100">
-  <ngx-masonry [options]="masonryOptions" [ordered]="true" class="mx-auto pt-lg-3 row justify-content-center">
-    <div ngxMasonryItem class="masonry-item p-2 col col-md-6 col-lg-4 col-xl-3">
+ <ngx-masonry *ngIf="sortedNotes.length >= 1" [options]="masonryOptions" [ordered]="true" class="mx-auto pt-lg-3 row justify-content-center">
+    <div ngxMasonryItem *ngFor="let note of sortedNotes" class="masonry-item p-2 col col-md-6 col-lg-4 col-xl-3">
       <div class="card shadow">
-        <div class="card-header">
-          Here comes the title
+<!--        <div class="card-header position-relative" [ngClass]="{'highlight-header': loggedInUser.userId == note.user.userId}">-->
+        <div class="card-header position-relative">
+          {{note.title}}
+<!--          <span *ngIf="note.isRead == false" class="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger p-2">-->
+          <span class="position-absolute">
+            <span class="visually-hidden">unread messages</span>
+          </span>
+<!--          <a id="edit-screen"><img *ngIf="loggedInUser.userId == note.user.userId" src="assets/edit.svg" class="float-end"></a>-->
+          <a id="edit-screen"><img src="assets/edit.svg" class="float-end"></a>
         </div>
         <div class="card-body">
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+          <p class="card-text">{{note.noteText}}</p>
           <div class="row text-muted">
-            <div class="col-6">
-              Author
+            <div class="col-5">
+              {{note.username}}
+              <!-- TODO: set the username instead of userid-->
             </div>
-            <div class="text-end col-6">
-              2 days ago
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div ngxMasonryItem class="masonry-item p-2 col col-md-6 col-lg-4 col-xl-3">
-      <div class="card shadow">
-        <div class="card-header">
-          Here comes the title
-        </div>
-        <div class="card-body">
-          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis vestibulum id ante in
-            scelerisque. Phasellus varius suscipit sapien in dapibus. Sed eu quam eget nibh laoreet vehicula a in
-            magna. </p>
-          <div class="row text-muted">
-            <div class="col-6">
-              Author
-            </div>
-            <div class="text-end col-6">
-              2 days ago
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div ngxMasonryItem class="masonry-item p-2 col col-md-6 col-lg-4 col-xl-3">
-      <div class="card shadow">
-        <div class="card-header">
-          Here comes the title
-        </div>
-        <div class="card-body">
-          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis vestibulum id ante in
-            scelerisque. Phasellus varius suscipit sapien in dapibus. Sed eu quam eget nibh laoreet vehicula a in
-            magna.
-            Nam aliquam massa nec metus laoreet, ut tincidunt nisi auctor. Vivamus posuere arcu ut lobortis
-            sollicitudin. Phasellus a metus leo. Fusce a sem nec urna sodales commodo. Etiam aliquet nunc non molestie
-            feugiat. Aliquam pretium egestas tortor, eget vulputate odio varius id. Duis a pharetra turpis. </p>
-          <div class="row text-muted">
-            <div class="col-6">
-              Author
-            </div>
-            <div class="text-end col-6">
-              2 days ago
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div ngxMasonryItem class="masonry-item p-2 col col-md-6 col-lg-4 col-xl-3">
-      <div class="card shadow">
-        <div class="card-header">
-          Here comes the title
-        </div>
-        <div class="card-body">
-          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis vestibulum id ante in
-            scelerisque. Phasellus varius suscipit sapien in dapibus. Sed eu quam eget nibh laoreet vehicula a in
-            magna. </p>
-          <div class="row text-muted">
-            <div class="col-6">
-              Author
-            </div>
-            <div class="text-end col-6">
-              2 days ago
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div ngxMasonryItem class="masonry-item p-2 col col-md-6 col-lg-4 col-xl-3">
-      <div class="card shadow">
-        <div class="card-header">
-          Here comes the title
-        </div>
-        <div class="card-body">
-          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis vestibulum id ante in
-            scelerisque. Phasellus varius suscipit sapien in dapibus. Sed eu quam eget nibh laoreet vehicula a in
-            magna. </p>
-          <div class="row text-muted">
-            <div class="col-6">
-              Author
-            </div>
-            <div class="text-end col-6">
-              2 days ago
+            <div class="text-end col-7">
+              {{note.timestamp}}
             </div>
           </div>
         </div>
@@ -103,7 +29,8 @@
     </div>
   </ngx-masonry>
 
-  <div class="position-absolute bottom-0 end-0 p-5" [ngClass]="{'d-none': selectedWorkfieldFromNavbar.name !== 'botany'}" *ngIf="createNote === false; else addNote;">
+<!--  <div class="position-absolute bottom-0 end-0 p-5" [ngClass]="{'d-none': selectedWorkfieldFromNavbar !== loggedInUser.workfield}" *ngIf="createNote === false; else addNote;">-->
+  <div class="position-absolute bottom-0 end-0 p-5" *ngIf="createNote === false; else addNote;">
     <button type="button" class="btn btn-success size d-lg-none shadow fixed-bottom mb-3 mr-3" (click)="onCreateNote(false)">
       <img class="button-img" src="https://icon-library.com/images/compose-icon/compose-icon-1.jpg" alt="add note">
     </button>
@@ -116,7 +43,6 @@
       <app-share-notes class="position-absolute w-100 top start-0 translate-middle-y"
                        (unselectedEvent)="onCreateNote($event)">
       </app-share-notes>
-      <!--   <router-outlet></router-outlet>      route werkt nog niet helemaal goed-->
     </ng-container>
   </ng-template>
 </div>

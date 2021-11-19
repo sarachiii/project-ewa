@@ -1,4 +1,11 @@
-import {Injectable} from '@angular/core';
+import {Injectable, Output} from '@angular/core';
+import {BehaviorSubject, Subject} from "rxjs";
+
+/**
+ * This is the notes service.
+ *
+ * @author Sarah Chrzanowska-Buth & Nazlıcan Eren
+ */
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {Note} from "../models/note";
@@ -10,34 +17,25 @@ import {DatePipe} from "@angular/common";
   providedIn: 'root'
 })
 export class NotesService {
+  private visitedPage: Subject<boolean> = new BehaviorSubject<boolean>(false);
+  currentVisitedPage = this.visitedPage.asObservable();
   public notes: Note[] = [];
   resourceUrl: string = "";
 
   constructor(private http: HttpClient) {
-    this.resourceUrl = environment.BACKEND_URL + "/notes"
-    // Change allNotes() to botanyNotes() to see difference.
+    this.resourceUrl = environment.BACKEND_URL + "/notes";
     this.allNotes();
-    // this.botanyNotes();
   }
 
   restGetNotes(): Observable<Note[]> {
     return this.http.get<Note[]>(this.resourceUrl + "/all").pipe(catchError(this.handleError));
   }
 
-  allNotes(): void {
+  allNotes(): void{
     this.restGetNotes().subscribe((notes: Note[]) => {
       let notesArray = notes.map(note => Note.copyConstructor(note));
       for (let i = 0; i < notes.length; i++) {
         this.notes.push(notesArray[i]);
-      }
-    });
-  }
-
-  botanyNotes(): void {
-    this.restGetNotes().subscribe((notes: Note[]) => {
-      let notesArray = notes.map(note => Note.copyConstructor(note));
-      for (let i = 0; i < notes.length; i++) {
-        if (notesArray[i].workfield == 'B') this.notes.push(notesArray[i]);
       }
     });
   }
@@ -59,5 +57,9 @@ export class NotesService {
 
   restPostNote(note): Observable<Note> {
     return this.http.post<Note>(this.resourceUrl + "/add", note);
+  }
+
+  updateVisitedPage(visited: boolean) { //  This method sets the boolean for if the notes page was visited by the user or not
+    this.visitedPage.next(visited);
   }
 }

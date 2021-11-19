@@ -18,8 +18,9 @@ public class Note {
     public String title;
     @Column(name = "note_text")
     public String noteText;
+    public String username;
 
-    public Note(int noteId, int userId, String workfield, LocalDateTime timestamp, String title, String noteText) {
+    public Note(int noteId, int userId, String workfield, LocalDateTime timestamp, String title, String noteText, String username) {
         super();
         this.noteId = noteId;
         this.workfield = workfield;
@@ -27,15 +28,17 @@ public class Note {
         this.timestamp = timestamp;
         this.title = title;
         this.noteText = noteText;
+        this.username = username;
     }
 
-    public Note(int userId, String workfield, LocalDateTime timestamp, String title, String noteText) {
+    public Note(int userId, String workfield, LocalDateTime timestamp, String title, String noteText, String username) {
         super();
         this.workfield = workfield;
         this.userId = userId;
         this.timestamp = timestamp;
         this.title = title;
         this.noteText = noteText;
+        this.username = username;
     }
 
     public Note() {
@@ -47,6 +50,6 @@ public class Note {
 
     @Override
     public String toString() {
-        return "\n" + noteId + ", " + userId + ", " + workfield + ", " + timestamp + ", " + title + ", " + noteText;
+        return "\n" + noteId + ", " + userId + ", " + workfield + ", " + timestamp + ", " + title + ", " + noteText + ", " + username;
     }
 }
