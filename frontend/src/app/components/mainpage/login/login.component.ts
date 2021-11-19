@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 import {AuthenticationService} from "../../../services/authentication.service";
 import {HttpClient} from "@angular/common/http";
 import {WebStorageService} from "../../../services/storage/web-storage.service";
+import {UserService} from "../../../services/user.service";
 
 @Component({
   selector: 'app-login',
@@ -19,6 +20,7 @@ export class LoginComponent implements OnInit {
     protected router : Router,
     protected authentocationService :AuthenticationService,
     protected webStorageService: WebStorageService,
+    protected userService: UserService,
     protected http :HttpClient) { }
 
   ngOnInit(): void {
@@ -30,6 +32,7 @@ export class LoginComponent implements OnInit {
       console.log(data)
       if (data) {
         this.loginErrorMessage= "";
+        this.userService.updateLoggedUser(data);
         this.webStorageService.set('userId', `${data}`);
         this.router.navigate(['home']);
         this.invalidLogin = false;

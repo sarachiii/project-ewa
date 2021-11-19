@@ -12,12 +12,14 @@
         <li class="nav-item d-lg-none px-2 py-3 d-flex justify-content-between text-white mx-12">
           <div class="d-flex">
             <div class="nav-user d-inline-block align-self-center">
-              <img class="rounded-circle" src="https://yt3.ggpht.com/fAfB4LQvATPHhF9ou35zv5FZmXVhMtGnW_vZQNpyd_Krkzasu48k53I3UTIxcqNyMioqK4PR0w=s900-c-k-c0x00ffffff-no-rj">
+              <img class="rounded-circle" [src]="user.profilePicture || 'assets/images/default_avatar.svg'">
             </div>
             <div class="d-inline-block px-3">
-              <span>Sjors Peters</span>
+              <span>{{user.firstName || 'First name'}}</span>&nbsp;<span>{{user.lastName || 'Last name'}}</span>
               <hr class="mb-0 mt-1 text-black">
-              <span class="fs-14">Botanist</span>
+              <div class="fs-14">
+                <span>{{user.specialty || 'Specialty'}}</span><ng-container *ngIf="!!user.role">&nbsp;&#183;&nbsp;<span>{{user.role || 'Role'}}</span></ng-container>
+              </div>
             </div>
           </div>
         </li>
@@ -42,13 +44,13 @@
         </li>
         <li class="nav-item dropdown d-none d-lg-block">
           <a class="nav-link nav-user dropdown-toggle p-2" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <img class="rounded-circle" src="https://yt3.ggpht.com/fAfB4LQvATPHhF9ou35zv5FZmXVhMtGnW_vZQNpyd_Krkzasu48k53I3UTIxcqNyMioqK4PR0w=s900-c-k-c0x00ffffff-no-rj">
+            <img class="rounded-circle" [src]="user.profilePicture || 'assets/images/default_avatar.svg'">
           </a>
-          <ul class="dropdown-menu dropdown-menu-end mt-0" aria-labelledby="userDropdown">
+          <ul class="dropdown-menu dropdown-menu-end mt-0 w-auto" aria-labelledby="userDropdown">
             <li class="dropdown-item-text">
-              Sjors Peters
+              <span>{{user.firstName || 'First name'}}</span>&nbsp;<span>{{user.lastName || 'Last name'}}</span>
               <div class="fs-14">
-                <span id="expertise">Botanist</span><span *ngIf="false"> &#183; <span id="userRole">__userRole__</span></span>
+                <span id="expertise">{{user.specialty || 'Specialty'}}</span><ng-container *ngIf="!!user.role">&nbsp;&#183;&nbsp;<span id="userRole">{{user.role || 'Role'}}</span></ng-container>
               </div>
             </li>
             <li><hr class="dropdown-divider opacity-100 mx-2"></li>

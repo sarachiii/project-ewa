@@ -1,25 +1,32 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { User } from "../../../models/user";
 import { SettingsService } from "../../../services/settings.service";
 import { passwordPatternValidator, passwordValidator} from "../../../shared/validators/password.validator";
 import { requireOneDisableAll } from "../../../shared/validators/custom.validator";
 import {WebStorageService} from "../../../services/storage/web-storage.service";
+import {UserService} from "../../../services/user.service";
+import {Subscription} from "rxjs";
+import {first, shareReplay} from "rxjs/operators";
 
 @Component({
   selector: 'app-account',
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.css']
 })
-export class AccountComponent implements OnInit {
+export class AccountComponent implements OnInit, OnDestroy {
   user: User;
   copyUser: User = <User>{};
   // TODO: change name to profileForm
   accountForm: FormGroup;
   newPasswordForm: FormGroup;
 
+  protected userSubscription: Subscription;
+
   constructor(protected settingsService: SettingsService,
-              protected webStorageService: WebStorageService) {
+              protected webStorageService: WebStorageService,
+              protected userService: UserService) {
+    this.userSubscription = new Subscription();
 
     // TODO: NotificationService
 
@@ -31,18 +38,22 @@ export class AccountComponent implements OnInit {
 
   ngOnInit(): void {
     // Reset has all the initial values
-    this.settingsService.getUserById(this.webStorageService.getAsNumber('userId')).subscribe(value => {
+    this.userService.getUserById(this.webStorageService.getUserId()).subscribe(value => {
       this.user = value;
 
-      console.log(value)
+      // console.log(value)
 
       this.copyUser = Object.assign<User, User>(this.copyUser, this.user);
 
+      // console.log(this.copyUser)
       this.onReset();
     });
+
   }
 
-
+  ngOnDestroy(): void {
+    this.userSubscription.unsubscribe();
+  }
 
   get firstName() {
     return this.accountForm.get('firstName');
@@ -105,7 +116,7 @@ export class AccountComponent implements OnInit {
       this.url.reset('')
     }
     this.file.reset('');
-    console.log(this.pictureForm)
+    // console.log(this.pictureForm)
   }
 
   onReset() {
@@ -116,6 +127,7 @@ export class AccountComponent implements OnInit {
     this.newPasswordFormInit();
     this.accountForm.patchValue(this.copyUser);
     this.password.reset('');
+    // console.log(this.copyUser)
     this.password.setValidators([Validators.required, passwordValidator(this.copyUser.password)]);
   }
 
@@ -136,7 +148,7 @@ export class AccountComponent implements OnInit {
 
       // If file chosen upload it else choose url as image
       if (this.file.value && this.file.enabled) {
-        console.log(this.file)
+        // console.log(this.file)
         // updatedUser.profilePicture = this.file.value;
         // TODO: upload file somewhere and use link as path OR start a file server?
       } else if (this.url.value && this.url.enabled) {
@@ -149,8 +161,11 @@ export class AccountComponent implements OnInit {
       this.settingsService.updateProfile(this.webStorageService.getAsNumber('userId'),
         {...this.accountForm.value, newPasswordForm: this.newPasswordForm.value }).subscribe(e=>{
         console.log(e)
+
+        this.userService.updateLoggedUser(this.webStorageService.getUserId());
       }, error => {
         console.log(error)})
+
 
       // TODO: stuff with frontend service and backend UserController
     }

@@ -1,24 +1,33 @@
 import { Injectable } from '@angular/core';
 import { CRUDService } from "./interfaces/crud.service";
 import { Role, User } from "../models/user";
-import { Observable } from "rxjs";
+import {BehaviorSubject, Observable} from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../environments/environment";
+import {shareReplay} from "rxjs/operators";
 
-@Injectable()
+// TODO: Maybe find a way to separate User Storage and Service
+@Injectable({
+  providedIn: 'root'
+})
 export class UserService implements CRUDService<User> {
   protected resourceUrl: URL;
   protected users: User[];
+  private _loggedUser$: BehaviorSubject<User>;
 
   constructor(protected httpClient: HttpClient) {
     this.resourceUrl = new URL(environment.apiUrl);
     this.users = [];
-
+    this._loggedUser$ = new BehaviorSubject<User>(<User>{});
     // Temporarily used as logged in user
    /* this.users.push(new User(1,0, Role.ADMIN, "Botanist", "Sjors", "Peters",
       "sjors.peters@climatecleanup.org", "user",
       "https://yt3.ggpht.com/fAfB4LQvATPHhF9ou35zv5FZmXVhMtGnW_vZQNpyd_Krkzasu48k53I3UTIxcqNyMioqK4PR0w=s900-c-k-c0x00ffffff-no-rj"));*/
     // localStorage.setItem('userId', this.users[0].id.toString())
+  }
+
+  get loggedUser$(): Observable<User> {
+    return this._loggedUser$.asObservable();
   }
 
   findAll(): User[] {
@@ -58,6 +67,16 @@ export class UserService implements CRUDService<User> {
 
   getUserByUsername(username: string): Observable<User> {
     return this.httpClient.get<User>(new URL(`/users?username=${username}`, this.resourceUrl).toString());
+  }
+
+  updateLoggedUser(id: number) {
+    this.getUserById(id).pipe(shareReplay(1)).toPromise().then(value => {
+      this._loggedUser$.next(value);
+    }).catch(reason => { console.log(reason); });
+      /*.pipe(shareReplay(1)).subscribe(value => {
+      this._loggedUser$.next(value);
+      console.log(value)
+    }, error => { console.log(error); });*/
   }
 
   // Temporary logged in user

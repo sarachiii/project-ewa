@@ -17,9 +17,10 @@ const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent, canActivate: [AuthGuardService] },
   { path: 'dashboard', component: ResultsComponent, canActivate: [AuthGuardService] },
-  { path: 'login', component: LoginComponent },
+  { path: 'login', component: LoginComponent, canActivate: [AuthGuardService] },
   { path: 'sensors', component: SensorComponent, canActivate: [AuthGuardService] },
-  { path: 'notes', component: NotesNavbarComponent, canActivate: [AuthGuardService], children: [
+  { path: 'notes', component: NotesNavbarComponent, canActivate: [AuthGuardService], canActivateChild: [AuthGuardService],
+    children: [
       {
         path: ':field',
         component: NotesComponent,
@@ -29,7 +30,8 @@ const routes: Routes = [
       },
     ],
   },
-  { path: 'settings', component: SettingsComponent, canActivate: [AuthGuardService], children: [
+  { path: 'settings', component: SettingsComponent, canActivate: [AuthGuardService], canActivateChild: [AuthGuardService],
+    children: [
       { path: '', redirectTo: 'account', pathMatch: 'full' },
       { path: 'account', component: AccountComponent },
       { path: 'preferences', component: PreferencesComponent }
