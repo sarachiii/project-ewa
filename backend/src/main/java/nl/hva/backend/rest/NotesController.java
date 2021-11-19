@@ -29,7 +29,9 @@ public class NotesController {
     //Add a note
     @PostMapping("add")
     public ResponseEntity<Note> saveNote(@RequestBody Note note) {
-        if (note.noteText.length() <= 500 && note.title.length() <= 50) {
+        if (note.noteText.length() <= 0 && note.title.length() <= 0) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        } else if (note.noteText.length() <= 500 && note.title.length() <= 50) {
             notesRepository.insertOrUpdateNote(note);
             return ResponseEntity.ok().build();
         } else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);

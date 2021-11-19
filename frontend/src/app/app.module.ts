@@ -1,5 +1,6 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
+import {HttpClientModule} from "@angular/common/http";
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -17,7 +18,6 @@ import {FormsModule} from "@angular/forms";
 import {ChartsModule} from 'ng2-charts';
 import {NgxMasonryModule} from "ngx-masonry";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {HttpClientModule} from "@angular/common/http";
 import {DatePipe} from "@angular/common";
 
 @NgModule({
@@ -41,7 +41,7 @@ import {DatePipe} from "@angular/common";
     ChartsModule,
     NgxMasonryModule,
     BrowserAnimationsModule,
-    HttpClientModule,
+    HttpClientModule
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent]

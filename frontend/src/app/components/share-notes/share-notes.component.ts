@@ -38,7 +38,7 @@ export class ShareNotesComponent implements OnInit {
     var isodate = date.toISOString().replace(/\..+/, '');
     // userId & workfield are still hard coded.
     // noteId gets an id assigned in the database.
-    this.notesService.addNote(new Note(0, 1, "B", isodate, title, text, "Sjors"))
+    this.notesService.addNote(new Note(0, 1, "B", isodate, title, text, "Sjors Peters"))
     this.unselectedEvent.emit(true);
   }
 
