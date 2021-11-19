@@ -13,37 +13,61 @@ public class User {
     @GeneratedValue
     @Column(name = "user_id")
     private Long id;
-    @Column
-    private String username;
-    @Column
-    private String email;
-    @Column
-    private String firstname;
-    @Column
-    private String lastname;
-    @Column
+    @Column(name = "email")
+    private String emailAddress;
+    @Column(name = "firstname")
+    private String firstName;
+    @Column(name = "lastname")
+    private String lastName;
     private String password;
     @Column(name = "work_field")
-    private String workfield;
-    @Column(name = "team_leader")
-    private String teamleader;
+    private String specialty;
+    @Column(name = "image_path")
+    private String profilePicture;
+    @Column(name = "team_id")
+    private Long teamId;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private Preferences preferences;
+
+    public enum Specialty {
+        A("Agronomy"),
+        B("Botany"),
+        G("Geology"),
+        H("Hydrology"),
+        CS("Climate-Science");
+
+        private final String string;
+
+        Specialty(String string) {
+            this.string = string;
+        }
+
+        @Override
+        public String toString() {
+            return this.string;
+        }
+    }
 
     public User() {
     }
 
-    public User (String username,String password){
+    public User (String emailAddress, String password) {
         this();
-        this.username= username;
+        this.emailAddress = emailAddress;
         this.password = password;
     }
-    public User(String username,String email, String firstname, String lastname, String password, String workfield) {
+    public User (String emailAddress, String firstName, String lastName, String password,
+                String specialty, String profilePicture, Long teamId) {
         this();
-        this.username = username;
-        this.email = email;
-        this.firstname = firstname;
-        this.lastname = lastname;
+        this.emailAddress = emailAddress;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.password = password;
-        this.workfield = workfield;
+        this.specialty = specialty;
+        this.profilePicture = profilePicture;
+        this.teamId = teamId;
     }
 
     // public User() {
@@ -59,36 +83,28 @@ public class User {
         this.id = id;
     }
 
-    public String getUsername() {
-        return this.username;
+    public String getEmailAddress() {
+        return emailAddress;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
     }
 
-    public String getEmail() {
-        return email;
+    public String getFirstName() {
+        return this.firstName;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getFirstname() {
-        return this.firstname;
+    public String getLastName() {
+        return this.lastName;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public String getLastname() {
-        return this.lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getPassword() {
@@ -99,19 +115,27 @@ public class User {
         this.password = password;
     }
 
-    public String getWorkfield() {
-        return this.workfield;
+    public String getSpecialty() {
+        return Specialty.valueOf(this.specialty).toString();
     }
 
-    public void setWorkfield(String workfield) {
-        this.workfield = workfield;
+    public void setSpecialty(String specialty) {
+        this.specialty = specialty;
     }
 
-    public String getTeamleader() {
-        return teamleader;
+    public String getProfilePicture() {
+        return this.profilePicture;
     }
 
-    public void setTeamleader(String teamleader) {
-        this.teamleader = teamleader;
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
+    }
+
+    public Long getTeamId() {
+        return teamId;
+    }
+
+    public void setTeamId(Long teamId) {
+        this.teamId = teamId;
     }
 }

@@ -1,34 +1,32 @@
-import {Workfield} from "./workfield";
+import { Preferences } from "./preferences";
 
-/**
- * This is the user class. It generates a hardcoded logged in user and a random user.
- *
- * @author Sarah Chrzanowska-Buth
- */
+export enum Role {
+  ADMIN = "admin",
+  TEAM_LEADER = "team_leader",
+  TEAM_MEMBER = "team_member"
+}
 
 export class User {
+  id: number;
+  teamId: number;
+  role: Role; // TODO: Add custom validator for role in teams
+  specialty: string;
+  firstName: string;
+  lastName: string;
+  emailAddress: string;
+  password: string;
+  profilePicture: string;
 
-  public userId: number = 1000;
-  public name: string;
-  public workfield: Workfield;
-
-  constructor(userId: number, name: string = "", workfield: Workfield = Workfield.AGRONOMY) {
-    this.userId = userId;
-    this.name = name;
-    this.workfield = workfield;
-  }
-
-  public static generateLoggedInUser(userId = 0) {
-    let workField = Workfield.BOTANY;
-    let name = "You";
-    return new User(userId, name, workField);
-  }
-
-  public static generateRandomUser(userId = 0) {
-    const enumValues = Object.values(Workfield); //list of enum workfield values
-    const number = Math.floor(Math.random() * enumValues.length); //create random number for the values
-    let workfield = enumValues[number]; //pick a ranom workfield from the enum
-    let name = "Username";
-    return new User(userId, name, workfield);
+  constructor(userId: number, teamId: number, role: Role, specialty: string, firstName: string, lastName: string,
+              emailAddress: string, password: string, profilePicture?: string) {
+    this.id = userId;
+    this.teamId = teamId;
+    this.role = role;
+    this.specialty = specialty;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.emailAddress = emailAddress;
+    this.password = password;
+    this.profilePicture = profilePicture || '';
   }
 }

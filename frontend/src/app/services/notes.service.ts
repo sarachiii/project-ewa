@@ -23,7 +23,7 @@ export class NotesService {
   resourceUrl: string = "";
 
   constructor(private http: HttpClient) {
-    this.resourceUrl = environment.BACKEND_URL + "/notes";
+    this.resourceUrl = environment.apiUrl + "/notes";
     this.allNotes();
   }
 

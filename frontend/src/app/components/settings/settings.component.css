@@ -1,0 +1,33 @@
+.card {
+  border-radius: 10px;
+  border-color: var(--cc-darkgreen);
+}
+
+.card hr, .card .vr {
+  background-color: var(--cc-darkgreen);
+}
+.btn {
+  border-radius: 10px;
+}
+.side-bar {
+  width: 300px;
+}
+
+.btn:hover .green-filter, .btn.active .green-filter {
+  filter: brightness(100) !important;
+}
+
+.btn:hover .green-filter {
+  transition: 0.15s filter ease-in-out, 0.15s -webkit-filter ease-in-out;
+}
+@media (min-width: 768px) {
+  .w-md-100 {
+    width: 100% !important;
+  }
+}
+@media (max-width: 768px) {
+  .position-md-absolute {
+    position: absolute !important;
+  }
+}
+
