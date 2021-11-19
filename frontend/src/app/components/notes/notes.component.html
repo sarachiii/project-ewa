@@ -18,7 +18,6 @@
           <div class="row text-muted">
             <div class="col-5">
               {{note.username}}
-              <!-- TODO: set the username instead of userid-->
             </div>
             <div class="text-end col-7">
               {{note.timestamp}}
@@ -29,8 +28,7 @@
     </div>
   </ngx-masonry>
 
-<!--  <div class="position-absolute bottom-0 end-0 p-5" [ngClass]="{'d-none': selectedWorkfieldFromNavbar !== loggedInUser.workfield}" *ngIf="createNote === false; else addNote;">-->
-  <div class="position-absolute bottom-0 end-0 p-5" *ngIf="createNote === false; else addNote;">
+  <div class="position-absolute bottom-0 end-0 p-5" [ngClass]="{'d-none': selectedWorkfieldFromNavbar != 'botany'}" *ngIf="createNote === false; else addNote;">
     <button type="button" class="btn btn-success size d-lg-none shadow fixed-bottom mb-3 mr-3" (click)="onCreateNote(false)">
       <img class="button-img" src="https://icon-library.com/images/compose-icon/compose-icon-1.jpg" alt="add note">
     </button>
