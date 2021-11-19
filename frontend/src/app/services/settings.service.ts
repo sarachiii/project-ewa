@@ -4,19 +4,20 @@ import { Preferences } from "../models/preferences";
 import { HttpClient } from "@angular/common/http";
 import {Observable} from "rxjs";
 import {shareReplay} from "rxjs/operators";
+import {environment} from "../../environments/environment";
 
 @Injectable()
-export class SettingsService extends UserService {
+export class SettingsService {
   // prefsList: Preferences[];
+  protected resourceUrl: URL;
   preferences: Preferences;
 
   // TODO: Add StorageService to save the preferences in the localStorage or sessionStorage
   // TODO: Perhaps separate SettingsService and PreferencesService to manage preferences site wide
   constructor(protected httpClient: HttpClient) {
-    super(httpClient);
     // this.prefsList = [];
     // this.prefsList.push(new Preferences(this.loggedInUser().id));
-
+    this.resourceUrl = new URL(environment.apiUrl);
     // console.log(this.prefsList)
   }
 

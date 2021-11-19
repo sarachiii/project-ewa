@@ -31,6 +31,25 @@ public class User {
     @PrimaryKeyJoinColumn
     private Preferences preferences;
 
+    public enum Specialty {
+        A("Agronomy"),
+        B("Botany"),
+        G("Geology"),
+        H("Hydrology"),
+        CS("Climate-Science");
+
+        private final String string;
+
+        Specialty(String string) {
+            this.string = string;
+        }
+
+        @Override
+        public String toString() {
+            return this.string;
+        }
+    }
+
     public User() {
     }
 
@@ -97,7 +116,7 @@ public class User {
     }
 
     public String getSpecialty() {
-        return this.specialty;
+        return Specialty.valueOf(this.specialty).toString();
     }
 
     public void setSpecialty(String specialty) {

@@ -5,18 +5,15 @@ import {BehaviorSubject} from "rxjs";
   providedIn: 'root'
 })
 export class WebStorageService {
-  protected rememberSession: BehaviorSubject<boolean>;
   protected webStorage: Storage;
   protected rememberMe: boolean;
 
   constructor() {
-    this.rememberSession = new BehaviorSubject<boolean>(false);
-    this.rememberSession.subscribe()
     this.setStorage(localStorage.getItem("rememberMe") !== null)
   }
 
   getUserId() {
-    return this.webStorage.getItem("userId");
+    return this.getAsNumber("userId");
   }
 
   setStorage(rememberMe: boolean) {
@@ -29,20 +26,12 @@ export class WebStorageService {
     }
   }
 
-  clear(): void {
-    this.webStorage.clear();
+  set(key: string, value: string): void {
+    this.webStorage.setItem(key, value);
   }
 
   get(key: string): string | null {
     return this.webStorage.getItem(key);
-  }
-
-  set(key: string, value: string) {
-    return this.webStorage.setItem(key, value);
-  }
-
-  has(key: string): boolean {
-    return !!this.webStorage.getItem(key);
   }
 
   getAsNumber(key: string): number | null {
@@ -51,5 +40,17 @@ export class WebStorageService {
 
   getAsBoolean(key: string): boolean {
     return (/true|1/i).test(this.get(key));
+  }
+
+  has(key: string): boolean {
+    return !!this.webStorage.getItem(key);
+  }
+
+  remove(key: string): void {
+    this.webStorage.removeItem(key);
+  }
+
+  clear(): void {
+    this.webStorage.clear();
   }
 }

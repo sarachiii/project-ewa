@@ -1,3 +1,11 @@
+export enum EField {
+  A = "Agronomy",
+  B = "Botany",
+  G = "Geology",
+  H = "Hydrology",
+  CS = "Climate-Science"
+}
+
 export class Field  {
   private _name: string;
 

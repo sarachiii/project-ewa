@@ -9,7 +9,7 @@ import { SettingsService } from "../../services/settings.service";
 })
 export class SettingsComponent implements OnInit {
 
-  constructor(settingsService: SettingsService) { }
+  constructor(protected settingsService: SettingsService) { }
 
   ngOnInit(): void {
   }
