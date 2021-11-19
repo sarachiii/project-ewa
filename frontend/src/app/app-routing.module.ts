@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from "./components/mainpage/home/home.component";
 import { ErrorComponent } from "./components/error/error.component";
 import { ResultsComponent } from "./components/mainpage/results/results.component";
 import { NotesNavbarComponent } from "./components/notes-navbar/notes-navbar.component";
@@ -14,8 +13,7 @@ import { PreferencesComponent } from "./components/settings/preferences/preferen
 import {AuthGuardService} from "./services/auth-guard.service";
 
 const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent, canActivate: [AuthGuardService] },
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: ResultsComponent, canActivate: [AuthGuardService] },
   { path: 'login', component: LoginComponent, canActivate: [AuthGuardService] },
   { path: 'sensors', component: SensorComponent, canActivate: [AuthGuardService] },

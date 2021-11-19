@@ -19,6 +19,7 @@ import {NotesService} from "../../../services/notes.service";
 export class NavBarComponent implements OnInit, OnDestroy {
   user: User | null;
   private userSubscription: Subscription;
+  visitedPage: boolean = false;
 
   constructor(private webStorageService: WebStorageService,
               private userService: UserService, private notesService: NotesService) {

@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
         this.loginErrorMessage= "";
         this.userService.updateLoggedUser(data);
         this.webStorageService.set('userId', `${data}`);
-        this.router.navigate(['home']);
+        this.router.navigate(['dashboard']);
         this.invalidLogin = false;
       } else if (data === undefined) {
         this.loginErrorMessage="No account with this username!"
