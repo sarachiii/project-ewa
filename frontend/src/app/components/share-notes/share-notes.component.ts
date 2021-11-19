@@ -1,6 +1,9 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
+import {NotesService} from "../../services/notes.service";
+import {Note} from "../../models/note";
+import {DatePipe} from "@angular/common";
 
 @Component({
   selector: 'app-share-notes',
@@ -10,13 +13,12 @@ import {HttpClient} from "@angular/common/http";
 export class ShareNotesComponent implements OnInit {
 
   @Output() unselectedEvent = new EventEmitter();
-  teamNumber: String | undefined;
-  username: String | undefined;
-  text: String | undefined;
+  title: string | undefined;
+  text: string | undefined;
+  note: Note;
 
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute) {
-    //private http: HttpClient
+  constructor(private notesService: NotesService, private router: Router, private activatedRoute: ActivatedRoute) {
     setInterval(() => {
       this.currentDate()
     }, 1000)
@@ -25,20 +27,19 @@ export class ShareNotesComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onReturnToNotes() {
-    if (confirm("Are you sure you want to discard unsaved changes?")) {
-      this.unselectedEvent.emit(true);
-    }
+  onReturnToNotes(title: string, text: string) {
+    if (title.trim() === "" && text.trim() === "") this.unselectedEvent.emit(true);
+    else if (confirm("Are you sure you want to discard unsaved changes?")) this.unselectedEvent.emit(true);
   }
 
-  onSaveNote(postData: { date: string; teamNumber: string; text: String; username: String }) {
-    // this.this.post('localhost:8080/note/add.json', postData)
-    //   .subscribe(responseData => {
-    //     console.log(responseData);
-    //   });
-    console.log(postData);
+  onSaveNote(title: string, text: string) {
+    // var date = new Date();
+    // date.setHours(date.getHours() + 1);
+    // var isodate = date.toISOString().replace(/\..+/, '');
+    // userId & workfield are still hard coded.
+    // noteId gets an id assigned in the database.
+    // this.notesService.addNote(new Note(0, 1, "B", date, title, text, "Sjors"))
     this.unselectedEvent.emit(true);
-    // this.routeTo();
   }
 
   onDisable() {
@@ -54,10 +55,4 @@ export class ShareNotesComponent implements OnInit {
     });
     return dateFormat;
   }
-
-  // routeTo(): void {
-  //   console.log("testttt")
-  //   this.router.navigate(['../../notes/view-notes'], {relativeTo: this.activatedRoute.parent})
-  //     .catch(reason => console.error(reason));
-  // }
 }

@@ -10,7 +10,6 @@ import { AppComponent } from './app.component';
 import { NavBarComponent } from './components/mainpage/nav-bar/nav-bar.component';
 import { HomeComponent } from './components/mainpage/home/home.component';
 import { ErrorComponent } from './components/error/error.component';
-import { MenuComponent } from './components/mainpage/menu/menu.component';
 import { ResultsComponent } from './components/mainpage/results/results.component';
 import { NotesComponent } from './components/notes/notes.component';
 import { NotesNavbarComponent } from './components/notes-navbar/notes-navbar.component';
@@ -21,6 +20,9 @@ import { RegisterComponent } from './components/mainpage/register/register.compo
 import { SettingsComponent } from './components/settings/settings.component';
 import { AccountComponent } from './components/settings/account/account.component';
 import { PreferencesComponent } from './components/settings/preferences/preferences.component';
+import {DatePipe} from "@angular/common";
+import {NgxMasonryModule} from "ngx-masonry";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
@@ -28,7 +30,6 @@ import { PreferencesComponent } from './components/settings/preferences/preferen
     NavBarComponent,
     HomeComponent,
     ErrorComponent,
-    MenuComponent,
     ResultsComponent,
     NotesComponent,
     NotesNavbarComponent,
@@ -46,9 +47,12 @@ import { PreferencesComponent } from './components/settings/preferences/preferen
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    ChartsModule
+    ChartsModule,
+    NgxMasonryModule,
+    BrowserAnimationsModule,
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

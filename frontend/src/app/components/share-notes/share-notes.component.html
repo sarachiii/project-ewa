@@ -1,38 +1,68 @@
 <div class="d-flex justify-content-center">
-  <div class="p-3 backgroundNote col-sm-12 col-md-12 col-lg-8 col-xl-7 shadow">
-    <button type="button" class="btn-close" aria-label="Close" (click)="onReturnToNotes()"></button>
-    <form>
-      <div class="row justify-content-center">
-        <div class="col-sm-10 col-md-3 col-lg-4 col-xl-3 form-group">
-          <label for="team">Team: </label>
-          <input type="text" id="team" class="form-control" name="team" [disabled]="onDisable()" #teamNumber
-                 value="Botany">
-        </div>
-        <div class="col-sm-10 col-md-3 col-lg-4 col-xl-3 form-group">
-          <label for="user">Added By: </label>
-          <input type="text" id="user" class="form-control" name="user" [disabled]="onDisable()"
-                 value="Sjors Peters" #username>
-        </div>
-        <div class="col-sm-10 col-md-3 col-lg-4 col-xl-3 form-group">
-          <label for="date">Date: </label>
-          <input type="text" id="date" class="form-control" name="date" [disabled]="onDisable()"
-                 [ngModel]="currentDate()">
-        </div>
-      </div>
-      <div class="row justify-content-center">
-        <div class="col-sm-10 col-md-9 col-lg-12 col-xl-9 form-group">
-          <label for="note">Note: </label>
-          <textarea id="note" class="form-control" name="note" rows="12" #text></textarea>
-        </div>
-      </div>
+
+  <div class="card backgroundNote col-sm-12 col-md-12 col-lg-8 col-xl-7 shadow">
+    <div class="card-header d-flex">
+      <input maxLength="50" type="text" id="title" class="form-control titleColor col-sm-8" name="title"
+             placeholder="Give your note a title" #title>
+      <button type="button" class="btn btn-success float-end m-1 btnsize justify-content-end col-sm-2"
+              (click)="onSaveNote(title.value, text.value)">
+        ✓
+      </button>
+      <button type="button" class="btn btn-danger float-end m-1 btnsize  justify-content-end col-sm-2"
+              (click)="onReturnToNotes(title.value, text.value)">
+        &#x2715;
+      </button>
+    </div>
+    <div class="card-body">
       <div class="d-flex justify-content-center m-2">
-        <button type="button" class="btn btn-success"
-                (click)="onSaveNote({teamNumber: teamNumber.value,
-                 username: username.value, date: currentDate(), text: text.value})"
-        >Save Note
-        </button>
+        <textarea maxLength="500" id="note" class="form-control" name="note" rows="12" #text
+                  placeholder="Start writing your notes here ..."></textarea>
       </div>
-    </form>
+      <div class="row text-muted">
+        <div class="col-6" #username>
+          Sjors Peters
+        </div>
+        <div class="col-6 text-end">
+          {{currentDate()}}
+        </div>
+      </div>
+    </div>
   </div>
+
+  <!--  <div class="p-3 backgroundNote col-sm-12 col-md-12 col-lg-8 col-xl-7 shadow">-->
+  <!--    <button type="button" class="btn-close" aria-label="Close" (click)="onReturnToNotes()"></button>-->
+  <!--    <form>-->
+  <!--      <div class="row justify-content-center">-->
+  <!--        <div class="col-sm-10 col-md-3 col-lg-4 col-xl-3 form-group">-->
+  <!--          <label for="team">Team: </label>-->
+  <!--          <input type="text" id="team" class="form-control" name="team" [disabled]="onDisable()" #teamNumber-->
+  <!--                 value="Botany">-->
+  <!--        </div>-->
+  <!--        <div class="col-sm-10 col-md-3 col-lg-4 col-xl-3 form-group">-->
+  <!--          <label for="user">Added By: </label>-->
+  <!--          <input type="text" id="user" class="form-control" name="user" [disabled]="onDisable()"-->
+  <!--                 value="Sjors Peters" #username>-->
+  <!--        </div>-->
+  <!--        <div class="col-sm-10 col-md-3 col-lg-4 col-xl-3 form-group">-->
+  <!--          <label for="date">Date: </label>-->
+  <!--          <input type="text" id="date" class="form-control" name="date" [disabled]="onDisable()"-->
+  <!--                 [ngModel]="currentDate()">-->
+  <!--        </div>-->
+  <!--      </div>-->
+  <!--      <div class="row justify-content-center">-->
+  <!--        <div class="col-sm-10 col-md-9 col-lg-12 col-xl-9 form-group">-->
+  <!--          <label for="note">Note: </label>-->
+  <!--          <textarea id="note" class="form-control" name="note" rows="12" #text></textarea>-->
+  <!--        </div>-->
+  <!--      </div>-->
+  <!--      <div class="d-flex justify-content-center m-2">-->
+  <!--        <button type="button" class="btn btn-success"-->
+  <!--                (click)="onSaveNote({teamNumber: teamNumber.value,-->
+  <!--                 username: username.value, date: currentDate(), text: text.value})"-->
+  <!--        >Save Note-->
+  <!--        </button>-->
+  <!--      </div>-->
+  <!--    </form>-->
+  <!--  </div>-->
 </div>
 

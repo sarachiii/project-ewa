@@ -1,23 +1,20 @@
 .container {
-  /*margin: 20px auto;*/
   color: black;
   flex-direction: column;
 }
 
-.row{
-  border-radius: 25px;
-  background: #ffc;
-}
-.btn-success{
+.btn-success {
   background-color: var(--cc-green);
   border-color: var(--cc-darkgreen);
 }
+
 .btn-success:hover {
   color: #fff;
   background-color: var(--cc-darkgreen);
   border-color: var(--cc-darkgreen);
 }
-.size{
+
+.size {
   border-radius: 5px;
   width: 40px;
   height: 40px;
@@ -25,13 +22,35 @@
   padding: 0;
   margin: 0;
 }
-.btn-pos{
 
-}
-.button-img{
+.button-img {
   display: block;
   width: 40px;
   height: 40px;
+}
+
+.card-header {
+  border-radius: 10px 10px 0 0;
+  background-color: #E3D3B1;
+  font-weight: bold;
+}
+
+.highlight-header {
+  background-color: #C19462;
+}
+
+.card-body {
+  border-radius: 0 0 10px 10px;
+  background-color: #FFFFCC;
+}
+
+.card {
+  border-radius: 10px;
+  border-width: 0;
+}
+
+.masonry-item {
+  transition: top 0.4s ease-in-out, left 0.4s ease-in-out;
 }
 
 
