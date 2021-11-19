@@ -33,9 +33,9 @@ export class ShareNotesComponent implements OnInit {
   }
 
   onSaveNote(title: string, text: string) {
-    // var date = new Date();
-    // date.setHours(date.getHours() + 1);
-    // var isodate = date.toISOString().replace(/\..+/, '');
+    var date = new Date();
+    date.setHours(date.getHours() + 1);
+    var isodate = date.toISOString().replace(/\..+/, '');
     // userId & workfield are still hard coded.
     // noteId gets an id assigned in the database.
     this.notesService.addNote(new Note(0, 1, "B", isodate, title, text, "Sjors"))

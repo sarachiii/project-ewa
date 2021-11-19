@@ -65,3 +65,7 @@ textarea {
   border: none;
   border-radius: 0;
 }
+
+.modal-backdrop {
+  background-color: rgba(116,118,116,0.55);
+}

@@ -9,14 +9,15 @@ import {ShareNotesComponent} from "./components/share-notes/share-notes.componen
 import { SensorComponent} from "./components/mainpage/sensor/sensor.component";
 import { LoginComponent } from './components/mainpage/login/login.component';
 import { RegisterComponent } from './components/mainpage/register/register.component';
+import {AuthGuardService} from "./services/auth-guard.service";
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
-  { path: 'dashboard', component: ResultsComponent },
+  { path: 'home', component: HomeComponent, canActivate: [AuthGuardService] },
+  { path: 'dashboard', component: ResultsComponent, canActivate: [AuthGuardService] },
   { path: 'login', component: LoginComponent },
-  { path: 'sensors', component: SensorComponent},
-  { path: 'notes', component: NotesNavbarComponent, children: [
+  { path: 'sensors', component: SensorComponent, canActivate: [AuthGuardService] },
+  { path: 'notes', component: NotesNavbarComponent, canActivate: [AuthGuardService], children: [
       {
         path: ':field',
         component: NotesComponent,
@@ -26,7 +27,7 @@ const routes: Routes = [
       },
     ],
   },
-  { path: '**', component: ErrorComponent }
+  { path: '**', component: ErrorComponent, canActivate: [AuthGuardService] }
 ];
 
 @NgModule({

@@ -3,11 +3,11 @@
     <div class="d-flex justify-content-between w-100 px-12">
 
       <a class="navbar-brand" href="#" routerLink="dashboard"><img class="white-filter pe-2" src="assets/logo.svg" alt="Climate Cleanup"><span class="align-middle">Climate Cleanup</span></a>
-      <button class="navbar-toggler navbar-dark" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+      <button *ngIf="loginService.isUserLoggedIn()" class="navbar-toggler navbar-dark" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
     </div>
-    <div class="collapse navbar-collapse ms-lg-auto" id="navbarToggler">
+    <div *ngIf="loginService.isUserLoggedIn()" class="collapse navbar-collapse ms-lg-auto" id="navbarToggler">
       <ul class="navbar-nav ms-lg-auto pt-2 pt-lg-0">
         <li class="nav-item d-lg-none px-2 py-3 d-flex justify-content-between text-white mx-12">
           <div class="d-flex">
@@ -39,7 +39,7 @@
           <a class="nav-link" href="#" routerLink="settings" routerLinkActive="nav-link-active">Settings</a>
         </li>
         <li class="nav-item d-lg-none">
-          <a class="nav-link" href="#" routerLink="login">Log Out</a>
+          <a class="nav-link" href="#" routerLink="login" (click)="loginService.logOut()">Log Out</a>
         </li>
         <li class="nav-item dropdown d-none d-lg-block">
           <a class="nav-link nav-user dropdown-toggle p-2" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -55,7 +55,7 @@
             <li><hr class="dropdown-divider opacity-100 mx-2"></li>
             <li><a class="dropdown-item fw-bold" routerLink="teams">Teams</a></li>
             <li><a class="dropdown-item fw-bold" routerLink="settings">Settings</a></li>
-            <li><a class="dropdown-item fw-bold" routerLink="login">Log Out</a></li>
+            <li><a class="dropdown-item fw-bold" routerLink="login" (click)="loginService.logOut()">Log Out</a></li>
           </ul>
         </li>
       </ul>

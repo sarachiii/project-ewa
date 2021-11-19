@@ -40,8 +40,7 @@
   </div>
   <ng-template #addNote>
     <ng-container>
-      <app-share-notes class="position-absolute w-100 top start-0 translate-middle-y"
-                       (unselectedEvent)="onCreateNote($event)">
+      <app-share-notes (unselectedEvent)="onCreateNote($event)">
       </app-share-notes>
     </ng-container>
   </ng-template>

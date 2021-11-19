@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {NotesService} from "../../../services/notes.service";
+import {AuthenticationService} from "../../../services/authentication.service";
 
 /**
  * This is the navbar component.
@@ -15,7 +16,7 @@ import {NotesService} from "../../../services/notes.service";
 export class NavBarComponent implements OnInit {
   visitedPage: boolean = false;
 
-  constructor(private notesService: NotesService) {
+  constructor(private notesService: NotesService, public loginService:AuthenticationService) {
   }
 
   ngOnInit(): void {
