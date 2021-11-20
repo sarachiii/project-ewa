@@ -1,5 +1,7 @@
 package nl.hva.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +13,7 @@ import java.util.Random;
  * @author arashnasrat
  */
 public class History {
+    @JsonFormat(pattern = "HH:mm:ss")
     private LocalDateTime timestamp;
     private Integer userId;
     /*Integer greenHouseId;*/
