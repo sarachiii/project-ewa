@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { User } from "../../../models/user";
 import { SettingsService } from "../../../services/settings.service";
@@ -7,26 +7,23 @@ import { requireOneDisableAll } from "../../../shared/validators/custom.validato
 import {WebStorageService} from "../../../services/storage/web-storage.service";
 import {UserService} from "../../../services/user.service";
 import {Subscription} from "rxjs";
-import {first, shareReplay} from "rxjs/operators";
+import {first} from "rxjs/operators";
 
 @Component({
   selector: 'app-account',
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.css']
 })
-export class AccountComponent implements OnInit, OnDestroy {
+export class AccountComponent implements OnInit {
   user: User;
   copyUser: User = <User>{};
   // TODO: change name to profileForm
   accountForm: FormGroup;
   newPasswordForm: FormGroup;
 
-  protected userSubscription: Subscription;
-
   constructor(protected settingsService: SettingsService,
               protected webStorageService: WebStorageService,
               protected userService: UserService) {
-    this.userSubscription = new Subscription();
 
     // TODO: NotificationService
 
@@ -38,7 +35,7 @@ export class AccountComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // Reset has all the initial values
-    this.userService.getUserById(this.webStorageService.getUserId()).subscribe(value => {
+    this.userService.getUserById(this.webStorageService.getUserId()).pipe(first()).subscribe(value => {
       this.user = value;
 
       // console.log(value)
@@ -49,10 +46,6 @@ export class AccountComponent implements OnInit, OnDestroy {
       this.onReset();
     });
 
-  }
-
-  ngOnDestroy(): void {
-    this.userSubscription.unsubscribe();
   }
 
   get firstName() {
@@ -163,6 +156,7 @@ export class AccountComponent implements OnInit, OnDestroy {
         console.log(e)
 
         this.userService.updateLoggedUser(this.webStorageService.getUserId());
+        this.userService.loggedUser$.pipe(first()).subscribe(value => {this.copyUser = value})
       }, error => {
         console.log(error)})
 

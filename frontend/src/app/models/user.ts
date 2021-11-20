@@ -1,9 +1,11 @@
 import { Preferences } from "./preferences";
+import {EField} from "./field";
 
 export enum Role {
   ADMIN = "admin",
   TEAM_LEADER = "team_leader",
-  TEAM_MEMBER = "team_member"
+  TEAM_MEMBER = "team_member",
+  UNKNOWN = ""
 }
 
 export class User {
@@ -17,16 +19,16 @@ export class User {
   password: string;
   profilePicture: string;
 
-  constructor(userId: number, teamId: number, role: Role, specialty: string, firstName: string, lastName: string,
-              emailAddress: string, password: string, profilePicture?: string) {
-    this.id = userId;
-    this.teamId = teamId;
-    this.role = role;
-    this.specialty = specialty;
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.emailAddress = emailAddress;
-    this.password = password;
-    this.profilePicture = profilePicture || '';
+  constructor(userId?: number, teamId?: number, role?: Role, specialty?: string, firstName?: string, lastName?: string,
+              emailAddress?: string, password?: string, profilePicture?: string) {
+    this.id = userId || 0;
+    this.teamId = teamId || 0;
+    this.role = role || Role.UNKNOWN;
+    this.specialty = specialty || EField.UNKNOWN;
+    this.firstName = firstName || "";
+    this.lastName = lastName || "";
+    this.emailAddress = emailAddress || "";
+    this.password = password || "";
+    this.profilePicture = profilePicture || "";
   }
 }

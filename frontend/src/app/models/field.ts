@@ -3,7 +3,8 @@ export enum EField {
   B = "Botany",
   G = "Geology",
   H = "Hydrology",
-  CS = "Climate-Science"
+  CS = "Climate-Science",
+  UNKNOWN = ""
 }
 
 export class Field  {
