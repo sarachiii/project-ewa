@@ -21,7 +21,6 @@ export class ShareNotesComponent implements OnInit {
   user: User | null;
   private userSubscription: Subscription;
 
-
   constructor(private notesService: NotesService, private router: Router, private activatedRoute: ActivatedRoute,
               private webStorageService: WebStorageService, private userService: UserService) {
     setInterval(() => {
@@ -29,7 +28,6 @@ export class ShareNotesComponent implements OnInit {
     }, 1000)
 
   }
-
 
   ngOnInit(): void {
     this.userSubscription = this.userService.loggedUser$.subscribe(value => {
@@ -47,9 +45,11 @@ export class ShareNotesComponent implements OnInit {
     var date = new Date();
     date.setHours(date.getHours() + 1);
     var isodate = date.toISOString().replace(/\..+/, '');
-    this.notesService.addNote(new Note(0, this.user.id, this.user.specialty.charAt(0),
+    // this.notesService.addNote(new Note(0, this.user.id, "B",
+      this.notesService.addNote(new Note(0, this.user.id, this.user.specialty.charAt(0),
       isodate, title, text, this.user.firstName))
     this.unselectedEvent.emit(true);
+    window.location.reload();
   }
 
   currentDate() {

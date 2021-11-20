@@ -4,6 +4,8 @@ import {NgxMasonryComponent, NgxMasonryOptions} from "ngx-masonry";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Note} from "../../models/note";
 import {NotesService} from "../../services/notes.service";
+import {of} from "rxjs";
+import {map} from "rxjs/operators";
 
 /**
  * This is the notes component. It takes care of showing the notes on the notes page. It shows the newest notes first and than the older ones.
@@ -45,8 +47,17 @@ export class NotesComponent implements OnInit {
     this.isVisited = true;
     this.notesService.updateVisitedPage(this.isVisited);
     this.selectedWorkfieldFromNavbar = Workfield.BOTANY; //TODO: set the workfield to the workfield of the logged in user
-    this.notes = this.notesService.notes;
-    this.filteredNotes = this.notes.filter(note => this.selectedWorkfieldFromNavbar.charAt(0) == note.workfield.toLocaleLowerCase().charAt(0)); //the notes are filtered by workfield and are shown on the correct page
+    this.notesService.restGetNotes().subscribe(value => {
+      this.notesService.notes = value.map(note => Note.copyConstructor(note));
+      this.notes = this.notesService.notes;
+      this.filteredNotes = this.notes.filter(note => this.selectedWorkfieldFromNavbar.charAt(0) == note.workfield.toLocaleLowerCase().charAt(0)); //the notes are filtered by workfield and are shown on the correct page
+    })
+    // this.notesService.notesubject.subscribe(value => {
+    //   console.log(value)
+    //   if (value) this.notes.push(value);
+    // })
+    // this.filteredNotes = this.notes.filter(note => this.selectedWorkfieldFromNavbar.charAt(0) == note.workfield.toLocaleLowerCase().charAt(0)); //the notes are filtered by workfield and are shown on the correct page
+    console.log(this.filteredNotes)
   }
 
   ngOnChanges(): void {
