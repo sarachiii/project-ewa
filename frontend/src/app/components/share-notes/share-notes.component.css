@@ -66,6 +66,12 @@ textarea {
   border-radius: 0;
 }
 
+
+#title.form-control:focus,
+#note.form-control:focus {
+  box-shadow: 0 0 0 0 !important;
+}
+
 .modal-backdrop {
   background-color: rgba(116,118,116,0.55);
 }

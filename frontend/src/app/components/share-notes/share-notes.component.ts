@@ -42,14 +42,14 @@ export class ShareNotesComponent implements OnInit {
   }
 
   onSaveNote(title: string, text: string) {
-    var date = new Date();
-    date.setHours(date.getHours() + 1);
-    var isodate = date.toISOString().replace(/\..+/, '');
+    // let date = new Date();
+    // date.setHours(date.getHours() + 1);
+    // let isodate = date.toISOString().replace(/\..+/, '');
     // this.notesService.addNote(new Note(0, this.user.id, "B",
-      this.notesService.addNote(new Note(0, this.user.id, this.user.specialty.charAt(0),
-      isodate, title, text, this.user.firstName))
+    this.notesService.addNote(new Note(0, this.user.id, this.user.specialty.charAt(0),
+      new Date(), title, text, this.user.firstName))
     this.unselectedEvent.emit(true);
-    window.location.reload();
+    // window.location.reload();
   }
 
   currentDate() {

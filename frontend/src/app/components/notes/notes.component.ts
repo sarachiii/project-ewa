@@ -4,8 +4,6 @@ import {NgxMasonryComponent, NgxMasonryOptions} from "ngx-masonry";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Note} from "../../models/note";
 import {NotesService} from "../../services/notes.service";
-import {of} from "rxjs";
-import {map} from "rxjs/operators";
 
 /**
  * This is the notes component. It takes care of showing the notes on the notes page. It shows the newest notes first and than the older ones.
@@ -23,9 +21,15 @@ export class NotesComponent implements OnInit {
   createNote: boolean = false;
   notes: Note[] = [];
   filteredNotes: Note[] = [];
+  test: boolean = false;
 
-  public get sortedNotes(): Note[] {
-    return this.filteredNotes.sort((a, b) => new Date(b.timestamp).getDate() - new Date(a.timestamp).getDate());
+  get sortedNotes(): Note[] {
+    // this.filteredNotes = this.notes.filter(note => this.selectedWorkfieldFromNavbar.charAt(0) == note.workfield.toLocaleLowerCase().charAt(0)); //the notes are filtered by workfield and are shown on the correct page
+    // TODO: Maybe placing the filter here is exhausting too many resources
+    this.notes = this.notesService.notes.filter(note => this.selectedWorkfieldFromNavbar.charAt(0) == note.workfield.toLocaleLowerCase().charAt(0)); //the notes are filtered by workfield and are shown on the correct page
+    // if (this.masonry) this.reloadMasonry();
+    // console.log(this.notes)
+    return this.notes.sort((a, b) => new Date(b.timestamp).valueOf() - new Date(a.timestamp).valueOf());
   }
 
   @Input() selectedWorkfieldFromNavbar: Workfield;
@@ -47,17 +51,18 @@ export class NotesComponent implements OnInit {
     this.isVisited = true;
     this.notesService.updateVisitedPage(this.isVisited);
     this.selectedWorkfieldFromNavbar = Workfield.BOTANY; //TODO: set the workfield to the workfield of the logged in user
-    this.notesService.restGetNotes().subscribe(value => {
+    this.notesService.restGetNotes().toPromise().then(value => {
       this.notesService.notes = value.map(note => Note.copyConstructor(note));
-      this.notes = this.notesService.notes;
-      this.filteredNotes = this.notes.filter(note => this.selectedWorkfieldFromNavbar.charAt(0) == note.workfield.toLocaleLowerCase().charAt(0)); //the notes are filtered by workfield and are shown on the correct page
-    })
-    // this.notesService.notesubject.subscribe(value => {
+      // this.notes = this.notesService.notes.filter(note => this.selectedWorkfieldFromNavbar.charAt(0) == note.workfield.toLocaleLowerCase().charAt(0)); //the notes are filtered by workfield and are shown on the correct page
+      // this.notes = this.notesService.notes;
+      // this.filteredNotes = this.notes.filter(note => this.selectedWorkfieldFromNavbar.charAt(0) == note.workfield.toLocaleLowerCase().charAt(0)); //the notes are filtered by workfield and are shown on the correct page
+    }).catch(console.log);
+    // this.notesService.notes$.subscribe(value => {
     //   console.log(value)
-    //   if (value) this.notes.push(value);
+    //   if (this.masonry) this.reloadMasonry();
     // })
     // this.filteredNotes = this.notes.filter(note => this.selectedWorkfieldFromNavbar.charAt(0) == note.workfield.toLocaleLowerCase().charAt(0)); //the notes are filtered by workfield and are shown on the correct page
-    console.log(this.filteredNotes)
+    // console.log(this.filteredNotes)
   }
 
   ngOnChanges(): void {
@@ -65,7 +70,12 @@ export class NotesComponent implements OnInit {
       percentPosition: true,
       horizontalOrder: true,
     };
-    this.filteredNotes = this.notes.filter(note => this.selectedWorkfieldFromNavbar.charAt(0) == note.workfield.toLocaleLowerCase().charAt(0));
+    // this.filteredNotes = this.notes.filter(note => this.selectedWorkfieldFromNavbar.charAt(0) == note.workfield.toLocaleLowerCase().charAt(0));
+  }
+
+  reloadMasonry(): void {
+    this.masonry.reloadItems();
+    this.masonry.layout();
   }
 
   onCreateNote(createNote: boolean) {

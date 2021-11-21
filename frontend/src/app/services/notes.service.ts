@@ -22,17 +22,17 @@ export class NotesService {
   currentVisitedPage = this.visitedPage.asObservable();
   public notes: Note[] = [];
   resourceUrl: string = "";
-  // private _notesubject: BehaviorSubject<Note>;
+  private _note$: BehaviorSubject<Note>;
 
   constructor(private http: HttpClient) {
-    // this._notesubject = new BehaviorSubject<Note>(<Note>{});
     this.resourceUrl = environment.apiUrl + "/notes";
+    this._note$ = new BehaviorSubject<Note>(<Note>{});
     // this.allNotes();
   }
 
-  // get notesubject(): Observable<Note> {
-  //   return this._notesubject.asObservable();
-  // }
+  get note$(): Observable<Note> {
+    return this._note$.asObservable();
+  }
 
   restGetNotes(): Observable<Note[]> {
     return this.http.get<Note[]>(this.resourceUrl + "/all").pipe(catchError(this.handleError));
@@ -58,7 +58,7 @@ export class NotesService {
 
   addNote(note: Note) {
     this.restPostNote(note).toPromise().then(() => {
-      this.notes.push(note);
+      this.notes.push(Note.copyConstructor(note));
       console.log(this.notes)
     });
   }
