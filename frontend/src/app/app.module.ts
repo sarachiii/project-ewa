@@ -22,6 +22,7 @@ import { SettingsComponent } from './components/settings/settings.component';
 import { AccountComponent } from './components/settings/account/account.component';
 import { PreferencesComponent } from './components/settings/preferences/preferences.component';
 import { DatePipe } from "@angular/common";
+import { SimpleNotificationsModule } from "angular2-notifications";
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { DatePipe } from "@angular/common";
     ChartsModule,
     NgxMasonryModule,
     BrowserAnimationsModule,
+    SimpleNotificationsModule.forRoot(),
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent]
