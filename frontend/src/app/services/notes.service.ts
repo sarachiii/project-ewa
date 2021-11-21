@@ -12,6 +12,7 @@ import {Note} from "../models/note";
 import {Observable, throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
 import {DatePipe} from "@angular/common";
+import {User} from "../models/user";
 
 @Injectable({
   providedIn: 'root'
@@ -21,10 +22,16 @@ export class NotesService {
   currentVisitedPage = this.visitedPage.asObservable();
   public notes: Note[] = [];
   resourceUrl: string = "";
+  private _note$: BehaviorSubject<Note>;
 
   constructor(private http: HttpClient) {
     this.resourceUrl = environment.apiUrl + "/notes";
-    this.allNotes();
+    this._note$ = new BehaviorSubject<Note>(<Note>{});
+    // this.allNotes();
+  }
+
+  get note$(): Observable<Note> {
+    return this._note$.asObservable();
   }
 
   restGetNotes(): Observable<Note[]> {
@@ -50,8 +57,9 @@ export class NotesService {
   }
 
   addNote(note: Note) {
-    this.restPostNote(note).toPromise().then(scooter => {
-      this.notes.push(scooter);
+    this.restPostNote(note).toPromise().then(() => {
+      this.notes.push(Note.copyConstructor(note));
+      console.log(this.notes)
     });
   }
 

@@ -4,6 +4,7 @@ import nl.hva.backend.models.Note;
 import nl.hva.backend.repositories.NotesRepository;
 import nl.hva.backend.rest.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -28,15 +29,12 @@ public class NotesController {
     //Add a note
     @PostMapping("add")
     public ResponseEntity<Note> saveNote(@RequestBody Note note) {
-        notesRepository.insertOrUpdateNote(note);
-//        Note savedNote = notesRepository.insertOrUpdateNote(note);
-//
-//        URI location = ServletUriComponentsBuilder
-//                .fromCurrentRequest()
-//                .path("/{id}")
-//                .buildAndExpand(savedNote.getNoteId()).toUri();
-//        return ResponseEntity.created(location).body(savedNote);
-        return ResponseEntity.ok().build();
+        if (note.noteText.length() <= 0 && note.title.length() <= 0) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        } else if (note.noteText.length() <= 500 && note.title.length() <= 50) {
+            notesRepository.insertOrUpdateNote(note);
+            return ResponseEntity.ok().build();
+        } else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
 
     //GET one note by id
