@@ -33,7 +33,7 @@ export class AuthGuardService implements CanActivate, CanActivateChild {
     // TODO: Switch over to JWT and cookies
     if (this.webStorageService.getUserId()) {
       if(state.url == '/login') {
-        this.router.navigate(['dashboard']).catch(reason => { console.log(reason); });
+        this.router.navigate(['home']).catch(reason => { console.log(reason); });
         return false;
       }
       return true;

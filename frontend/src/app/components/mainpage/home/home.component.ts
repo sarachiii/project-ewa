@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ChartDataSets, ChartOptions } from 'chart.js';
 import { Color, Label } from 'ng2-charts';
 import {Chart} from "chart.js";
+import {HistoryService} from "../../../services/history.service";
 
 @Component({
   selector: 'app-home',
@@ -26,23 +27,27 @@ export class HomeComponent implements OnInit  {
   public lineChartType = 'line';
   public lineChartPlugins = [];
 
-  constructor() { }
+  protected sensors: Map<string, { [key: string]: string }>;
 
-  ngOnInit() {
-    var myChart = new Chart("baseChart", {
+  constructor(private historyService: HistoryService) {
+    this.sensors = new Map<string, { [key: string]: string }>();
+    this.sensors.set("water_ph", { context: "baseChart", label: "Water pH" });
+    this.sensors.set("air_temp_c", { context: "airTemperature", label: "Air temperature in C" });
+    this.sensors.set("soil_temp_c", { context: "soilTemperature", label: "Soil temperature in C" });
+    this.sensors.set("soil_humidity", { context: "soilHumidity", label: "Soil humidity in C" });
+    this.sensors.set("soil_mix_id", { context: "soilmix", label: "Soil Mix" });
+  }
+
+  generateChart(context: string, labels: string[], data: number[], label: string = ""): Chart {
+    return new Chart(context, {
       type: 'line',
       data: {
-        labels: ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sept', 'oct', 'nov', 'dec'],
+        labels: labels,
         datasets: [{
-          label: '# of Votes',
-          data: [12, 19, 3, 5, 2, 3, 6, 2, 3, 8],
+          label: label,
+          data: data,
           backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)'
+            'rgba(130,174,28,0.24)'
           ],
           borderColor: [
             'rgba(255, 99, 132, 1)',
@@ -61,5 +66,19 @@ export class HomeComponent implements OnInit  {
         }
       }
     });
+  }
+
+  ngOnInit() {
+    this.historyService.getSensorData().subscribe(value => {
+      let types = value.map(sensor => sensor.sensorType).filter((v, i , a) => a.indexOf(v) === i);
+      for (const type of types) {
+        if(this.sensors.has(type)) {
+          let sensor = value.filter(data => data.sensorType == type);
+          let sensorData = sensor.map(record => record.newValue);
+          let sensorDataLabels = sensor.map(record => record.timestamp);
+          this.generateChart(this.sensors.get(type).context, sensorDataLabels, sensorData, this.sensors.get(type).label)
+        }
+      }
+    })
   }
 }
