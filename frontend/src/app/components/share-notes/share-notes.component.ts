@@ -54,7 +54,7 @@ export class ShareNotesComponent implements OnInit {
 
   currentDate() {
     let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    return new Date().getDay() + " " + months[new Date().getMonth()] + " " +
+    return new Date().getDate() + " " + months[new Date().getMonth()] + " " +
       new Date().getFullYear() + ", " + new Date().getHours() + ":" + new Date().getMinutes();
   }
 }
