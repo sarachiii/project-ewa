@@ -37,6 +37,7 @@ import { RegisterComponent } from './components/mainpage/register/register.compo
     AppRoutingModule,
     FormsModule,
     ChartsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

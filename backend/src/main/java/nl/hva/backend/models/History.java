@@ -74,7 +74,7 @@ public class History {
         String[] sensors = { "air_temp_c", "air_humidity", "soil_temp_c", "soil_humidity", "soil_mix_id",
                 "water_ph", "water_mix_id", "lighting_rgb", "daily_exposure" };
         for (int i = 0; i < 10; i++) {
-            LocalDateTime timestamp = LocalDateTime.now();
+            LocalDateTime timestamp = LocalDateTime.now().plusMinutes(i + 1);
             for (String sensor : sensors) {
                 String value;
                 switch (sensor) {
