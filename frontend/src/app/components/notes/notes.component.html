@@ -10,7 +10,7 @@
           <span class="position-absolute">
             <span class="visually-hidden">unread messages</span>
           </span>
-          <a id="edit-screen"><img *ngIf="note.username == 'Sjors Peters'" src="assets/edit.svg" class="float-end"></a>
+          <a id="edit-screen"><img *ngIf="note.userId == this.user.id" src="assets/edit.svg" class="float-end"></a>
         </div>
         <div class="card-body">
           <p class="card-text">{{note.noteText}}</p>

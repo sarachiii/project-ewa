@@ -21,6 +21,7 @@ public class AccountForm {
     private String password;
     @NotNull
     private NewPasswordForm newPasswordForm;
+    private Boolean deleteProfilePicture;
 
     public static class PictureForm {
         // Add custom validation
@@ -89,17 +90,19 @@ public class AccountForm {
     }
 
     public AccountForm(String firstName, String lastName, PictureForm pictureForm,
-                       String emailAddress, String password, NewPasswordForm newPasswordForm) {
+                       String emailAddress, String password, NewPasswordForm newPasswordForm,
+                       Boolean deleteProfilePicture) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.pictureForm = pictureForm;
         this.emailAddress = emailAddress;
         this.password = password;
         this.newPasswordForm = newPasswordForm;
+        this.deleteProfilePicture = deleteProfilePicture;
     }
 
     protected AccountForm() {
-        this("", "", new PictureForm(), "", "", new NewPasswordForm());
+        this("", "", new PictureForm(), "", "", new NewPasswordForm(), false);
     }
 
     public String getFirstName() {
@@ -148,5 +151,13 @@ public class AccountForm {
 
     public void setNewPasswordForm(NewPasswordForm newPasswordForm) {
         this.newPasswordForm = newPasswordForm;
+    }
+
+    public Boolean getDeleteProfilePicture() {
+        return deleteProfilePicture;
+    }
+
+    public void setDeleteProfilePicture(Boolean deleteProfilePicture) {
+        this.deleteProfilePicture = deleteProfilePicture;
     }
 }

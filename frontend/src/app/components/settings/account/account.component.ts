@@ -7,7 +7,7 @@ import { requireOneDisableAll } from "../../../shared/validators/custom.validato
 import {WebStorageService} from "../../../services/storage/web-storage.service";
 import {UserService} from "../../../services/user.service";
 import {Subscription} from "rxjs";
-import {first} from "rxjs/operators";
+import {first, skipWhile} from "rxjs/operators";
 
 @Component({
   selector: 'app-account',
@@ -20,6 +20,7 @@ export class AccountComponent implements OnInit {
   // TODO: change name to profileForm
   accountForm: FormGroup;
   newPasswordForm: FormGroup;
+  deleteProfilePicture: boolean;
 
   constructor(protected settingsService: SettingsService,
               protected webStorageService: WebStorageService,
@@ -35,14 +36,9 @@ export class AccountComponent implements OnInit {
 
   ngOnInit(): void {
     // Reset has all the initial values
-    this.userService.getUserById(this.webStorageService.getUserId()).pipe(first()).subscribe(value => {
+    this.userService.loggedUser$.pipe(skipWhile(value => Object.keys(value).length === 0), first()).subscribe(value => {
       this.user = value;
-
-      // console.log(value)
-
       this.copyUser = Object.assign<User, User>(this.copyUser, this.user);
-
-      // console.log(this.copyUser)
       this.onReset();
     });
 
@@ -113,15 +109,20 @@ export class AccountComponent implements OnInit {
   }
 
   onReset() {
-    this.accountForm.reset();
-    this.newPasswordForm.reset();
-    this.pictureForm.reset();
-    this.accountFormInit();
-    this.newPasswordFormInit();
-    this.accountForm.patchValue(this.copyUser);
-    this.password.reset('');
-    // console.log(this.copyUser)
-    this.password.setValidators([Validators.required, passwordValidator(this.copyUser.password)]);
+    this.userService.loggedUser$.pipe(first()).subscribe(value => {
+      this.user = value;
+      this.copyUser = Object.assign<User, User>(this.copyUser, this.user);
+      this.accountForm.reset();
+      this.newPasswordForm.reset();
+      this.pictureForm.reset();
+      this.deleteProfilePicture = false;
+      this.accountFormInit();
+      this.newPasswordFormInit();
+      this.accountForm.patchValue(this.copyUser);
+      this.password.reset('');
+      // console.log(this.copyUser)
+      this.password.setValidators([Validators.required, passwordValidator(this.copyUser.password)]);
+    }, error => console.error)
   }
 
   onSubmit() {
@@ -131,6 +132,7 @@ export class AccountComponent implements OnInit {
 
     // Update user if form is (still) valid
     if (this.accountForm.valid) {
+      // TODO: Remove updateUser or change code to match
       // Combine values into an updated user
       let updatedUser = <User>{...this.copyUser, ...this.accountForm.value};
 
@@ -152,11 +154,15 @@ export class AccountComponent implements OnInit {
       // Update the user
       //this.settingsService.save(Object.assign<User, User>(this.copyUser, updatedUser));
       this.settingsService.updateProfile(this.webStorageService.getAsNumber('userId'),
-        {...this.accountForm.value, newPasswordForm: this.newPasswordForm.value }).subscribe(e=>{
+        {
+          ...this.accountForm.value,
+          newPasswordForm: this.newPasswordForm.value,
+          deleteProfilePicture: this.deleteProfilePicture
+        }).subscribe(e=>{
         console.log(e)
 
         this.userService.updateLoggedUser(this.webStorageService.getUserId());
-        this.userService.loggedUser$.pipe(first()).subscribe(value => {this.copyUser = value})
+        // this.userService.loggedUser$.pipe(first()).subscribe(value => {this.copyUser = value})
       }, error => {
         console.log(error)})
 
@@ -175,5 +181,7 @@ export class AccountComponent implements OnInit {
     // Remove the profile picture
     this.pictureForm.reset({file: '', url: ''});
     this.copyUser.profilePicture = '';
+    this.deleteProfilePicture = true;
+    this.accountForm.markAsDirty();
   }
 }

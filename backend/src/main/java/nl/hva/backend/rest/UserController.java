@@ -107,6 +107,8 @@ public class UserController {
             user.setProfilePicture(accountForm.getPictureForm().getFile());
         } else if (!accountForm.getPictureForm().getUrl().isBlank()) {
             user.setProfilePicture(accountForm.getPictureForm().getUrl());
+        } else if (accountForm.getDeleteProfilePicture()) {
+            user.setProfilePicture(null);
         }
 
         this.userRepository.save(user);

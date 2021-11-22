@@ -4,6 +4,10 @@ import {NgxMasonryComponent, NgxMasonryOptions} from "ngx-masonry";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Note} from "../../models/note";
 import {NotesService} from "../../services/notes.service";
+import {first, skipWhile} from "rxjs/operators";
+import {User} from "../../models/user";
+import {UserService} from "../../services/user.service";
+import {interval} from "rxjs";
 
 /**
  * This is the notes component. It takes care of showing the notes on the notes page. It shows the newest notes first and than the older ones.
@@ -22,6 +26,7 @@ export class NotesComponent implements OnInit {
   notes: Note[] = [];
   filteredNotes: Note[] = [];
   test: boolean = false;
+  user: User;
 
   get sortedNotes(): Note[] {
     // this.filteredNotes = this.notes.filter(note => this.selectedWorkfieldFromNavbar.charAt(0) == note.workfield.toLocaleLowerCase().charAt(0)); //the notes are filtered by workfield and are shown on the correct page
@@ -37,7 +42,10 @@ export class NotesComponent implements OnInit {
   @ViewChild(NgxMasonryComponent) masonry: NgxMasonryComponent;
   masonryOptions: NgxMasonryOptions;
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute, private notesService: NotesService) {
+  constructor(private router: Router,
+              private activatedRoute: ActivatedRoute,
+              private notesService: NotesService,
+              private userService: UserService) {
     this.masonryOptions = {
       percentPosition: true,
       horizontalOrder: true,
@@ -63,6 +71,9 @@ export class NotesComponent implements OnInit {
     // })
     // this.filteredNotes = this.notes.filter(note => this.selectedWorkfieldFromNavbar.charAt(0) == note.workfield.toLocaleLowerCase().charAt(0)); //the notes are filtered by workfield and are shown on the correct page
     // console.log(this.filteredNotes)
+    this.userService.loggedUser$.pipe(skipWhile(value => Object.keys(value).length === 0), first()).subscribe(value => {
+      this.user = value;
+    });
   }
 
   ngOnChanges(): void {
