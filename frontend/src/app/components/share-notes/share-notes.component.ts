@@ -47,7 +47,7 @@ export class ShareNotesComponent implements OnInit {
     // let isodate = date.toISOString().replace(/\..+/, '');
     // this.notesService.addNote(new Note(0, this.user.id, "B",
     this.notesService.addNote(new Note(0, this.user.id, this.user.specialty.charAt(0),
-      new Date(), title, text, this.user.firstName + " " + this.user.lastName))
+      new Date(), title, text, this.user.firstName))
     this.unselectedEvent.emit(true);
     window.location.reload();
   }
