@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, ViewChild} from '@angular/core';
 import {Workfield} from "../../models/workfield";
 import {NgxMasonryComponent, NgxMasonryOptions} from "ngx-masonry";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -20,7 +20,7 @@ import {interval} from "rxjs";
   templateUrl: './notes.component.html',
   styleUrls: ['./notes.component.css']
 })
-export class NotesComponent implements OnInit {
+export class NotesComponent implements OnInit, OnChanges {
   isVisited: boolean = false;
   createNote: boolean = false;
   notes: Note[] = [];
