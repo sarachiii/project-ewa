@@ -1,0 +1,36 @@
+stages:
+    - deploy
+
+deploy_be:
+    stage: deploy
+    image: node:latest
+    tags:
+        - hva
+    only:
+        refs:
+            - master
+        changes:
+          - "backend/**/*"  
+    script:
+        - git remote rm heroku-be-app || true
+        - git remote add heroku-be-app https://heroku:$HEROKU_API_KEY@git.heroku.com/hbo-ict-ccu-be-app-staging.git || true
+        - git subtree split --prefix backend -b splitting-be
+        - git push --force heroku-be-app splitting-be:master
+        - git branch -D splitting-be
+
+deploy_fe:    
+    stage: deploy
+    image: node:latest
+    tags:
+        - hva
+    only:
+        refs:
+            - master
+        changes:
+          - "frontend/**/*"  
+    script:
+        - git remote rm heroku-fe-app || true
+        - git remote add heroku-fe-app https://heroku:$HEROKU_API_KEY@git.heroku.com/hbo-ict-ccu-fe-app-staging.git || true
+        - git subtree split --prefix frontend -b splitting-fe
+        - git push --force heroku-fe-app splitting-fe:master
+        - git branch -D splitting-fe
