@@ -8,7 +8,7 @@ deploy_be:
         - hva
     only:
         refs:
-            - master
+            - staging
         changes:
           - "backend/**/*"  
     script:
@@ -25,7 +25,7 @@ deploy_fe:
         - hva
     only:
         refs:
-            - master
+            - staging
         changes:
           - "frontend/**/*"  
     script:
