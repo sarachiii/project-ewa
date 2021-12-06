@@ -23,6 +23,7 @@ import { AccountComponent } from './components/settings/account/account.componen
 import { PreferencesComponent } from './components/settings/preferences/preferences.component';
 import { DatePipe } from "@angular/common";
 import { SimpleNotificationsModule } from "angular2-notifications";
+import { EditNotesComponent } from './components/edit-notes/edit-notes.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { SimpleNotificationsModule } from "angular2-notifications";
     RegisterComponent,
     SettingsComponent,
     AccountComponent,
-    PreferencesComponent
+    PreferencesComponent,
+    EditNotesComponent
   ],
   imports: [
     BrowserModule,
