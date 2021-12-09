@@ -70,11 +70,6 @@ public class User {
         this.teamId = teamId;
     }
 
-    // public User() {
-    // this('')
-    // }
-
-    
     public Long getId() {
         return this.id;
     }
