@@ -1,20 +1,34 @@
 package nl.hva.backend.models;
 
 
+import javax.persistence.*;
 
 /**
  * This is the model for all the sensors
  *
  * @author Jechillo Huang
  */
-
+@Entity
+@Table(name = "sensor")
 public class Sensor {
+    @Id
+    @GeneratedValue
+    @Column(name = "idx")
+    private int idx;
+    @Column(name = "name")
+    private String name;
+    @Column(name = "min_value")
+    private Double minValue;
+    @Column(name = "max_value")
+    private Double maxValue;
+    @Column(name = "units")
+    private char units;
 
-    public int idx;
-    public String name;
-    public double minValue;
-    public double maxValue;
-    public char units;
+//    public int idx;
+//    public String name;
+//    public double minValue;
+//    public double maxValue;
+//    public char units;
 
     public Sensor(int idx, String name, double minValue, double maxValue, char units) {
         this.idx = idx;
@@ -24,25 +38,31 @@ public class Sensor {
         this.units = units;
     }
 
-//    public int getIdx() { return idx; }
-//
-//    public void setIdx(int idx) { this.idx = idx; }
-//
-//    public String getName() { return name; }
-//
-//    public void setName(String name) { this.name = name; }
-//
-//    public double getMinValue() { return minValue; }
-//
-//    public void setMinValue(double minValue) { this.minValue = minValue; }
-//
-//    public double getMaxValue() { return maxValue; }
-//
-//    public void setMaxValue(double maxValue) { this.maxValue = maxValue; }
-//
-//    public char getUnits() { return units; }
-//
-//    public void setUnits(char units) { this.units = units; }
+//    public Sensor(String name, double minValue, double maxValue, char units){
+//        this(name, minValue, maxValue, units);
+//    }
+
+    public Sensor(){}
+
+    public int getIdx() { return idx; }
+
+    public void setIdx(int idx) { this.idx = idx; }
+
+    public String getName() { return name; }
+
+    public void setName(String name) { this.name = name; }
+
+    public double getMinValue() { return minValue; }
+
+    public void setMinValue(double minValue) { this.minValue = minValue; }
+
+    public double getMaxValue() { return maxValue; }
+
+    public void setMaxValue(double maxValue) { this.maxValue = maxValue; }
+
+    public char getUnits() { return units; }
+
+    public void setUnits(char units) { this.units = units; }
 
     //    public double airTemperature;
 //    public double airHumidity;

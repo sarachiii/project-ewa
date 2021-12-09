@@ -15,6 +15,7 @@ export class SensorsService {
 
   }
 
+  //This method returns a Http request
    getSensorData(ghId: number | string) {
      return this.http.get(`http://www.sneltec.com/hva/hva.php?gh_id=${ghId}`)
 

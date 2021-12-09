@@ -17,20 +17,16 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("sensor/")
+@RequestMapping("/sensor")
 public class SensorController {
-
-    public double sensor() {
-        return 2.0;
-    }
 
     @Autowired
     private SensorRepository sensorRepository;
 
-    @GetMapping("all")
+    @GetMapping("/sensor")
     public List<Sensor> getAllSensors() {return sensorRepository.findAll();}
 
-    @PostMapping("add")
+    @PostMapping("/sensor")
     public ResponseEntity<Sensor> saveSensor(@RequestBody Sensor sensor){
         sensorRepository.save(sensor);
                 return ResponseEntity.ok().build();
