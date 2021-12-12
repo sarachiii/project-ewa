@@ -55,4 +55,8 @@ export class NavBarComponent implements OnInit, OnDestroy {
     this.webStorageService.clear();
   }
 
+  handleImageError(event: Event) {
+    (<HTMLImageElement>event.target).src = "assets/images/default_avatar.svg";
+  }
+
 }

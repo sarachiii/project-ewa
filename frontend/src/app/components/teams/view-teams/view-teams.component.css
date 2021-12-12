@@ -1,0 +1,10 @@
+.list-group-item {
+  border-color: var(--cc-green);
+}
+.dropdown-item:active {
+  background-color: var(--cc-green);
+}
+.dropdown-item.active, .list-group-item.active {
+  background-color: var(--cc-green);
+  font-weight: bold;
+}

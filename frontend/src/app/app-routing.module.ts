@@ -11,6 +11,9 @@ import { SettingsComponent } from "./components/settings/settings.component";
 import { AccountComponent } from "./components/settings/account/account.component";
 import { PreferencesComponent } from "./components/settings/preferences/preferences.component";
 import { AuthGuardService } from "./services/auth-guard.service";
+import {TeamsComponent} from "./components/teams/teams.component";
+import {ViewTeamsComponent} from "./components/teams/view-teams/view-teams.component";
+import {TeamComponent} from "./components/teams/view-teams/team/team.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -27,6 +30,12 @@ const routes: Routes = [
         ]
       },
     ],
+  },
+  { path: 'teams', component: TeamsComponent, canActivate: [AuthGuardService], canActivateChild: [AuthGuardService],
+    children: [
+      { path: '', redirectTo: 'view', pathMatch: 'full' },
+      { path: 'view', component: ViewTeamsComponent }
+    ]
   },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuardService], canActivateChild: [AuthGuardService],
     children: [
