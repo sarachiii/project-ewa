@@ -54,6 +54,10 @@ export class EditNotesComponent implements OnInit {
   }
 
   onSaveNote(title: string, text: string) {
+    if (title.trim() === this.note.title && text.trim() === this.note.noteText){
+      this.unselectedEvent.emit(true);
+      return;
+    }
     this.notesService.addNote(new Note(this.note.noteId, this.note.userId, this.note.workfield.charAt(0), this.note.timestamp, title, text, this.note.username))
     this.unselectedEvent.emit(true);
     window.location.reload();
