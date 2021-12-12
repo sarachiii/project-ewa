@@ -104,7 +104,9 @@ export class NotesComponent implements OnInit, OnChanges {
   }
 
   onDeleteNote(noteId: number) {
-    this.notesService.deleteNote(noteId);
-    window.location.reload();
+    if(confirm("Are you sure you want to delete this note?")){
+      this.notesService.deleteNote(noteId);
+      window.location.reload();
+    }
   }
 }
