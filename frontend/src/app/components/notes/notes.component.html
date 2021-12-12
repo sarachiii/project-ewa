@@ -1,16 +1,25 @@
 <p *ngIf="sortedNotes.length < 1">There are no notes yet! :(</p>
 <div class="container position-relative h-100">
- <ngx-masonry *ngIf="sortedNotes.length >= 1" [options]="masonryOptions" [ordered]="true" class="mx-auto pt-lg-3 row justify-content-center">
+  <ngx-masonry *ngIf="sortedNotes.length >= 1" [options]="masonryOptions" [ordered]="true"
+               class="mx-auto pt-lg-3 row justify-content-center">
     <div ngxMasonryItem *ngFor="let note of sortedNotes" class="masonry-item p-2 col col-md-6 col-lg-4 col-xl-3">
       <div class="card shadow">
-<!--        <div class="card-header position-relative" [ngClass]="{'highlight-header': loggedInUser.userId == note.user.userId}">-->
+        <!--        <div class="card-header position-relative" [ngClass]="{'highlight-header': loggedInUser.userId == note.user.userId}">-->
         <div class="card-header position-relative">
           {{note.title}}
-<!--          <span *ngIf="note.isRead == false" class="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger p-2">-->
+          <!--          <span *ngIf="note.isRead == false" class="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger p-2">-->
           <span class="position-absolute">
             <span class="visually-hidden">unread messages</span>
           </span>
-          <a id="edit-screen"><img *ngIf="note.userId == this.user.id" src="assets/edit.svg" class="float-end"></a>
+          <a id="edit-screen">
+            <button type="button" id="deleteButton" class="float-end" *ngIf="note.userId == this.user.id"
+                    (click)="onDeleteNote(note.noteId)">
+              <img src="assets/images/delete_icon.png" alt="deleteNote" height="22" width="22"></button>
+
+            <button type="button" id="editNoteButton" *ngIf="note.userId == this.user.id" class="float-end"
+                    (click)="onEditNote(false, note)">
+              <img src="assets/edit.svg" alt="edit"></button>
+          </a>
         </div>
         <div class="card-body">
           <p class="card-text">{{note.noteText}}</p>
@@ -27,11 +36,16 @@
     </div>
   </ngx-masonry>
 
-  <div class="position-absolute bottom-0 end-0 p-5" [ngClass]="{'d-none': selectedWorkfieldFromNavbar != 'botany'}" *ngIf="createNote === false; else addNote;">
-    <button type="button" class="btn btn-success size d-lg-none shadow fixed-bottom mb-3 mr-3" (click)="onCreateNote(false)">
+  <div class="position-absolute bottom-0 end-0 p-5" [ngClass]="{'d-none': selectedWorkfieldFromNavbar != 'botany'}"
+       [ngTemplateOutlet]="createNote === true ? addNote : editNote === true ? viewNote : null">
+    <!--   Create note button mobile   -->
+    <button type="button" class="btn btn-success size d-lg-none shadow fixed-bottom mb-3 mr-3"
+            (click)="onCreateNote(false)">
       <img class="button-img" src="https://icon-library.com/images/compose-icon/compose-icon-1.jpg" alt="add note">
     </button>
-    <button type="button" class="btn btn-success d-none d-lg-block shadow fixed-bottom mb-3 mr-3" (click)="onCreateNote(false)">
+    <!--   Create note button desktop   -->
+    <button type="button" class="btn btn-success d-none d-lg-block shadow fixed-bottom mb-3 mr-3"
+            (click)="onCreateNote(false)">
       Create Note
     </button>
   </div>
@@ -39,6 +53,13 @@
     <ng-container>
       <app-share-notes (unselectedEvent)="onCreateNote($event)">
       </app-share-notes>
+    </ng-container>
+  </ng-template>
+  <ng-template #viewNote>
+    <ng-container>
+      <app-edit-notes [(selectedNoteFromNotes)]="selectedNote"
+                      (unselectedEvent)="onEditNote($event, null)">
+      </app-edit-notes>
     </ng-container>
   </ng-template>
 </div>

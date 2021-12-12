@@ -1,9 +1,13 @@
-<div class="d-flex justify-content-center modal modal-dialog-centered modal-backdrop" data-bs-backdrop="static">
+<div class="d-flex justify-content-center modal modal-dialog-centered modal-backdrop" data-bs-backdrop="static"
+     xmlns="http://www.w3.org/1999/html">
 
   <div class="card backgroundNote col-sm-12 col-md-12 col-lg-8 col-xl-5 shadow">
     <div class="card-header d-flex">
-      <input maxLength="50" autocomplete="off" type="text" id="title" class="form-control titleColor col-sm-8" name="title"
-             placeholder="Give your note a title" #title>
+      <input maxLength="50" autocomplete="off" type="text" id="title" class="form-control titleColor col-sm-8"
+             name="title" #title value="{{note.title}}">
+      <!--      <button type="button" class="float-end"-->
+      <!--              (click)="onSaveNote(title.value, text.value)" style="border: 0; background: transparent;">-->
+      <!--        <img src="assets/edit.svg" alt="edit"></button>-->
       <button type="button" class="btn btn-success float-end m-1 btnsize justify-content-end col-sm-2"
               (click)="onSaveNote(title.value, text.value)">
         ✓
@@ -14,19 +18,17 @@
       </button>
     </div>
     <div class="card-body">
-      <div class="d-flex justify-content-center m-2">
+      <div class="d-flex justify-content-center m-2 ">
         <textarea maxLength="500" id="note" class="form-control" name="note" rows="12" #text
-                  placeholder="Start writing your notes here ..."></textarea>
+                  placeholder="Start writing your notes here ...">{{note.noteText}}</textarea>
       </div>
       <div class="row text-muted">
         <div class="col-6">
-         {{this.user.firstName}}
+          {{this.user.firstName}}
         </div>
         <div class="col-6 text-end">
-          {{currentDate()}}
-        </div>
+          {{note.convertedDate()}}</div>
       </div>
     </div>
   </div>
 </div>
-

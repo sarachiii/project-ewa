@@ -33,8 +33,12 @@ public class NotesRepository {
         return entityManager.merge(note);
     }
 
-    public void deleteNote(int noteId) {
+    public boolean deleteNoteById(int noteId) {
         Note note = findNoteById(noteId);
-        entityManager.remove(note);
+        if (note != null) {
+            entityManager.remove(note);
+            return true;
+        }
+        return false;
     }
 }

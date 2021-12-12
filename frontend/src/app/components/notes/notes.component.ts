@@ -23,6 +23,11 @@ import {interval} from "rxjs";
 export class NotesComponent implements OnInit, OnChanges {
   isVisited: boolean = false;
   createNote: boolean = false;
+  editNote: boolean = false;
+  deleteNote: boolean;
+  selectedNote: Note = <Note>{};
+
+
   notes: Note[] = [];
   filteredNotes: Note[] = [];
   test: boolean = false;
@@ -91,5 +96,17 @@ export class NotesComponent implements OnInit, OnChanges {
 
   onCreateNote(createNote: boolean) {
     this.createNote = !createNote;
+  }
+
+  onEditNote(editNote: boolean, note) {
+    this.selectedNote = note
+    this.editNote = !editNote;
+  }
+
+  onDeleteNote(noteId: number) {
+    if(confirm("Are you sure you want to delete this note?")){
+      this.notesService.deleteNote(noteId);
+      window.location.reload();
+    }
   }
 }
