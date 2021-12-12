@@ -25,6 +25,8 @@ export class NotesComponent implements OnInit, OnChanges {
   createNote: boolean = false;
   editNote: boolean = false;
   deleteNote: boolean;
+  selectedNote: Note = <Note>{};
+
 
   notes: Note[] = [];
   filteredNotes: Note[] = [];
@@ -96,7 +98,8 @@ export class NotesComponent implements OnInit, OnChanges {
     this.createNote = !createNote;
   }
 
-  onEditNote(editNote: boolean) {
+  onEditNote(editNote: boolean, note) {
+    this.selectedNote = note
     this.editNote = !editNote;
   }
 

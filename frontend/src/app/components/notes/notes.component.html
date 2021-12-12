@@ -13,11 +13,11 @@
           </span>
           <a id="edit-screen">
             <button type="button" id="deleteButton" class="float-end" *ngIf="note.userId == this.user.id"
-                     (click)="onDeleteNote(note.noteId)">
+                    (click)="onDeleteNote(note.noteId)">
               <img src="assets/images/delete_icon.png" alt="deleteNote" height="22" width="22"></button>
 
             <button type="button" id="editNoteButton" *ngIf="note.userId == this.user.id" class="float-end"
-                    (click)="onEditNote(false)">
+                    (click)="onEditNote(false, note)">
               <img src="assets/edit.svg" alt="edit"></button>
           </a>
         </div>
@@ -57,7 +57,8 @@
   </ng-template>
   <ng-template #viewNote>
     <ng-container>
-      <app-edit-notes (unselectedEvent)="onEditNote($event)">
+      <app-edit-notes [(selectedNoteFromNotes)]="selectedNote"
+                      (unselectedEvent)="onEditNote($event, null)">
       </app-edit-notes>
     </ng-container>
   </ng-template>

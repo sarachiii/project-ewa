@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {NotesService} from "../../services/notes.service";
 import {Note} from "../../models/note";
@@ -13,12 +13,25 @@ import {Subscription} from "rxjs";
   styleUrls: ['../share-notes/share-notes.component.css']
 })
 export class EditNotesComponent implements OnInit {
-  @Output() unselectedEvent = new EventEmitter();
+  private _selectedNoteFromNotes: Note;
   title: string;
   text: string;
   note: Note;
   user: User | null;
   private userSubscription: Subscription;
+
+  @Input()
+  set selectedNoteFromNotes(note: Note) {
+    this.note = note;
+  }
+
+  get selectedNoteFromNotes(): Note {
+    return this._selectedNoteFromNotes;
+  }
+  @Output() selectedNoteFromNotesChange = new EventEmitter<Note>();
+
+  @Output() unselectedEvent = new EventEmitter();
+
 
   constructor(private notesService: NotesService, private router: Router, private activatedRoute: ActivatedRoute,
               private webStorageService: WebStorageService, private userService: UserService) {
@@ -36,13 +49,12 @@ export class EditNotesComponent implements OnInit {
   }
 
   onReturnToNotes(title: string, text: string) {
-    if (title.trim() === "" && text.trim() === "") this.unselectedEvent.emit(true);
+    if (title.trim() === this.note.title && text.trim() === this.note.noteText) this.unselectedEvent.emit(true);
     else if (confirm("Are you sure you want to discard unsaved changes?")) this.unselectedEvent.emit(true);
   }
 
   onSaveNote(title: string, text: string) {
-    this.notesService.addNote(new Note(0, this.user.id, this.user.specialty.charAt(0),
-      new Date(), title, text, this.user.firstName))
+    this.notesService.addNote(new Note(this.note.noteId, this.note.userId, this.note.workfield.charAt(0), this.note.timestamp, title, text, this.note.username))
     this.unselectedEvent.emit(true);
     window.location.reload();
   }
