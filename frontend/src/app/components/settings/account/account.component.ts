@@ -184,4 +184,8 @@ export class AccountComponent implements OnInit {
     this.deleteProfilePicture = true;
     this.accountForm.markAsDirty();
   }
+
+  handleImageError(event: Event) {
+    (<HTMLImageElement>event.target).src = "assets/images/default_avatar.svg";
+  }
 }
