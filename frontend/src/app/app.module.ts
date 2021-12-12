@@ -24,6 +24,8 @@ import { PreferencesComponent } from './components/settings/preferences/preferen
 import { DatePipe } from "@angular/common";
 import { SimpleNotificationsModule } from "angular2-notifications";
 import { TeamsComponent } from './components/teams/teams.component';
+import { ViewTeamsComponent } from './components/teams/view-teams/view-teams.component';
+import { TeamComponent } from './components/teams/view-teams/team/team.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +42,9 @@ import { TeamsComponent } from './components/teams/teams.component';
     SettingsComponent,
     AccountComponent,
     PreferencesComponent,
-    TeamsComponent
+    TeamsComponent,
+    ViewTeamsComponent,
+    TeamComponent
   ],
   imports: [
     BrowserModule,
@@ -51,7 +55,7 @@ import { TeamsComponent } from './components/teams/teams.component';
     ChartsModule,
     NgxMasonryModule,
     BrowserAnimationsModule,
-    SimpleNotificationsModule.forRoot(),
+    SimpleNotificationsModule.forRoot()
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent]

@@ -1,0 +1,27 @@
+.card {
+  border-radius: 10px;
+  border-color: var(--cc-darkgreen);
+}
+.btn {
+  border-radius: 10px;
+}
+.btn:hover .green-filter, .btn.active .green-filter {
+  filter: brightness(100) !important;
+}
+
+.btn:hover .green-filter {
+  transition: 0.15s filter ease-in-out, 0.15s -webkit-filter ease-in-out;
+}
+@media(min-width: 380px) {
+  .d-xs-inline {
+    display: inline !important;
+  }
+}
+@media(max-width: 380px) {
+  .me-xs-0 {
+    margin-right: 0 !important;
+  }
+  .justify-content-xs-center {
+    justify-content: center !important;
+  }
+}
