@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { CRUDService } from "./interfaces/crud.service";
-import { Role, User } from "../models/user";
-import {BehaviorSubject, Observable} from "rxjs";
+import { User } from "../models/user";
+import { BehaviorSubject, Observable } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../environments/environment";
-import {shareReplay} from "rxjs/operators";
+import { shareReplay } from "rxjs/operators";
 
 // TODO: Maybe find a way to separate User Storage and Service
 @Injectable({
@@ -58,7 +58,7 @@ export class UserService implements CRUDService<User> {
   }
 
   getAllUsers(): Observable<User[]> {
-    return this.httpClient.get<User[]>(new URL(`/users`, this.resourceUrl).toString());
+    return this.httpClient.get<User[]>(new URL('/users', this.resourceUrl).toString());
   }
 
   getUserById(id: number): Observable<User> {

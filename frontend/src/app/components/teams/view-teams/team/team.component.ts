@@ -1,4 +1,5 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Role, User} from "../../../../models/user";
 
 class Member {
   id: number;
@@ -23,10 +24,14 @@ class Member {
   styleUrls: ['./team.component.css']
 })
 export class TeamComponent implements OnInit, OnChanges {
+  readonly Role = Role;
   @Input()
   selectedTeamId: number;
   members: Member[];
   team: Member[];
+  @Input()
+  user: User;
+  editTeam: boolean;
 
   constructor() {
     this.team = [];
@@ -61,12 +66,14 @@ export class TeamComponent implements OnInit, OnChanges {
       new Member(24, 5, "Paula", "Banister", "P.Banister@ccu.org", "Agronomy"),
       new Member(25, 5, "Hideaki", "Chen", "H.Chen@ccu.org", "Geology")
     ]
+    this.editTeam = false;
   }
 
   ngOnInit(): void { }
 
   ngOnChanges(changes: SimpleChanges) {
     this.team = this.members.filter((member) => member.teamId == this.selectedTeamId);
+    this.editTeam = false;
   }
 
 }

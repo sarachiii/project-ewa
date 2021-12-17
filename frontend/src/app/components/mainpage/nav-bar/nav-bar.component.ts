@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {WebStorageService} from "../../../services/storage/web-storage.service";
 import {UserService} from "../../../services/user.service";
-import {Role, User} from "../../../models/user";
+import {User} from "../../../models/user";
 import {Subscription} from "rxjs";
 import {NotesService} from "../../../services/notes.service";
 /**

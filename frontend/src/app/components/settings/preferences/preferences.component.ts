@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Role, User } from "../../../models/user";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import {LanguageCode, Preferences} from "../../../models/preferences";
+import {Preferences} from "../../../models/preferences";
 import {SettingsService} from "../../../services/settings.service";
 import {WebStorageService} from "../../../services/storage/web-storage.service";
 
@@ -66,7 +65,7 @@ export class PreferencesComponent implements OnInit {
           console.log(result);
           Object.assign(this.copyPrefs, result);
         }).catch(e => {
-          console.log(e);
+          console.error(e);
         }).finally(() => {
           this.prefsSaving = false;
         });
