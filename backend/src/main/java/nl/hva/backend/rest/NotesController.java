@@ -35,10 +35,10 @@ public class NotesController {
         } else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
 
-    //Delete a scooter by id from the scooters list
+    //Delete a scooter by id from the note list
     @DeleteMapping("delete/{id}")
     @ResponseBody
-    public ResponseEntity<String> deleteScooterById(@PathVariable int id) {
+    public ResponseEntity<String> deleteNoteById(@PathVariable int id) {
         if (!notesRepository.deleteNoteById(id))
             throw new ResourceNotFound("id-" + id);
         return ResponseEntity.ok().body("Note with id " + id + " was deleted.");

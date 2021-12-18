@@ -1,35 +1,50 @@
 package nl.hva.backend.models;
 
-
-import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "user")
 public class User {
-    
+
     @Id
-    @GeneratedValue
-    @Column(name = "user_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(name = "email")
     private String emailAddress;
-    @Column(name = "firstname")
+
+    @Column(name = "first_name")
     private String firstName;
-    @Column(name = "lastname")
+
+    @Column(name = "last_name")
     private String lastName;
+
     private String password;
-    @Column(name = "work_field")
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     private String specialty;
+
     @Column(name = "image_path")
     private String profilePicture;
+
     @Column(name = "team_id")
     private Long teamId;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private Preferences preferences;
+
+//    @OneToMany(mappedBy = "user")
+//    @JsonBackReference
+//    private List<Note> notes = new ArrayList<>();
 
     public enum Specialty {
         A("Agronomy"),
@@ -50,15 +65,22 @@ public class User {
         }
     }
 
+    public enum Role {
+        SUPER_ADMIN,
+        ADMIN,
+        MEMBER
+    }
+
     public User() {
     }
 
-    public User (String emailAddress, String password) {
+    public User(String emailAddress, String password) {
         this();
         this.emailAddress = emailAddress;
         this.password = password;
     }
-    public User (String emailAddress, String firstName, String lastName, String password,
+
+    public User(String emailAddress, String firstName, String lastName, String password,
                 String specialty, String profilePicture, Long teamId) {
         this();
         this.emailAddress = emailAddress;
@@ -108,6 +130,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public String getSpecialty() {
