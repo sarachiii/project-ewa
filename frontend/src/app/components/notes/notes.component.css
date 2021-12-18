@@ -1,6 +1,13 @@
 .container {
   color: black;
   flex-direction: column;
+  margin-bottom: 75px;
+}
+
+.btn {
+  border-radius: 10px;
+  height: 50px;
+  min-width: 50px;
 }
 
 .btn-success {
