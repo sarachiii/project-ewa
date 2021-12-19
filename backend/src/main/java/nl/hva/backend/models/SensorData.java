@@ -45,8 +45,15 @@ public class SensorData {
     @Transient
     private User user;
 
-    protected SensorData() {
+    public SensorData(long greenhouseId, long sensorId, double value, long userId) {
+        this.greenhouseId = greenhouseId;
+        this.sensorId = sensorId;
+        this.value = value;
+        this.userId = userId;
+    }
 
+    protected SensorData() {
+        this(0, 0, 0, 0);
     }
 
     public long getGreenhouseId() {
@@ -105,8 +112,8 @@ public class SensorData {
     }
 
     @JsonIgnore
-    public double fromHexColor(String hexColor) {
-        return Double.parseDouble(hexColor.replace("#", ""));
+    public static double fromHexColor(String hexColor) {
+        return Integer.parseInt(hexColor.replace("#", ""), 16);
     }
 
     public User getUser() {

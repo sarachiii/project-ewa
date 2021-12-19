@@ -1,5 +1,7 @@
 package nl.hva.backend.rest.exception;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDateTime;
 
 /**
@@ -22,6 +24,7 @@ public class ExceptionResponse {
         this.path = path;
     }
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     public LocalDateTime getTimestamp() {
         return timestamp;
     }
