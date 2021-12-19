@@ -24,10 +24,10 @@ import java.util.Map;
 @ControllerAdvice
 class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ResourceNotFound.class)
-    public final ResponseEntity<ExceptionResponse<String>> handleNotFoundExceptions(Exception ex, WebRequest wr){
+    public final ResponseEntity<ExceptionResponse> handleNotFoundExceptions(Exception ex, WebRequest wr){
         String path = ((ServletWebRequest)wr).getRequest().getRequestURI();
 
-        ExceptionResponse<String> exceptionResponse = new ExceptionResponse<>(
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
                 HttpStatus.NOT_FOUND.value(),
                 "Resource not found",
                 ex.getMessage(),
@@ -37,10 +37,10 @@ class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(PreConditionFailed.class)
-    public final ResponseEntity<ExceptionResponse<String>> handlePreConditionFailedException(Exception ex, WebRequest wr){
+    public final ResponseEntity<ExceptionResponse> handlePreConditionFailedException(Exception ex, WebRequest wr){
         String path = ((ServletWebRequest)wr).getRequest().getRequestURI();
 
-        ExceptionResponse<String> exceptionResponse = new ExceptionResponse<>(
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
                 HttpStatus.PRECONDITION_FAILED.value(),
                 "PreCondition failed",
                 ex.getMessage(),
@@ -50,10 +50,10 @@ class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(AlreadyExist.class)
-    public final ResponseEntity<ExceptionResponse<String>> handleUserExist(Exception ex, WebRequest wr){
+    public final ResponseEntity<ExceptionResponse> handleUserExist(Exception ex, WebRequest wr){
         String path = ((ServletWebRequest)wr).getRequest().getRequestURI();
 
-        ExceptionResponse<String> exceptionResponse = new ExceptionResponse<>(
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
                 403,
                 "Duplicate user",
                 ex.getMessage(),
@@ -63,10 +63,10 @@ class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(BadRequestException.class)
-    public final ResponseEntity<ExceptionResponse<String>> handleBadRequest(Exception ex, WebRequest wr){
+    public final ResponseEntity<ExceptionResponse> handleBadRequest(Exception ex, WebRequest wr){
         String path = ((ServletWebRequest)wr).getRequest().getRequestURI();
 
-        ExceptionResponse<String> exceptionResponse = new ExceptionResponse<>(
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
                 HttpStatus.BAD_REQUEST.value(),
                 "Bad Request",
                 ex.getMessage(),
@@ -97,7 +97,7 @@ class CustomExceptionHandler extends ResponseEntityExceptionHandler {
             e.printStackTrace();
         }
 
-        ExceptionResponse<String> exceptionResponse = new ExceptionResponse<>(
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
                 status.value(),
                 ex.getMessage(),
                 error,
