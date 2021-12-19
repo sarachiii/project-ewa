@@ -41,7 +41,7 @@ export class TeamService {
 
   // Request team members by id from backend
   getTeamById(id: number): Observable<Member[]> {
-    return this.httpClient.get<Member[]>(new URL(`/teams?id=${id}`, this.resourceUrl).toString());
+    return this.httpClient.get<Member[]>(new URL(`/teams/${id}`, this.resourceUrl).toString());
   }
 
   //save(team: Member[])

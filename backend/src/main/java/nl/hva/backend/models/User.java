@@ -1,8 +1,5 @@
 package nl.hva.backend.models;
 
-
-import com.fasterxml.jackson.annotation.JsonView;
-
 import javax.persistence.*;
 
 @Entity
@@ -30,6 +27,10 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private Preferences preferences;
+
+    @ManyToOne
+    @Transient
+    private Team team;
 
     public enum Specialty {
         A("Agronomy"),
