@@ -11,6 +11,8 @@ import { SettingsComponent } from "./components/settings/settings.component";
 import { AccountComponent } from "./components/settings/account/account.component";
 import { PreferencesComponent } from "./components/settings/preferences/preferences.component";
 import { AuthGuardService } from "./services/auth-guard.service";
+import {AdminHomeComponent} from "./components/admin-home/admin-home.component";
+import {AdminGuardGuard} from "./services/admin-guard.guard";
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -35,7 +37,8 @@ const routes: Routes = [
       { path: 'preferences', component: PreferencesComponent }
     ]
   },
-  { path: '**', component: ErrorComponent, canActivate: [AuthGuardService] }
+  { path: '**', component: ErrorComponent, canActivate: [AuthGuardService] },
+  { path:'admin', component: AdminHomeComponent, canActivate: [AdminGuardGuard]}
 ];
 
 @NgModule({
