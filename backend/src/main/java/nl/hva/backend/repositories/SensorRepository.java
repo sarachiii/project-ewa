@@ -35,8 +35,12 @@ public class SensorRepository {
         return namedQuery.getResultList();
     }
 
-    public Sensor findById(long sensorId) {
-        return entityManager.find(Sensor.class, sensorId);
+    public Sensor findById(long id) {
+        return entityManager.find(Sensor.class, id);
+    }
+
+    public SensorData findDataById(long greenhouseId, long sensorId) {
+        return entityManager.find(SensorData.class, new SensorDataPK(greenhouseId, sensorId));
     }
 
     public Sensor findByName(String name) {
@@ -53,8 +57,8 @@ public class SensorRepository {
         return entityManager.merge(sensorData);
     }
 
-    public void flush() {
-        entityManager.flush();
-    }
+    /*public List<SensorData> saveAllData(List<SensorData> sensorData) {
+
+    }*/
 }
 

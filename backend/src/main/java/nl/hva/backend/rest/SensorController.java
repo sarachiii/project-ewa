@@ -116,7 +116,7 @@ public class SensorController {
         if (view != null) return ResponseEntity.ok(sensorNode);
 
         // Convert CCU API response to match database response
-        List<Sensor> sensors = this.getAllSensors();
+        List<Sensor> sensors = this.sensorRepository.findAll();
         List<SensorData> sensorData = new ArrayList<>();
 
         for (Sensor sensor : sensors) {
@@ -131,35 +131,28 @@ public class SensorController {
     }
 
     @PostMapping("data")
-    public ResponseEntity<?> postSensorData(@RequestBody List<SensorData> sensorData) {
-        if (sensorData.size() == 0) throw new BadRequestException("Sensordata is empty");
-
-        Sensor lightingSensor = sensorRepository.findByName("lighting_rgb");
-        String color = "#000000";
+    public ResponseEntity<?> postSensorData(@RequestBody ObjectNode sensorNode) {
+        if (sensorNode == null) throw new BadRequestException("Empty body");
+        /*if (!sensorNode.has(Sensor.Name.AIR_TEMP_C.toString())
+                || !sensorNode.has(Sensor.Name.AIR_HUMIDITY.toString())
+                || !sensorNode.has(Sensor.Name.SOIL_TEMP_C.toString())
+                || !sensorNode.has(Sensor.Name.SOIL_HUMIDITY.toString())
+                || !sensorNode.has(Sensor.Name.SOIL_MIX_ID.toString())
+                || !sensorNode.has(Sensor.Name.WATER_PH.toString())
+                || !sensorNode.has(Sensor.Name.WATER_MIX_ID.toString())
+                || !sensorNode.has(Sensor.Name.LIGHTING_RGB.toString())
+                || !sensorNode.has(Sensor.Name.DAILY_EXPOSURE.toString())) {
+            throw new BadRequestException("Missing required fields");
+        }*/
 
         // Prepare JSON to post to CCU API
         MultiValueMap<String, String> sensorJson = new LinkedMultiValueMap<>();
 
-        for (SensorData sd : sensorData) {
-            Sensor sensor = sensorRepository.findById(sd.getSensorId());
-
-            if (sd.getValue() < sensor.getMinValue() || sd.getValue() > sensor.getMaxValue()) {
-                throw new BadRequestException(String.format(
-                        "Sensor %s is out of range: min: %.1f, max: %.1f",
-                        sensor.getName(), sensor.getMinValue(), sensor.getMaxValue()
-                ));
-            }
-
-            // Convert color for lighting else use double value
-            sensorJson.add(sensor.getName(), sd.getSensorId() == lightingSensor.getId() ? sd.getHexColor() : String.valueOf(sd.getValue()));
-
-            SensorData newData = sensorRepository.saveData(sd);
-            /*User user = userRepository.findUserById(newData.getUserId());
-            newData.setUser(user);*/
+        Iterator<Map.Entry<String, JsonNode>> fields = sensorNode.fields();
+        while (fields.hasNext()) {
+            Map.Entry<String, JsonNode> field = fields.next();
+            sensorJson.add(field.getKey(), field.getValue().asText());
         }
-
-        sensorJson.add("gh_id", String.valueOf(sensorData.get(0).getGreenhouseId()));
-        sensorJson.add("user_id", String.valueOf(sensorData.get(0).getUserId()));
 
         ResponseEntity<ObjectNode> response = client.post()
                 .uri(uriBuilder -> uriBuilder
@@ -177,12 +170,25 @@ public class SensorController {
 
         JsonNode errorNode = responseNode.get("errorList");
 
-        if (errorNode.isArray()) {
-            if (errorNode.size() > 1) {
-                return ResponseEntity.badRequest().body(errorNode);
+        if (!errorNode.isArray()) throw new BadRequestException("CCU API response is no longer supported");
+
+        if (errorNode.size() > 1) return ResponseEntity.badRequest().body(errorNode);
+
+        List<SensorData> sensorData = this.sensorRepository.findAllData();
+        fields = sensorNode.fields();
+        while (fields.hasNext()) {
+            Map.Entry<String, JsonNode> field = fields.next();
+            if (Sensor.Name.has(field.getKey())) {
+                sensorData.stream()
+                        .filter(sd -> sd.getSensor().getName().equals(field.getKey())).findAny()
+                        .ifPresent(sd -> {
+                            sd.setGreenhouseId(sensorNode.get("gh_id").asLong());
+                            sd.setUserId(sensorNode.get("user_id").asLong());
+                            sd.setValue(field.getKey().equals(Sensor.Name.LIGHTING_RGB.toString()) ?
+                                    SensorData.fromHexColor(field.getValue().asText()) :
+                                    field.getValue().asDouble());
+                        });
             }
-        } else {
-            throw new BadRequestException("CCU API response is no longer supported");
         }
 
         return ResponseEntity.ok(this.getSensorDataDB());
