@@ -51,19 +51,31 @@ public class SensorController {
     }
 
     @GetMapping("data/db")
-    public List<SensorData> getSensorDataDB() {
-        return sensorRepository.findAllData();
+    public List<SensorData> getSensorDataDB(@RequestParam(defaultValue = "2", required = false) String id) {
+        long ghId = 2L;
+        try {
+            ghId = Long.parseLong(id);
+        } catch (NumberFormatException e) {
+            throw new BadRequestException("Id is wrong format: needs to be number");
+        }
+        return this.sensorRepository.findByGhId(ghId);
     }
 
     @GetMapping("data/api")
-    public ResponseEntity<?> getSensorDataAPI(@RequestParam(required = false) Long id,
+    public ResponseEntity<?> getSensorDataAPI(@RequestParam(defaultValue = "2",required = false) String id,
                                               @RequestParam(required = false) String view)
             throws BadRequestException, ResourceNotFound {
         if (view != null && !view.equals("raw"))
             throw new BadRequestException(String.format("Parameter view=%s is unacceptable, accepted values: raw", view));
+        long ghId = 2L;
+        try {
+            ghId = Long.parseLong(id);
+        } catch (NumberFormatException e) {
+            throw new BadRequestException("Id is wrong format: needs to be number");
+        }
 
         MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
-        queryParams.add("gh_id", "2");
+        queryParams.add("gh_id", String.valueOf(ghId));
 
         ResponseEntity<JsonNode> response = queryCcuApi(HttpMethod.GET, queryParams);
 
@@ -139,7 +151,7 @@ public class SensorController {
             }
         }
 
-        return view == null ? ResponseEntity.ok(this.getSensorDataDB()) : this.getSensorDataAPI(2L, view);
+        return view == null ? ResponseEntity.ok(this.getSensorDataDB("2")) : this.getSensorDataAPI("2", view);
     }
 
     @PostMapping("add")

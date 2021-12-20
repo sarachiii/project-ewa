@@ -30,6 +30,12 @@ public class SensorRepository {
         return namedQuery.getResultList();
     }
 
+    public List<SensorData> findByGhId(long id) {
+        TypedQuery<SensorData> namedQuery = entityManager.createNamedQuery("SensorData.findByGhId", SensorData.class);
+        namedQuery.setParameter("ghId", id);
+        return namedQuery.getResultList();
+    }
+
     public List<SensorData> findAllData() {
         TypedQuery<SensorData> namedQuery = entityManager.createNamedQuery("SensorData.findAll", SensorData.class);
         return namedQuery.getResultList();

@@ -31,22 +31,23 @@
     </div>
   </div>
   <!--Sensors Modules-->
-  <div id="sensors" class="row justify-content-center py-3 align-div-middle col-xl-10 p-0">
-    <div *ngFor="let sensor of sensors" [id]="sensor.nameCamelCase" class="card shadow align-items-center p-3 m-2">
-      <strong class="text-center fs-5">{{sensor.name}}</strong>
-      <div>
-        <img class="flex-grow-1 py-3" [src]="sensor.imagePath" [alt]="sensor.name">
-        <h2 class="float-end">17.8 C</h2>
+  <div id="sensors" class="row justify-content-center py-3 mx-auto col-xl-10 p-0">
+    <div *ngFor="let sensor of sensors" [id]="sensor.nameHyphenated" class="card shadow align-items-center p-3 m-2">
+      <strong class="text-center fs-5">{{sensor.sensorName}}</strong>
+      <div class="d-flex flex-grow-1">
+        <img class="py-3" [src]="sensor.imagePath" [alt]="sensor.name">
+        <h3 class="float-end my-auto ps-1">{{sensor.currentValue || "no value"}}</h3>
       </div>
       <div class="input-group">
-        <ng-container *ngIf="sensor.type=='text' else elseBlock">
+        <ng-container *ngIf="sensor.sensorName != factor.LIGHTING_RGB else elseBlock">
           <button class="btn btn-primary py-1 fw-bold" type="button" (click)="decrementValue(sensor)">-</button>
-          <input type="text" class="form-control text-center" placeholder="value" [(ngModel)]="sensor.value">
+          <input type="text" class="form-control text-center" placeholder="value" [(ngModel)]="sensor.desiredValue">
           <button class="btn btn-primary py-1 fw-bold" type="button" (click)="incrementValue(sensor)">+</button>
         </ng-container>
         <ng-template #elseBlock>
           <div class="form-control overflow-hidden p-0 position-relative">
-            <input class="position-absolute start-50 top-50 translate-middle" type="color" [(ngModel)]="sensor.value">
+            <input class="position-absolute start-50 top-50 translate-middle" type="color"
+                   [(ngModel)]="sensor.desiredValue">
           </div>
         </ng-template>
       </div>

@@ -15,7 +15,10 @@ import javax.persistence.*;
 @Entity
 @BatchSize(size = 10)
 @IdClass(SensorDataPK.class)
-@NamedQuery(name = "SensorData.findAll", query = "SELECT sd FROM SensorData sd")
+@NamedQueries({
+        @NamedQuery(name = "SensorData.findAll", query = "SELECT sd FROM SensorData sd"),
+        @NamedQuery(name = "SensorData.findByGhId", query = "SELECT sd FROM SensorData sd WHERE sd.greenhouseId = :ghId")
+})
 public class SensorData {
 
     @Id
