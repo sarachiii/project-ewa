@@ -45,9 +45,6 @@ public class SensorController {
     @Qualifier("ccuApiClient")
     private WebClient client;
 
-    @Autowired
-    private WebConfig webConfig;
-
     @GetMapping()
     public List<Sensor> getAllSensors() {
         return sensorRepository.findAll();
@@ -60,60 +57,25 @@ public class SensorController {
 
     @GetMapping("data/api")
     public ResponseEntity<?> getSensorDataAPI(@RequestParam(required = false) Long id,
-                                              @RequestParam(required = false) String view) {
-        if (view != null && !view.equals("raw")) {
+                                              @RequestParam(required = false) String view)
+            throws BadRequestException, ResourceNotFound {
+        if (view != null && !view.equals("raw"))
             throw new BadRequestException(String.format("Parameter view=%s is unacceptable, accepted values: raw", view));
-        }
-        /*RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
-        HttpEntity<?> httpEntity = new HttpEntity<>(headers);
 
-        String url = UriComponentsBuilder.fromHttpUrl(webConfig.getCcuApiUrl())
-                .queryParam("gh_id", 2)
-                .encode().toUriString();
+        MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
+        queryParams.add("gh_id", "2");
 
-        HttpEntity<String> response = restTemplate.exchange(
-                url,
-                HttpMethod.GET,
-                httpEntity,
-                String.class
-        );
+        ResponseEntity<JsonNode> response = queryCcuApi(HttpMethod.GET, queryParams);
 
-        return ResponseEntity.ok(response.getBody());*/
+        if (response.getStatusCode().equals(HttpStatus.BAD_REQUEST)) return response;
 
-        // Get the greenhouse sensor data from the API
-        ResponseEntity<ObjectNode> response = client.get()
-                .uri(uriBuilder -> uriBuilder
-                        .queryParam("gh_id", 2)
-                        .build())
-                .retrieve()
-                .toEntity(ObjectNode.class)
-                .block();
-
-        // If no response send error msg
-        if (response == null) throw new ResourceNotFound("Could not connect to CCU API");
-
-        ObjectNode responseNode = response.getBody();
-
-        // If response hasn't a body send error msg
-        if (responseNode == null) throw new ResourceNotFound("Empty response from CCU API");
-
-        JsonNode errorNode = responseNode.get("errorList");
-
-        // If there are errors return errors
-        if (errorNode.isArray()) {
-            if (errorNode.size() > 1) {
-                return ResponseEntity.badRequest().body(errorNode.asText());
-            }
-        } else {
-            throw new BadRequestException("CCU API response is no longer supported");
-        }
-
-        JsonNode sensorNode = responseNode.get("sensorInfoList").get(0);
+        if (response.getBody() == null) throw new ResourceNotFound("Sensor list is empty");
 
         // If raw view is requested return CCU API response
-        if (view != null) return ResponseEntity.ok(sensorNode);
+        if (view != null) return response;
+
+        // Unwrap body to reach sensorNode
+        JsonNode sensorNode = response.getBody();
 
         // Convert CCU API response to match database response
         List<Sensor> sensors = this.sensorRepository.findAll();
@@ -131,48 +93,24 @@ public class SensorController {
     }
 
     @PostMapping("data")
-    public ResponseEntity<?> postSensorData(@RequestBody ObjectNode sensorNode) {
+    public ResponseEntity<?> postSensorData(@RequestBody ObjectNode sensorNode,
+                                            @RequestParam(required = false) String view) throws ResourceNotFound, BadRequestException{
         if (sensorNode == null) throw new BadRequestException("Empty body");
-        /*if (!sensorNode.has(Sensor.Name.AIR_TEMP_C.toString())
-                || !sensorNode.has(Sensor.Name.AIR_HUMIDITY.toString())
-                || !sensorNode.has(Sensor.Name.SOIL_TEMP_C.toString())
-                || !sensorNode.has(Sensor.Name.SOIL_HUMIDITY.toString())
-                || !sensorNode.has(Sensor.Name.SOIL_MIX_ID.toString())
-                || !sensorNode.has(Sensor.Name.WATER_PH.toString())
-                || !sensorNode.has(Sensor.Name.WATER_MIX_ID.toString())
-                || !sensorNode.has(Sensor.Name.LIGHTING_RGB.toString())
-                || !sensorNode.has(Sensor.Name.DAILY_EXPOSURE.toString())) {
-            throw new BadRequestException("Missing required fields");
-        }*/
+        if (view != null && !view.equals("raw"))
+            throw new BadRequestException(String.format("Parameter view=%s is unacceptable, accepted values: raw", view));
 
         // Prepare JSON to post to CCU API
-        MultiValueMap<String, String> sensorJson = new LinkedMultiValueMap<>();
+        MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
 
         Iterator<Map.Entry<String, JsonNode>> fields = sensorNode.fields();
         while (fields.hasNext()) {
             Map.Entry<String, JsonNode> field = fields.next();
-            sensorJson.add(field.getKey(), field.getValue().asText());
+            queryParams.add(field.getKey(), field.getValue().asText());
         }
 
-        ResponseEntity<ObjectNode> response = client.post()
-                .uri(uriBuilder -> uriBuilder
-                        .queryParams(sensorJson)
-                        .build())
-                .retrieve()
-                .toEntity(ObjectNode.class)
-                .block();
+        ResponseEntity<JsonNode> response = queryCcuApi(HttpMethod.POST, queryParams);
 
-        if (response == null) throw new ResourceNotFound("Could not connect to CCU API");
-
-        ObjectNode responseNode = response.getBody();
-
-        if (responseNode == null) throw new ResourceNotFound("Empty response from CCU API");
-
-        JsonNode errorNode = responseNode.get("errorList");
-
-        if (!errorNode.isArray()) throw new BadRequestException("CCU API response is no longer supported");
-
-        if (errorNode.size() > 1) return ResponseEntity.badRequest().body(errorNode);
+        if (response.getStatusCode().equals(HttpStatus.BAD_REQUEST)) return response;
 
         List<SensorData> sensorData = this.sensorRepository.findAllData();
         fields = sensorNode.fields();
@@ -184,6 +122,16 @@ public class SensorController {
                         .ifPresent(sd -> {
                             sd.setGreenhouseId(sensorNode.get("gh_id").asLong());
                             sd.setUserId(sensorNode.get("user_id").asLong());
+                            /*double value;
+                            if (field.getKey().equals(Sensor.Name.LIGHTING_RGB.toString())) {
+                                try {
+                                    value = SensorData.fromHexColor(sensorNode.get(field.getKey()).asText());
+                                } catch (NumberFormatException | IndexOutOfBoundsException e) {
+                                    throw new BadRequestException(String.format("Sensor %s has malformed input value: %s", field.getKey(), field.getValue()));
+                                }
+                            } else {
+                                value = sensorNode.get(field.getKey()).asDouble();
+                            }*/
                             sd.setValue(field.getKey().equals(Sensor.Name.LIGHTING_RGB.toString()) ?
                                     SensorData.fromHexColor(field.getValue().asText()) :
                                     field.getValue().asDouble());
@@ -191,13 +139,59 @@ public class SensorController {
             }
         }
 
-        return ResponseEntity.ok(this.getSensorDataDB());
+        return view == null ? ResponseEntity.ok(this.getSensorDataDB()) : this.getSensorDataAPI(2L, view);
     }
 
     @PostMapping("add")
     public ResponseEntity<Sensor> saveSensor(@RequestBody Sensor sensor){
         Sensor savedSensor = sensorRepository.save(sensor);
         return ResponseEntity.ok().body(savedSensor);
+    }
+
+    /* HELPER METHODS */
+
+    /**
+     * Queries an API using query parameters
+     *
+     * @param wc the webclient
+     * @param m the method
+     * @param qp query params
+     * @return ObjectNode
+     */
+    public ResponseEntity<ObjectNode> queryClient(WebClient wc, HttpMethod m, MultiValueMap<String, String> qp) {
+        return wc.method(m)
+                .uri(uriBuilder -> uriBuilder
+                        .queryParams(qp)
+                        .build())
+                .retrieve()
+                .toEntity(ObjectNode.class)
+                .block();
+    }
+
+    public ResponseEntity<JsonNode> queryCcuApi(HttpMethod m, MultiValueMap<String, String> qp)
+            throws ResourceNotFound {
+
+        // Query the greenhouse from the API for sensor data
+        ResponseEntity<ObjectNode> response = queryClient(client,  m, qp);
+
+        // If no response send error msg
+        if (response == null) throw new ResourceNotFound("Could not connect to CCU API");
+
+        ObjectNode responseNode = response.getBody();
+
+        // If response hasn't a body send error msg
+        if (responseNode == null) throw new ResourceNotFound("Empty response from CCU API");
+
+        JsonNode errorNode = responseNode.get("errorList");
+
+        // If errorList is not an array or sensorInfoList doesn't exist
+        if (!errorNode.isArray() || !responseNode.has("sensorInfoList"))
+            throw new BadRequestException("CCU API response is no longer supported");
+
+        // If there are errors return errors
+        if (errorNode.size() >= 1) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorNode);
+
+        return ResponseEntity.ok(responseNode.get("sensorInfoList").get(0));
     }
 
 }

@@ -39,8 +39,7 @@ public class SensorData {
     @Column(name = "user_id")
     private long userId;
 
-    @ManyToOne(targetEntity = User.class)
-//    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    @ManyToOne
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @Transient
     private User user;
@@ -112,8 +111,8 @@ public class SensorData {
     }
 
     @JsonIgnore
-    public static double fromHexColor(String hexColor) {
-        return Integer.parseInt(hexColor.replace("#", ""), 16);
+    public static double fromHexColor(String hexColor) throws NumberFormatException, IndexOutOfBoundsException {
+        return Integer.parseInt(hexColor.substring(1, 7), 16);
     }
 
     public User getUser() {
