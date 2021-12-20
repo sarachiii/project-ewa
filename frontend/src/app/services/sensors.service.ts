@@ -1,10 +1,17 @@
-import { Injectable } from '@angular/core';
+import {Injectable, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
+import {Sensor} from "../models/sensor";
+import {Observable} from "rxjs";
+
 
 @Injectable()
-export class SensorsService {
+export class SensorsService{
 
-  constructor(protected http: HttpClient) { }
+  private sensorUrl: String;
+
+  constructor(protected http: HttpClient) {
+    this.sensorUrl = 'http://localhost:8080/sensors';
+  }
 
   postSensorData(postData: any ){
     //This method sends a Http request
