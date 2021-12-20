@@ -18,21 +18,26 @@
             </div>
           </div>
           <div class="col">
-            <button (click)="onSuccess('Data saved successfully')" class="btn btn-primary fw-bold" type="button" id="submit">SUBMIT </button>
+            <button (click)="onSuccess('Data saved successfully')" class="btn btn-primary fw-bold" type="button"
+                    id="submit">SUBMIT
+            </button>
           </div>
           <simple-notifications></simple-notifications>
-<!--          <div class="col">-->
-<!--            <button (click)="onCreatePost('test')" class="btn btn-primary fw-bold" type="button" id="submit">SUBMIT </button>-->
-<!--          </div>-->
+          <!--          <div class="col">-->
+          <!--            <button (click)="onCreatePost('test')" class="btn btn-primary fw-bold" type="button" id="submit">SUBMIT </button>-->
+          <!--          </div>-->
         </div>
       </div>
-      </div>
+    </div>
   </div>
   <!--Sensors Modules-->
-  <div id="sensors" class="row justify-content-center py-3">
+  <div id="sensors" class="row justify-content-center py-3 align-div-middle col-xl-10 p-0">
     <div *ngFor="let sensor of sensors" [id]="sensor.nameCamelCase" class="card shadow align-items-center p-3 m-2">
       <strong class="text-center fs-5">{{sensor.name}}</strong>
-      <img class="flex-grow-1 py-3" [src]="sensor.imagePath" [alt]="sensor.name">
+      <div>
+        <img class="flex-grow-1 py-3" [src]="sensor.imagePath" [alt]="sensor.name">
+        <h2 class="float-end">17.8 C</h2>
+      </div>
       <div class="input-group">
         <ng-container *ngIf="sensor.type=='text' else elseBlock">
           <button class="btn btn-primary py-1 fw-bold" type="button" (click)="decrementValue(sensor)">-</button>
