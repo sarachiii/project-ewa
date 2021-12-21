@@ -1,35 +1,47 @@
 package nl.hva.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
-@Table(name = "user")
 public class User {
-    
+
     @Id
-    @GeneratedValue
-    @Column(name = "user_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "email")
-    private String emailAddress;
-    @Column(name = "firstname")
-    private String firstName;
-    @Column(name = "lastname")
-    private String lastName;
-    private String password;
-    @Column(name = "work_field")
-    private String specialty;
-    @Column(name = "image_path")
-    private String profilePicture;
+
     @Column(name = "team_id")
     private Long teamId;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @Column(name = "email")
+    private String emailAddress;
+
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
+
+    @JsonIgnore
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    private String specialty;
+
+    @Column(name = "image_path")
+    private String profilePicture;
+
+    @OneToOne(targetEntity = Preferences.class, mappedBy = "user", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private Preferences preferences;
 
-    @ManyToOne
-    @Transient
+    @ManyToOne(targetEntity = Team.class)
+    @JsonBackReference
+    @JoinColumn(name = "team_id", insertable = false, updatable = false)
     private Team team;
 
     public enum Specialty {
@@ -51,6 +63,12 @@ public class User {
         }
     }
 
+    public enum Role {
+        SUPER_ADMIN,
+        ADMIN,
+        MEMBER
+    }
+
     public User() {
     }
 
@@ -60,7 +78,7 @@ public class User {
         this.password = password;
     }
     public User (String emailAddress, String firstName, String lastName, String password,
-                String specialty, String profilePicture, Long teamId) {
+                 String specialty, String profilePicture, Long teamId) {
         this();
         this.emailAddress = emailAddress;
         this.firstName = firstName;
@@ -109,6 +127,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public String getSpecialty() {

@@ -4,6 +4,7 @@ import {Subscription} from "rxjs";
 import {TeamService} from "../../../services/team.service";
 import {UserService} from "../../../services/user.service";
 import {Role, User} from "../../../models/user";
+import {Team} from "../../../models/team";
 
 @Component({
   selector: 'app-view-teams',
@@ -17,7 +18,7 @@ export class ViewTeamsComponent implements OnInit, OnDestroy {
   protected paramsSubscription: Subscription | null;
   user: User;
   // Mocking teams ids
-  teams = [{id: 1}, {id: 2}, {id: 3}, {id: 4}, {id: 5}]
+  teams: Team[] = [];
 
   constructor(private router: Router,
               private activatedRoute: ActivatedRoute,
@@ -58,7 +59,7 @@ export class ViewTeamsComponent implements OnInit, OnDestroy {
     }).catch(console.error)
   }
 
-  addNewTeam(): void {
-    this.teams.push({id: this.teams.length+1})
-  }
+  // addNewTeam(): void {
+  //   this.teams.push({id: this.teams.length+1})
+  // }
 }

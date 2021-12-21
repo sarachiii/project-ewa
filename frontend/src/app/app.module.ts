@@ -26,7 +26,7 @@ import { SimpleNotificationsModule } from "angular2-notifications";
 import { EditNotesComponent } from './components/edit-notes/edit-notes.component';
 import { TeamsComponent } from './components/teams/teams.component';
 import { ViewTeamsComponent } from './components/teams/view-teams/view-teams.component';
-import { TeamComponent } from './components/teams/view-teams/team/team.component';
+import { MembersComponent } from './components/teams/view-teams/members/members.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +46,7 @@ import { TeamComponent } from './components/teams/view-teams/team/team.component
     EditNotesComponent,
     TeamsComponent,
     ViewTeamsComponent,
-    TeamComponent
+    MembersComponent
   ],
   imports: [
     BrowserModule,

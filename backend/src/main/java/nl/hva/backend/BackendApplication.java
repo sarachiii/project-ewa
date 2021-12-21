@@ -1,6 +1,6 @@
 package nl.hva.backend;
 
-import nl.hva.backend.repositories.NotesRepository;
+//import nl.hva.backend.repositories.NotesRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +11,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class BackendApplication implements CommandLineRunner {
 
-    @Autowired
-    NotesRepository repository;
+//    @Autowired
+//    NotesRepository repository;
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -22,8 +22,8 @@ public class BackendApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        /**FIND ALL NOTES*/
-        logger.info("all notes -> {}", repository.findAll());
+//        /**FIND ALL NOTES*/
+//        logger.info("all notes -> {}", repository.findAll());
 
         /**INSERTING OR UPDATING A NOTE*/
 //        LocalDateTime ldt = LocalDateTime.now();

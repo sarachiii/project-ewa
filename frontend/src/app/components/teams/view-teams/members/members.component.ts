@@ -20,10 +20,10 @@ class Member {
 
 @Component({
   selector: 'app-team',
-  templateUrl: './team.component.html',
-  styleUrls: ['./team.component.css']
+  templateUrl: './members.component.html',
+  styleUrls: ['./members.component.css']
 })
-export class TeamComponent implements OnInit, OnChanges {
+export class MembersComponent implements OnInit, OnChanges {
   readonly Role = Role;
   @Input()
   selectedTeamId: number;

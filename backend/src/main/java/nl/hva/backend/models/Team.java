@@ -14,7 +14,7 @@ public class Team {
     @Column(name = "gh_id")
     private Long ghId;
 
-    @OneToMany(mappedBy = "team")
+    @OneToMany(mappedBy = "team", targetEntity = User.class)
     private List<User> users = new ArrayList<>();
 
     public Team(Long ghId) {
@@ -29,8 +29,15 @@ public class Team {
         this.id = id;
     }
 
-    @Id
     public Long getId() {
         return id;
+    }
+
+    public Long getGhId() {
+        return ghId;
+    }
+
+    public void setGhId(Long ghId) {
+        this.ghId = ghId;
     }
 }
