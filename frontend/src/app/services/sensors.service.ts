@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
-import {Observable} from "rxjs";
+import {Observable, of} from "rxjs";
 import {Factor, Sensor} from "../models/sensor";
+import {map, shareReplay} from "rxjs/operators";
 
 @Injectable()
 export class SensorsService {
@@ -14,7 +15,7 @@ export class SensorsService {
     this.sensors = [];
 
     this.getSensors().then((value) => {
-      this.sensors.push(...value.map(sensor => Object.assign(new Sensor(), sensor)));
+      this.sensors.push(...value);
       this.getDesiredValues().toPromise().then((sensorData: any[]) => {
         for (let sd of sensorData) {
           let sensor: Sensor = this.sensors.find(sensor => sensor.id == sd["sensorId"]);
@@ -52,6 +53,9 @@ export class SensorsService {
   }
 
   getSensors(): Promise<Sensor[]> {
-    return this.http.get<Sensor[]>(new URL('sensors', this.resourceUrl).toString()).toPromise();
+    return this.http.get<Sensor[]>(new URL('sensors', this.resourceUrl).toString()).pipe(
+      map(sensors => sensors.map(sensor => Object.assign(new Sensor(), sensor))),
+      shareReplay(1)
+    ).toPromise();
   }
 }

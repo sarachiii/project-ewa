@@ -31,8 +31,8 @@ export class Sensor {
   // currentValue: any;
   // valueType: ValueType;
   // numberRange: Array<number>;
-  readonly name: string;
   readonly id: number;
+  readonly name: string;
   readonly minValue: number;
   readonly maxValue: number;
   readonly minWarningValue: number;
@@ -75,9 +75,9 @@ export class Sensor {
     return this.name.toLowerCase().replace(/_/g, '-');
   }
 
-  /*get nameCamelCase(): string {
-    return this.name.replace(/(?<=_)(.)/g, '$1').replace(/^./, this.name[0].toLowerCase());
-  }*/
+  get nameCamelCase(): string {
+    return this.name.replace(/(_(.))/g, (m, p1, p2) => p2.toUpperCase());
+  }
 
   get desiredValue(): number | string {
     return this._desiredValue || this.minValue;
