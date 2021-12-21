@@ -29,7 +29,7 @@
         <div id="profilePicture" formGroupName="pictureForm">
           <div class="image d-inline-block rounded-circle me-2 pe-auto">
             <img class="rounded-circle object-fit-cover w-100 h-100" [src]="url.value || copyUser.profilePicture || 'assets/images/default_avatar.svg'"
-                 alt="Profile picture" data-bs-toggle="modal" data-bs-target="#profilePictureModal">
+                 (error)="handleImageError($event)" alt="Profile picture" data-bs-toggle="modal" data-bs-target="#profilePictureModal">
           </div>
           <button type="button" class="btn btn-primary fw-bold ms-2" data-bs-toggle="modal"
                   data-bs-target="#profilePictureModal">
@@ -47,7 +47,7 @@
                 <div class="modal-body">
                   <div class="mb-3">
                     <div class="image rounded-circle d-block mx-auto">
-                      <img class="rounded-circle object-fit-cover w-100 h-100" [src]="file.value || url.value || copyUser.profilePicture || 'assets/images/default_avatar.svg'" alt="Profile picture">
+                      <img class="rounded-circle object-fit-cover w-100 h-100" [src]="file.value || url.value || copyUser.profilePicture || 'assets/images/default_avatar.svg'" (error)="handleImageError($event)" alt="Profile picture">
                     </div>
                   </div>
                   <!--<div class="mb-3">

@@ -6,7 +6,7 @@ import {BehaviorSubject, Subject} from "rxjs";
  *
  * @author Sarah Chrzanowska-Buth & Nazlıcan Eren
  */
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse, HttpEvent} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {Note} from "../models/note";
 import {Observable, throwError} from "rxjs";
@@ -66,6 +66,11 @@ export class NotesService {
   restPostNote(note): Observable<Note> {
     return this.http.post<Note>(this.resourceUrl + "/add", note);
   }
+
+  deleteNote(noteId): void {
+    this.http.delete<Note>(`${this.resourceUrl}/delete/${noteId}`).subscribe();
+  }
+
 
   updateVisitedPage(visited: boolean) { //  This method sets the boolean for if the notes page was visited by the user or not
     this.visitedPage.next(visited);

@@ -1,0 +1,27 @@
+<div class="container py-3 py-lg-5 fade-in">
+  <div class="card shadow p-3">
+    <div class="container">
+      <div class="row">
+        <h1 class="fw-bold">Teams</h1>
+        <hr class="my-2 opacity-100">
+      </div>
+      <div class="row">
+        <div class="col-lg-4 d-lg-flex pe-lg-0">
+          <div class="d-flex d-lg-block w-100">
+            <a class="btn btn-outline-primary fw-bold align-items-stretch d-flex w-100 me-2 me-lg-0 my-3 py-2 justify-content-xs-center" routerLink="view" routerLinkActive="active">
+              <img class="me-2 me-xs-0 green-filter" src="assets/teams/teams_icon_green.svg" alt="View teams"><span class="d-none d-xs-inline">View teams</span>
+            </a>
+            <a class="btn btn-outline-primary fw-bold align-items-stretch d-flex w-100 my-3 py-2 justify-content-xs-center" routerLink="add-user" routerLinkActive="active">
+              <img class="me-2 me-xs-0 green-filter" src="assets/teams/add_user_icon_green.svg" alt="Add new user"><span class="d-none d-xs-inline">Add user</span>
+            </a>
+          </div>
+          <div class="vr mx-3 my-2 opacity-100 d-none d-lg-flex"></div>
+          <hr class="d-flex d-lg-none mt-1 mb-2 opacity-100">
+        </div>
+        <div class="col-lg-8 ps-lg-0 position-relative">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,31 @@
+<div class="container px-0">
+  <div class="row">
+    <div class="col-lg-6 d-lg-flex pe-lg-0">
+      <div class="list-group my-3 w-100 d-none d-lg-flex">
+        <a *ngFor="let team of teams" type="button" class="list-group-item list-group-item-action"
+           (click)="onSelect(team.id)" [ngClass]="{'active': selectedTeamId == team.id}">Team {{team.id}}</a>
+      </div>
+      <div class="dropdown d-lg-none">
+        <button class="btn btn-primary dropdown-toggle d-flex align-items-center py-2 mt-2 mb-3 w-100 fw-bold text-start" type="button" id="teamsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+          {{selectedTeamId > -1 ? "Team " + selectedTeamId : "Choose a team"}}
+        </button>
+        <ul class="dropdown-menu w-100" aria-labelledby="teamsDropdown">
+          <li *ngFor="let team of teams">
+            <a class="dropdown-item" type="button" (click)="onSelect(team.id)"
+            [ngClass]="{'active': selectedTeamId == team.id}">Team {{team.id}}</a>
+          </li>
+        </ul>
+      </div>
+      <div class="vr mx-3 my-2 opacity-100 d-none d-lg-flex"></div>
+      <hr *ngIf="selectedTeamId > -1" class="d-flex d-lg-none mt-1 mb-2 opacity-100">
+    </div>
+    <div class="col-lg-6 ps-lg-0">
+      <ng-template #noTeam>
+        <div class="d-none d-lg-block my-3">Choose a team</div>
+      </ng-template>
+      <ng-container *ngIf="selectedTeamId > -1 else noTeam">
+        <app-team [selectedTeamId]="selectedTeamId"></app-team>
+      </ng-container>
+    </div>
+  </div>
+</div>
