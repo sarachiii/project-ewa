@@ -12,9 +12,6 @@
           <div class="co2-levels py-1">
             <div class="input-group">
               <span class="form-control text-center fs-5"><strong>{{co2level}}</strong></span>
-              <!--              <button class="btn btn-primary py-1" type="button" id="sync">-->
-              <!--                <img class="white-filter" src="../../../../assets/sync_white_24dp.svg" alt="Synchronise">-->
-              <!--              </button>-->
             </div>
           </div>
           <div class="col">
@@ -23,9 +20,6 @@
             </button>
           </div>
           <simple-notifications></simple-notifications>
-          <!--          <div class="col">-->
-          <!--            <button (click)="onCreatePost('test')" class="btn btn-primary fw-bold" type="button" id="submit">SUBMIT </button>-->
-          <!--          </div>-->
         </div>
       </div>
     </div>
@@ -57,8 +51,7 @@
         <ng-template #colorField>
           <div class="form-control overflow-hidden p-0 position-relative">
             <input [formControlName]="sensor.nameCamelCase" class="position-absolute start-50 top-50 translate-middle"
-                   type="color"
-                   [(ngModel)]="sensor.desiredValue">
+                   type="color" [(ngModel)]="sensor.desiredValue">
           </div>
         </ng-template>
       </div>

@@ -57,33 +57,12 @@ export class SensorComponent implements OnInit {
       }
     });
 
-    /*this.sensorsService.getSensors().then(sensors => {
-      this.sensorForm = this.fb.group(sensors.reduce((group, sensor) => {
-        console.log(group)
-        console.log(sensor.nameCamelCase)
-        group[sensor.nameCamelCase] = [''];
-        return group
-      }, {}));
-    });*/
-
     this.sensorsData = new Map();
     for (const sensor of this.sensors) {
       this.sensorsData.set(sensor.name, sensor)
     }
     this.sensors = this.sensorsService.findAll();
 
-    /*this.sensorsService.findAll()
-      .pipe(tap(x => console.log(x+"eeeeeeeeeeeeeeeeeeeeeeeee")),
-        first(sensors => sensors.length != 0))
-      .subscribe(sensors => {
-        this.sensors = sensors;
-        this.sensorForm = this.fb.group(this.sensors.reduce((group, sensor) => {
-          console.log(group)
-          console.log(sensor.nameCamelCase)
-          group[sensor.nameCamelCase] = [''];
-          return group
-        }, {}));
-      });*/
     console.log(this.sensorsData);
     this.sensorsService.getDesiredValues("2").subscribe(value => {
       console.log("", value)
@@ -114,7 +93,7 @@ export class SensorComponent implements OnInit {
       showProgressBar: true
     });
     let postData = {
-      "gh_id": 2, //TODO, change to user gh?
+      "gh_id": 2, //TODO, change to user gh...............
       "user_id": this.user.id,
       ...this.sensors.reduce((sensorsData, sensor) => {
         sensorsData[sensor.name] = sensor.desiredValue;

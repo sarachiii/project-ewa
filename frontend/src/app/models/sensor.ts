@@ -26,11 +26,7 @@ export enum Unit {
   PERCENTAGE = "%"
 }
 
-
 export class Sensor {
-  // currentValue: any;
-  // valueType: ValueType;
-  // numberRange: Array<number>;
   readonly id: number;
   readonly name: string;
   readonly minValue: number;
