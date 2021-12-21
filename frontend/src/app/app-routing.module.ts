@@ -18,7 +18,7 @@ const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent, canActivate: [AuthGuardService] },
   { path: 'login', component: LoginComponent, canActivate: [AuthGuardService] },
-  { path: 'sensors', component: SensorComponent, canActivate: [AuthGuardService] },
+  { path: 'sensors', component: SensorComponent, canActivate: [AdminGuardGuard] },
   { path: 'notes', component: NotesNavbarComponent, canActivate: [AuthGuardService], canActivateChild: [AuthGuardService],
     children: [
       {
