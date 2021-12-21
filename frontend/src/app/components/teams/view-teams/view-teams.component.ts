@@ -17,7 +17,6 @@ export class ViewTeamsComponent implements OnInit, OnDestroy {
   private _selectedTeamId: number;
   protected paramsSubscription: Subscription | null;
   user: User;
-  // Mocking teams ids
   teams: Team[] = [];
 
   constructor(private router: Router,
@@ -27,8 +26,9 @@ export class ViewTeamsComponent implements OnInit, OnDestroy {
     this.paramsSubscription = null;
     this.userService.loggedUser$.subscribe(value => {
       this.user = value;
+      this.onSelect(this.user.teamId);
     })
-    // if (this.teamService.findAll().length) this.teams = this.teamService.findAll();
+    this.teams = this.teamService.findAll();
   }
 
   get selectedTeamId(): number {
@@ -55,11 +55,11 @@ export class ViewTeamsComponent implements OnInit, OnDestroy {
   onSelect(id: number) {
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
-      queryParams: { team: id }
+      queryParams: {team: id}
     }).catch(console.error)
   }
 
-  // addNewTeam(): void {
-  //   this.teams.push({id: this.teams.length+1})
-  // }
+  addNewTeam(): void {
+    return null;
+  }
 }
