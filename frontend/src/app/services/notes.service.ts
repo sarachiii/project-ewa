@@ -13,6 +13,8 @@ import {Observable, throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
 import {DatePipe} from "@angular/common";
 import {User} from "../models/user";
+import {ObjectAssignBuiltinFn} from "@angular/compiler-cli/src/ngtsc/partial_evaluator/src/builtin";
+import {PostNote} from "../models/postNote";
 
 @Injectable({
   providedIn: 'root'
@@ -57,8 +59,8 @@ export class NotesService {
     return throwError('Something bad happened; please try again later.');
   }
 
-  addNote(note: Note) {
-    this.restPostNote(note).toPromise().then(() => {
+  addNote(note: Note, postNote: PostNote) {
+    this.restPostNote(postNote).toPromise().then(() => {
       this.notes.push(Note.copyConstructor(note));
       console.log(this.notes)
     });

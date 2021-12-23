@@ -20,16 +20,6 @@ export class Note {
     this.noteText = noteText;
   }
 
-  // constructor(noteId: number, userId: number, workfield: string, timestamp: Date, title: string, noteText: string, username: string) {
-  //   this.noteId = noteId;
-  //   this.userId = userId;
-  //   this.workfield = workfield;
-  //   this.timestamp = timestamp;
-  //   this.title = title;
-  //   this.noteText = noteText;
-  //   this.username = username;
-  // }
-
   convertedDate(locale: string = 'en-GB'): string {
     let options: Intl.DateTimeFormatOptions = {
       day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: 'numeric'

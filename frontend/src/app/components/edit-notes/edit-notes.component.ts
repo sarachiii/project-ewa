@@ -6,6 +6,7 @@ import {WebStorageService} from "../../services/storage/web-storage.service";
 import {UserService} from "../../services/user.service";
 import {User} from "../../models/user";
 import {Subscription} from "rxjs";
+import {PostNote} from "../../models/postNote";
 
 @Component({
   selector: 'app-edit-notes',
@@ -58,7 +59,9 @@ export class EditNotesComponent implements OnInit {
       this.unselectedEvent.emit(true);
       return;
     }
-    this.notesService.addNote(new Note(this.note.noteId, this.note.user, this.note.timestamp, title, text));
+    var note = new Note(this.note.noteId, this.note.user, this.note.timestamp, title, text);
+    var postNote = new PostNote(this.note.noteId, this.note.user.id, this.note.timestamp, title, text);
+    this.notesService.addNote(note, postNote);
     this.unselectedEvent.emit(true);
     window.location.reload();
   }
