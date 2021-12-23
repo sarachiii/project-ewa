@@ -16,7 +16,7 @@ import {User} from "../../../models/user";
   providers: [SensorsService]
 })
 export class SensorComponent implements OnInit {
-
+  showSubmit = true;
   factor = Factor;
   sensorsData: any;
   alert: boolean = false
@@ -86,8 +86,9 @@ export class SensorComponent implements OnInit {
 
   onSuccess(message) {
     console.log(this.sensorForm.value)
+    this.showSubmit = false
     this.service.success("Success", message, {
-      position: ['bottom', 'left'],
+      // position: ["top", "left"],
       timeOut: 4000,
       animate: 'fade',
       showProgressBar: true
@@ -100,10 +101,11 @@ export class SensorComponent implements OnInit {
         return sensorsData
       }, {})
     }
+    setTimeout(() => {
+      this.showSubmit = true
+    }, 5000);
     console.log(postData);
-
-    this.sensorsService.postSensorData(postData)
-      .subscribe(responseData => console.log(responseData))
+    this.sensorsService.postSensorData(postData).subscribe(responseData => console.log(responseData))
   }
 
   ngOnInit(): void {
@@ -133,3 +135,4 @@ export class SensorComponent implements OnInit {
     this.alert = true
   }
 }
+

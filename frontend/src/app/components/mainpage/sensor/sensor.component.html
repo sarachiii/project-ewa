@@ -1,25 +1,19 @@
 <div class="container fade-in">
   <!--Sensors Header-->
   <div class="row justify-content-center pt-4 pb-2">
-    <div class="col col-lg-6">
+    <div class="col col-md-10 col-lg-5 col-xl-5">
       <div class="card shadow px-3 py-2">
         <div class="row">
-          <strong class="fs-2">Green House 2</strong>
+          <strong class="fs-2 text-center">Green House 2</strong>
         </div>
         <hr class="my-2 opacity-100">
-        <div class="row align-items-center">
+        <div class="row justify-content-center">
           <strong class="co2-title fs-2">CO<sub>2</sub> level</strong>
           <div class="co2-levels py-1">
             <div class="input-group">
               <span class="form-control text-center fs-5"><strong>{{co2level}}</strong></span>
             </div>
           </div>
-          <div class="col">
-            <button (click)="onSuccess('Data saved successfully')" class="btn btn-primary fw-bold" type="button"
-                    id="submit">SUBMIT
-            </button>
-          </div>
-          <simple-notifications></simple-notifications>
         </div>
       </div>
     </div>
@@ -58,3 +52,9 @@
     </div>
   </form>
 </div>
+<div class="fixed-bottom" *ngIf="showSubmit == true">
+  <button class="btn btn-primary fw-bold d-lg-block float-end px-3 me-3 mb-3 shadow" type="button" id="submit"
+          (click)="onSuccess('Data saved successfully')">SUBMIT
+  </button>
+</div>
+<simple-notifications></simple-notifications>
