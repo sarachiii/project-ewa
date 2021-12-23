@@ -21,7 +21,7 @@ const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent, canActivate: [AuthGuardService] },
   { path: 'login', component: LoginComponent, canActivate: [AuthGuardService] },
-  { path: 'sensors', component: SensorComponent, canActivate: [AdminGuardGuard] },
+  { path: 'sensors', component: SensorComponent, canActivate: [AuthGuardService] },
   { path: 'notes', component: NotesNavbarComponent, canActivate: [AuthGuardService], canActivateChild: [AuthGuardService],
     children: [
       {
@@ -46,8 +46,13 @@ const routes: Routes = [
       { path: 'preferences', component: PreferencesComponent }
     ]
   },
+  { path: 'admin', component: AdminHomeComponent, canActivate: [AuthGuardService],
+  },
+  // { path: 'admin', component: AdminHomeComponent, canActivate: [AdminGuardGuard],
+  // },
+
+
   { path: '**', component: ErrorComponent, canActivate: [AuthGuardService] },
-  { path:'admin', component: AdminHomeComponent, canActivate: [AdminGuardGuard]}
 ];
 
 @NgModule({

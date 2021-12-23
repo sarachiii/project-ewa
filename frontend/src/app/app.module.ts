@@ -28,6 +28,7 @@ import { TeamsComponent } from './components/teams/teams.component';
 import { ViewTeamsComponent } from './components/teams/view-teams/view-teams.component';
 import { TeamComponent } from './components/teams/view-teams/team/team.component';
 import { AdminHomeComponent } from './components/admin-home/admin-home.component';
+import { AdminNavbarComponent } from './components/admin-home/admin-navbar/admin-navbar.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { AdminHomeComponent } from './components/admin-home/admin-home.component
     TeamsComponent,
     ViewTeamsComponent,
     TeamComponent,
-    AdminHomeComponent
+    AdminHomeComponent,
+    AdminNavbarComponent
   ],
   imports: [
     BrowserModule,
