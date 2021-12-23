@@ -2,6 +2,7 @@ package nl.hva.backend.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import javax.persistence.*;
@@ -25,6 +26,8 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
 
+//    @JsonInclude()
+//    @Transient
     private String password;
 
     @Enumerated(EnumType.STRING)
@@ -42,9 +45,9 @@ public class User {
     @PrimaryKeyJoinColumn
     private Preferences preferences;
 
-//    @OneToMany(mappedBy = "user")
-//    @JsonBackReference
-//    private List<Note> notes = new ArrayList<>();
+    @OneToMany(mappedBy = "user2")
+    @JsonBackReference
+    private List<Note> notes = new ArrayList<>();
 
     public enum Specialty {
         A("Agronomy"),
