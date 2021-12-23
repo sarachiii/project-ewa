@@ -21,40 +21,42 @@ export class ShareNotesComponent implements OnInit {
   user: User | null;
   private userSubscription: Subscription;
 
-  constructor(private notesService: NotesService, private router: Router, private activatedRoute: ActivatedRoute,
-              private webStorageService: WebStorageService, private userService: UserService) {
-    setInterval(() => {
-      this.currentDate()
-    }, 1000)
-
-  }
-
+  // constructor(private notesService: NotesService, private router: Router, private activatedRoute: ActivatedRoute,
+  //             private webStorageService: WebStorageService, private userService: UserService) {
+  //   setInterval(() => {
+  //     this.currentDate()
+  //   }, 1000)
+  //
+  // }
+  //
   ngOnInit(): void {
-    this.userSubscription = this.userService.loggedUser$.subscribe(value => {
-      this.user = value;
-      console.log(this.user);
-    })
   }
-
-  onReturnToNotes(title: string, text: string) {
-    if (title.trim() === "" && text.trim() === "") this.unselectedEvent.emit(true);
-    else if (confirm("Are you sure you want to discard unsaved changes?")) this.unselectedEvent.emit(true);
-  }
-
-  onSaveNote(title: string, text: string) {
-    // let date = new Date();
-    // date.setHours(date.getHours() + 1);
-    // let isodate = date.toISOString().replace(/\..+/, '');
-    // this.notesService.addNote(new Note(0, this.user.id, "B",
-    this.notesService.addNote(new Note(0, this.user.id, this.user.specialty.charAt(0),
-      new Date(), title, text, this.user.firstName))
-    this.unselectedEvent.emit(true);
-    window.location.reload();
-  }
-
-  currentDate() {
-    let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    return new Date().getDate() + " " + months[new Date().getMonth()] + " " +
-      new Date().getFullYear() + ", " + new Date().getHours() + ":" + new Date().getMinutes();
-  }
+  // ngOnInit(): void {
+  //   this.userSubscription = this.userService.loggedUser$.subscribe(value => {
+  //     this.user = value;
+  //     console.log(this.user);
+  //   })
+  // }
+  //
+  // onReturnToNotes(title: string, text: string) {
+  //   if (title.trim() === "" && text.trim() === "") this.unselectedEvent.emit(true);
+  //   else if (confirm("Are you sure you want to discard unsaved changes?")) this.unselectedEvent.emit(true);
+  // }
+  //
+  // onSaveNote(title: string, text: string) {
+  //   // let date = new Date();
+  //   // date.setHours(date.getHours() + 1);
+  //   // let isodate = date.toISOString().replace(/\..+/, '');
+  //   // this.notesService.addNote(new Note(0, this.user.id, "B",
+  //   this.notesService.addNote(new Note(0, this.user.id, this.user.specialty.charAt(0),
+  //     new Date(), title, text, this.user.firstName))
+  //   this.unselectedEvent.emit(true);
+  //   window.location.reload();
+  // }
+  //
+  // currentDate() {
+  //   let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  //   return new Date().getDate() + " " + months[new Date().getMonth()] + " " +
+  //     new Date().getFullYear() + ", " + new Date().getHours() + ":" + new Date().getMinutes();
+  // }
 }

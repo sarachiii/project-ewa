@@ -45,7 +45,7 @@ public class User {
     @PrimaryKeyJoinColumn
     private Preferences preferences;
 
-    @OneToMany(mappedBy = "user2")
+    @OneToMany(mappedBy = "user")
     @JsonBackReference
     private List<Note> notes = new ArrayList<>();
 

@@ -15,11 +15,11 @@
           </span>
           <div id="edit-screen" class="d-flex ms-1">
             <button type="button" id="editNoteButton" class="d-inline-flex align-items-center px-0 me-1"
-                    *ngIf="note.userId == this.user.id" (click)="onEditNote(false, note)">
+                    *ngIf="note.user.id == this.user.id" (click)="onEditNote(false, note)">
               <img src="assets/images/edit.svg" alt="edit" height="22" width="22">
             </button>
             <button type="button" id="deleteButton" class="d-inline-flex align-items-center px-0"
-                    *ngIf="note.userId == this.user.id" (click)="onDeleteNote(note.noteId)">
+                    *ngIf="note.user.id == this.user.id" (click)="onDeleteNote(note.noteId)">
               <img src="assets/images/delete.svg" alt="deleteNote">
             </button>
           </div>
@@ -27,7 +27,7 @@
         <div class="card-body">
           <p class="card-text">{{note.noteText}}</p>
           <div class="text-muted d-flex justify-content-between">
-            <span>{{note.username}}</span>
+            <span>{{note.user.firstName}}</span>
             <span class="text-end">{{note.convertedDate()}}</span>
           </div>
         </div>

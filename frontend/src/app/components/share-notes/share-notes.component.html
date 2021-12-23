@@ -1,32 +1,32 @@
-<div class="d-flex justify-content-center modal modal-dialog-centered modal-backdrop" data-bs-backdrop="static">
+<!--<div class="d-flex justify-content-center modal modal-dialog-centered modal-backdrop" data-bs-backdrop="static">-->
 
-  <div class="card backgroundNote col-sm-12 col-md-12 col-lg-8 col-xl-5 shadow">
-    <div class="card-header d-flex">
-      <input maxLength="50" autocomplete="off" type="text" id="title" class="form-control titleColor col-sm-8" name="title"
-             placeholder="Give your note a title" #title>
-      <button type="button" class="btn btn-success float-end m-1 btnsize justify-content-end col-sm-2"
-              (click)="onSaveNote(title.value, text.value)">
-        ✓
-      </button>
-      <button type="button" class="btn btn-danger float-end m-1 btnsize  justify-content-end col-sm-2"
-              (click)="onReturnToNotes(title.value, text.value)">
-        &#x2715;
-      </button>
-    </div>
-    <div class="card-body">
-      <div class="d-flex justify-content-center m-2">
-        <textarea maxLength="500" id="note" class="form-control" name="note" rows="12" #text
-                  placeholder="Start writing your notes here ..."></textarea>
-      </div>
-      <div class="row text-muted">
-        <div class="col-6">
-         {{this.user.firstName}}
-        </div>
-        <div class="col-6 text-end">
-          {{currentDate()}}
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<!--  <div class="card backgroundNote col-sm-12 col-md-12 col-lg-8 col-xl-5 shadow">-->
+<!--    <div class="card-header d-flex">-->
+<!--      <input maxLength="50" autocomplete="off" type="text" id="title" class="form-control titleColor col-sm-8" name="title"-->
+<!--             placeholder="Give your note a title" #title>-->
+<!--      <button type="button" class="btn btn-success float-end m-1 btnsize justify-content-end col-sm-2"-->
+<!--              (click)="onSaveNote(title.value, text.value)">-->
+<!--        ✓-->
+<!--      </button>-->
+<!--      <button type="button" class="btn btn-danger float-end m-1 btnsize  justify-content-end col-sm-2"-->
+<!--              (click)="onReturnToNotes(title.value, text.value)">-->
+<!--        &#x2715;-->
+<!--      </button>-->
+<!--    </div>-->
+<!--    <div class="card-body">-->
+<!--      <div class="d-flex justify-content-center m-2">-->
+<!--        <textarea maxLength="500" id="note" class="form-control" name="note" rows="12" #text-->
+<!--                  placeholder="Start writing your notes here ..."></textarea>-->
+<!--      </div>-->
+<!--      <div class="row text-muted">-->
+<!--        <div class="col-6">-->
+<!--         {{this.user.firstName}}-->
+<!--        </div>-->
+<!--        <div class="col-6 text-end">-->
+<!--          {{currentDate()}}-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
 

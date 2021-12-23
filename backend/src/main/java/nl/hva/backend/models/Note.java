@@ -30,7 +30,7 @@ public class Note {
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     @JsonManagedReference
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private User user2;
+    private User user;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "user_id")
@@ -42,7 +42,7 @@ public class Note {
     public Note(int noteId, User user, ZonedDateTime timestamp, String title, String noteText) {
         super();
         this.noteId = noteId;
-        this.user2 = user;
+        this.user = user;
         this.timestamp = timestamp;
         this.title = title;
         this.noteText = noteText;
@@ -57,8 +57,6 @@ public class Note {
         this.noteText = noteText;
     }
 
-
-
     public Note(Long userId, ZonedDateTime timestamp, String title, String noteText) {
         super();
         this.userId = userId;
@@ -69,6 +67,6 @@ public class Note {
 
     @Override
     public String toString() {
-        return "\n" + noteId + ", " + timestamp + ", " + title + ", " + noteText + ", ";
+        return "\n" + noteId + ", " + timestamp + ", " + title + ", " + noteText;
     }
 }

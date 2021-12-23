@@ -58,7 +58,7 @@ export class EditNotesComponent implements OnInit {
       this.unselectedEvent.emit(true);
       return;
     }
-    this.notesService.addNote(new Note(this.note.noteId, this.note.userId, this.note.workfield.charAt(0), this.note.timestamp, title, text, this.note.username))
+    this.notesService.addNote(new Note(this.note.noteId, this.note.user, this.note.timestamp, title, text));
     this.unselectedEvent.emit(true);
     window.location.reload();
   }

@@ -27,7 +27,7 @@ export class NotesService {
   constructor(private http: HttpClient) {
     this.resourceUrl = environment.apiUrl + "/notes";
     this._note$ = new BehaviorSubject<Note>(<Note>{});
-    // this.allNotes();
+    this.allNotes();
   }
 
   get note$(): Observable<Note> {
@@ -40,6 +40,7 @@ export class NotesService {
 
   allNotes(): void{
     this.restGetNotes().subscribe((notes: Note[]) => {
+      console.log(notes)
       let notesArray = notes.map(note => Note.copyConstructor(note));
       for (let i = 0; i < notes.length; i++) {
         this.notes.push(notesArray[i]);

@@ -36,7 +36,7 @@ export class NotesComponent implements OnInit, OnChanges {
   get sortedNotes(): Note[] {
     // this.filteredNotes = this.notes.filter(note => this.selectedWorkfieldFromNavbar.charAt(0) == note.workfield.toLocaleLowerCase().charAt(0)); //the notes are filtered by workfield and are shown on the correct page
     // TODO: Maybe placing the filter here is exhausting too many resources
-    this.notes = this.notesService.notes.filter(note => this.selectedWorkfieldFromNavbar.charAt(0) == note.workfield.toLocaleLowerCase().charAt(0)); //the notes are filtered by workfield and are shown on the correct page
+    this.notes = this.notesService.notes.filter(note => this.selectedWorkfieldFromNavbar.charAt(0) == note.user.specialty.toLocaleLowerCase().charAt(0)); //the notes are filtered by workfield and are shown on the correct page
     // if (this.masonry) this.reloadMasonry();
     // console.log(this.notes)
     return this.notes.sort((a, b) => new Date(b.timestamp).valueOf() - new Date(a.timestamp).valueOf());
@@ -66,16 +66,7 @@ export class NotesComponent implements OnInit, OnChanges {
     this.selectedWorkfieldFromNavbar = Workfield.BOTANY; //TODO: set the workfield to the workfield of the logged in user
     this.notesService.restGetNotes().toPromise().then(value => {
       this.notesService.notes = value.map(note => Note.copyConstructor(note));
-      // this.notes = this.notesService.notes.filter(note => this.selectedWorkfieldFromNavbar.charAt(0) == note.workfield.toLocaleLowerCase().charAt(0)); //the notes are filtered by workfield and are shown on the correct page
-      // this.notes = this.notesService.notes;
-      // this.filteredNotes = this.notes.filter(note => this.selectedWorkfieldFromNavbar.charAt(0) == note.workfield.toLocaleLowerCase().charAt(0)); //the notes are filtered by workfield and are shown on the correct page
     }).catch(console.log);
-    // this.notesService.notes$.subscribe(value => {
-    //   console.log(value)
-    //   if (this.masonry) this.reloadMasonry();
-    // })
-    // this.filteredNotes = this.notes.filter(note => this.selectedWorkfieldFromNavbar.charAt(0) == note.workfield.toLocaleLowerCase().charAt(0)); //the notes are filtered by workfield and are shown on the correct page
-    // console.log(this.filteredNotes)
     this.userService.loggedUser$.pipe(skipWhile(value => Object.keys(value).length === 0), first()).subscribe(value => {
       this.user = value;
     });
@@ -86,7 +77,6 @@ export class NotesComponent implements OnInit, OnChanges {
       percentPosition: true,
       horizontalOrder: true,
     };
-    // this.filteredNotes = this.notes.filter(note => this.selectedWorkfieldFromNavbar.charAt(0) == note.workfield.toLocaleLowerCase().charAt(0));
   }
 
   reloadMasonry(): void {
