@@ -4,7 +4,7 @@
   </div>
   <ngx-masonry *ngIf="sortedNotes.length >= 1" [options]="masonryOptions" [ordered]="true"
                class="mx-auto pt-2 pt-lg-3 row justify-content-center">
-    <div ngxMasonryItem *ngFor="let note of sortedNotes" class="masonry-item p-2 col col-md-6 col-lg-4 col-xl-3">
+    <div ngxMasonryItem *ngFor="let note of notes$ | async" class="masonry-item p-2 col col-md-6 col-lg-4 col-xl-3">
       <div class="card shadow">
         <!--        <div class="card-header position-relative" [ngClass]="{'highlight-header': loggedInUser.userId == note.user.userId}">-->
         <div class="card-header position-relative d-flex align-items-center justify-content-between">
@@ -35,7 +35,7 @@
     </div>
   </ngx-masonry>
 
-  <div class="fixed-bottom" [ngClass]="{'d-none': selectedWorkfieldFromNavbar != 'botany'}"
+  <div class="fixed-bottom" [ngClass]="{'d-none': selectedWorkfieldFromNavbar != this.user.specialty.toLowerCase()}"
        [ngTemplateOutlet]="createNote === true ? addNote : editNote === true ? viewNote : null">
     <!--   Create note button mobile   -->
     <button type="button" class="btn btn-primary d-lg-none shadow p-1 me-3 mb-3 float-end"

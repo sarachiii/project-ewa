@@ -3,14 +3,10 @@ import {User} from "./user";
 export class Note {
 
   public noteId: number;
-  // public userId: number;
   public user: User;
-  // public workfield: string;
   public timestamp: Date;
   public title: string;
   public noteText: string;
-
-  // public username: string;
 
   constructor(noteId: number, user: User, timestamp: Date, title: string, noteText: string) {
     this.noteId = noteId;

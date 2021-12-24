@@ -15,16 +15,13 @@ public class Note {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @GeneratedValue
     @Column(name = "id")
     public int noteId;
-    //    public String workfield;
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     public ZonedDateTime timestamp;
     public String title;
     @Column(name = "content")
     public String noteText;
-//    public String username;
 
     @ManyToOne
     @JoinColumn(name = "user_id", insertable = false, updatable = false)

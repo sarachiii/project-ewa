@@ -36,10 +36,6 @@ export class EditNotesComponent implements OnInit {
 
   constructor(private notesService: NotesService, private router: Router, private activatedRoute: ActivatedRoute,
               private webStorageService: WebStorageService, private userService: UserService) {
-    setInterval(() => {
-      this.currentDate()
-    }, 1000)
-
   }
 
   ngOnInit(): void {
@@ -59,17 +55,12 @@ export class EditNotesComponent implements OnInit {
       this.unselectedEvent.emit(true);
       return;
     }
-    var note = new Note(this.note.noteId, this.note.user, this.note.timestamp, title, text);
-    var postNote = new PostNote(this.note.noteId, this.note.user.id, this.note.timestamp, title, text);
+    let note = new Note(this.note.noteId, this.note.user, this.note.timestamp, title, text);
+    let postNote = new PostNote(this.note.noteId, this.note.user.id, this.note.timestamp, title, text);
     this.notesService.addNote(note, postNote);
     this.unselectedEvent.emit(true);
-    window.location.reload();
+    // window.location.reload();
   }
 
-  currentDate() {
-    let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    return new Date().getDate() + " " + months[new Date().getMonth()] + " " +
-      new Date().getFullYear() + ", " + new Date().getHours() + ":" + new Date().getMinutes();
-  }
 }
 

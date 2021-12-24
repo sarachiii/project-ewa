@@ -30,12 +30,12 @@ public class NotesController {
         if (note.noteText.length() <= 0 && note.title.length() <= 0) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         } else if (note.noteText.length() <= 500 && note.title.length() <= 50) {
-            notesRepository.insertOrUpdateNote(note);
-            return ResponseEntity.ok().build();
+            Note savedNote = notesRepository.insertOrUpdateNote(note);
+            return ResponseEntity.ok().body(savedNote);
         } else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
 
-    //Delete a scooter by id from the note list
+    //Delete a note by id from the note list
     @DeleteMapping("delete/{id}")
     @ResponseBody
     public ResponseEntity<String> deleteNoteById(@PathVariable int id) {

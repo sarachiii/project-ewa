@@ -50,7 +50,7 @@ export class ShareNotesComponent implements OnInit {
     var postNote = new PostNote(0, this.user.id, new Date(), title, text);
     this.notesService.addNote(note, postNote);
     this.unselectedEvent.emit(true);
-    window.location.reload();
+    // window.location.reload();
   }
 
   currentDate() {

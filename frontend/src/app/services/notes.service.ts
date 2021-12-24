@@ -6,14 +6,11 @@ import {BehaviorSubject, Subject} from "rxjs";
  *
  * @author Sarah Chrzanowska-Buth & Nazlıcan Eren
  */
-import {HttpClient, HttpErrorResponse, HttpEvent} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {Note} from "../models/note";
 import {Observable, throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
-import {DatePipe} from "@angular/common";
-import {User} from "../models/user";
-import {ObjectAssignBuiltinFn} from "@angular/compiler-cli/src/ngtsc/partial_evaluator/src/builtin";
 import {PostNote} from "../models/postNote";
 
 @Injectable({
@@ -24,25 +21,26 @@ export class NotesService {
   currentVisitedPage = this.visitedPage.asObservable();
   public notes: Note[] = [];
   resourceUrl: string = "";
-  private _note$: BehaviorSubject<Note>;
+  private _notes$: BehaviorSubject<Note[]>;
 
   constructor(private http: HttpClient) {
     this.resourceUrl = environment.apiUrl + "/notes";
-    this._note$ = new BehaviorSubject<Note>(<Note>{});
+    this._notes$ = new BehaviorSubject<Note[]>([]);
     this.allNotes();
   }
 
-  get note$(): Observable<Note> {
-    return this._note$.asObservable();
+  get notes$(): Observable<Note[]> {
+    return this._notes$.asObservable();
   }
 
   restGetNotes(): Observable<Note[]> {
     return this.http.get<Note[]>(this.resourceUrl + "/all").pipe(catchError(this.handleError));
   }
 
-  allNotes(): void{
+  allNotes(): void {
     this.restGetNotes().subscribe((notes: Note[]) => {
       console.log(notes)
+      this._notes$.next(notes.map(note => Note.copyConstructor(note)));
       let notesArray = notes.map(note => Note.copyConstructor(note));
       for (let i = 0; i < notes.length; i++) {
         this.notes.push(notesArray[i]);
@@ -60,9 +58,21 @@ export class NotesService {
   }
 
   addNote(note: Note, postNote: PostNote) {
-    this.restPostNote(postNote).toPromise().then(() => {
-      this.notes.push(Note.copyConstructor(note));
-      console.log(this.notes)
+    this.restPostNote(postNote).toPromise().then((savedNote) => {
+      let notes = this._notes$.getValue();
+      console.log("note", note);
+      console.log("postNote", postNote);
+      console.log("savedNote",savedNote);
+      let noteIndex = notes.findIndex(n => n.noteId == savedNote.noteId);
+      if (noteIndex > -1) {
+        notes[noteIndex] = note;
+      } else notes.push(Note.copyConstructor(savedNote));
+      this._notes$.next(notes);
+      /*let noteIndex = this.notes.findIndex(n => n.noteId == savedNote.noteId);
+      if (noteIndex > -1) {
+        this.notes[noteIndex] = savedNote;
+      } else this.notes.push(Note.copyConstructor(savedNote));
+      console.log(this.notes)*/
     });
   }
 
@@ -73,7 +83,6 @@ export class NotesService {
   deleteNote(noteId): void {
     this.http.delete<Note>(`${this.resourceUrl}/delete/${noteId}`).subscribe();
   }
-
 
   updateVisitedPage(visited: boolean) { //  This method sets the boolean for if the notes page was visited by the user or not
     this.visitedPage.next(visited);
