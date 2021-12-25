@@ -1,17 +1,17 @@
-import {Injectable, Output} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {BehaviorSubject, Subject} from "rxjs";
-
-/**
- * This is the notes service.
- *
- * @author Sarah Chrzanowska-Buth & Nazlıcan Eren
- */
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {Note} from "../models/note";
 import {Observable, throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
 import {PostNote} from "../models/postNote";
+
+/**
+ * This is the notes service.
+ *
+ * @author Sarah Chrzanowska-Buth & Nazlıcan Eren
+ */
 
 @Injectable({
   providedIn: 'root'
@@ -62,11 +62,14 @@ export class NotesService {
       let notes = this._notes$.getValue();
       console.log("note", note);
       console.log("postNote", postNote);
-      console.log("savedNote",savedNote);
+      console.log("savedNote", savedNote);
       let noteIndex = notes.findIndex(n => n.noteId == savedNote.noteId);
       if (noteIndex > -1) {
         notes[noteIndex] = note;
-      } else notes.push(Note.copyConstructor(savedNote));
+      } else {
+        savedNote.user = note.user;
+        notes.push(Note.copyConstructor(savedNote));
+      }
       this._notes$.next(notes);
       /*let noteIndex = this.notes.findIndex(n => n.noteId == savedNote.noteId);
       if (noteIndex > -1) {
@@ -81,10 +84,16 @@ export class NotesService {
   }
 
   deleteNote(noteId): void {
-    this.http.delete<Note>(`${this.resourceUrl}/delete/${noteId}`).subscribe();
+    this.http.delete<Note>(`${this.resourceUrl}/delete/${noteId}`).subscribe(() => {
+      let notes = this._notes$.getValue();
+      let noteIndex = notes.findIndex(n => n.noteId == noteId);
+      if (noteIndex > -1) notes.splice(noteIndex, 1);
+      this._notes$.next(notes);
+    }, error => console.log(error));
   }
 
-  updateVisitedPage(visited: boolean) { //  This method sets the boolean for if the notes page was visited by the user or not
+  // This method sets the boolean for if the notes page was visited by the user or not
+  updateVisitedPage(visited: boolean) {
     this.visitedPage.next(visited);
   }
 }

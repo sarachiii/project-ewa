@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {Workfield} from "../../models/workfield";
 import {NgxMasonryComponent, NgxMasonryOptions} from "ngx-masonry";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -72,6 +72,11 @@ export class NotesComponent implements OnInit, OnChanges {
         .catch(reason => console.error(reason));
       this.selectedWorkfieldFromNavbar = this.user.specialty.toLowerCase(); //TODO: set the workfield to the workfield of the logged in user
     });
+
+
+    this.notes$.subscribe(value => {
+      if (value.length && this.masonry) this.reloadMasonry();
+    })
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -87,7 +92,6 @@ export class NotesComponent implements OnInit, OnChanges {
           .sort((a, b) => new Date(b.timestamp).valueOf() - new Date(a.timestamp).valueOf());
       }));
 
-    this.notes$.subscribe(value => console.log(value))
     console.log(changes)
     console.log("this is run")
   }
@@ -109,7 +113,6 @@ export class NotesComponent implements OnInit, OnChanges {
   onDeleteNote(noteId: number) {
     if (confirm("Are you sure you want to delete this note?")) {
       this.notesService.deleteNote(noteId);
-      window.location.reload();
     }
   }
 }
