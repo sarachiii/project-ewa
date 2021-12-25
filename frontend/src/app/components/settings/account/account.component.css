@@ -12,6 +12,10 @@
   border-radius: 10px;
   border-color: var(--cc-green);
 }
+.form-select {
+  border-radius: 10px;
+  border-color: var(--cc-green);
+}
 .btn {
   border-radius: 10px;
 }

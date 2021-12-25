@@ -69,6 +69,10 @@ export class UserService implements CRUDService<User> {
     return this.httpClient.get<User>(new URL(`/users?username=${username}`, this.resourceUrl).toString());
   }
 
+  saveUser(user: User): Observable<User> {
+    return this.httpClient.post<User>(new URL(`/users`, this.resourceUrl).toString(), user);
+  }
+
   updateLoggedUser(id: number) {
     this.getUserById(id).pipe(shareReplay(1)).toPromise().then(value => {
       this._loggedUser$.next(value);
