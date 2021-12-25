@@ -29,19 +29,20 @@ export class EditNotesComponent implements OnInit {
   get selectedNoteFromNotes(): Note {
     return this._selectedNoteFromNotes;
   }
-  @Output() selectedNoteFromNotesChange = new EventEmitter<Note>();
 
+  @Output() selectedNoteFromNotesChange = new EventEmitter<Note>();
   @Output() unselectedEvent = new EventEmitter();
 
-
-  constructor(private notesService: NotesService, private router: Router, private activatedRoute: ActivatedRoute,
-              private webStorageService: WebStorageService, private userService: UserService) {
+  constructor(private notesService: NotesService,
+              private router: Router,
+              private activatedRoute: ActivatedRoute,
+              private webStorageService: WebStorageService,
+              private userService: UserService) {
   }
 
   ngOnInit(): void {
     this.userSubscription = this.userService.loggedUser$.subscribe(value => {
       this.user = value;
-      console.log(this.user);
     })
   }
 
@@ -51,7 +52,7 @@ export class EditNotesComponent implements OnInit {
   }
 
   onSaveNote(title: string, text: string) {
-    if (title.trim() === this.note.title && text.trim() === this.note.noteText){
+    if (title.trim() === this.note.title && text.trim() === this.note.noteText) {
       this.unselectedEvent.emit(true);
       return;
     }
@@ -60,6 +61,5 @@ export class EditNotesComponent implements OnInit {
     this.notesService.addNote(note, postNote);
     this.unselectedEvent.emit(true);
   }
-
 }
 

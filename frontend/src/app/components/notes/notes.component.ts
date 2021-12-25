@@ -10,7 +10,8 @@ import {UserService} from "../../services/user.service";
 import {interval, Observable} from "rxjs";
 
 /**
- * This is the notes component. It takes care of showing the notes on the notes page. It shows the newest notes first and than the older ones.
+ * This is the notes component. It takes care of showing the notes on the notes page.
+ * It shows the newest notes first and than the older ones.
  *
  * @author Sarah Chrzanowska-Buth
  */
@@ -26,20 +27,9 @@ export class NotesComponent implements OnInit, OnChanges {
   editNote: boolean = false;
   deleteNote: boolean;
   selectedNote: Note = <Note>{};
-  notes: Note[] = [];
-  filteredNotes: Note[] = [];
   test: boolean = false;
   user: User;
   notes$: Observable<Note[]>;
-
-  get sortedNotes(): Note[] {
-    // this.filteredNotes = this.notes.filter(note => this.selectedWorkfieldFromNavbar.charAt(0) == note.workfield.toLocaleLowerCase().charAt(0)); //the notes are filtered by workfield and are shown on the correct page
-    // TODO: Maybe placing the filter here is exhausting too many resources
-    this.notes = this.notesService.notes.filter(note => this.selectedWorkfieldFromNavbar.charAt(0) == note.user.specialty.toLocaleLowerCase().charAt(0)); //the notes are filtered by workfield and are shown on the correct page
-    // if (this.masonry) this.reloadMasonry();
-    // console.log(this.notes)
-    return this.notes.sort((a, b) => new Date(b.timestamp).valueOf() - new Date(a.timestamp).valueOf());
-  }
 
   @Input() selectedWorkfieldFromNavbar: string;
 
@@ -59,20 +49,16 @@ export class NotesComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.isVisited = true;
     this.notesService.updateVisitedPage(this.isVisited);
-    /*this.notesService.restGetNotes().toPromise().then(value => {
-      this.notesService.notes = value.map(note => Note.copyConstructor(note));
-    }).catch(console.log);*/
-    /*this.notes$ = this.notesService.notes$
-      .pipe(map(notes => notes.filter(note => this.selectedWorkfieldFromNavbar.charAt(0) == note.user.specialty.toLocaleLowerCase().charAt(0))));
-    // this.notes$.subscribe(x=>console.log(x))*/
 
-    this.userService.loggedUser$.pipe(skipWhile(value => Object.keys(value).length === 0), first()).subscribe(value => {
-      this.user = value;
-      this.router.navigate([this.user.specialty.toLowerCase()], {relativeTo: this.activatedRoute}) //the initial notes page is equal to the workfield of the user
-        .catch(reason => console.error(reason));
-      this.selectedWorkfieldFromNavbar = this.user.specialty.toLowerCase(); //TODO: set the workfield to the workfield of the logged in user
-    });
-
+    this.userService.loggedUser$
+      .pipe(skipWhile(value => Object.keys(value).length === 0), first())
+      .subscribe(value => {
+        this.user = value;
+        // The initial notes page is equal to the workfield of the user
+        this.router.navigate([this.user.specialty.toLowerCase()], {relativeTo: this.activatedRoute})
+          .catch(reason => console.error(reason));
+        this.selectedWorkfieldFromNavbar = this.user.specialty.toLowerCase();
+      });
 
     this.notes$.subscribe(value => {
       if (value.length && this.masonry) this.reloadMasonry();
@@ -88,12 +74,10 @@ export class NotesComponent implements OnInit, OnChanges {
     this.notes$ = this.notesService.notes$
       .pipe(map(notes => {
         return notes
-          .filter((note) => this.selectedWorkfieldFromNavbar.charAt(0) == note.user.specialty.toLocaleLowerCase().charAt(0))
+          .filter((note) =>
+            this.selectedWorkfieldFromNavbar.charAt(0) == note.user.specialty.toLocaleLowerCase().charAt(0))
           .sort((a, b) => new Date(b.timestamp).valueOf() - new Date(a.timestamp).valueOf());
       }));
-
-    console.log(changes)
-    console.log("this is run")
   }
 
   reloadMasonry(): void {

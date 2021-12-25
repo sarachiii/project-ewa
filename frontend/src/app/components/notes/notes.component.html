@@ -1,10 +1,10 @@
-<div class="container position-relative h-100">
-  <div class="text-center p-4" *ngIf="sortedNotes.length < 1">
+<div *ngIf="notes$ | async as notes" class="container position-relative h-100">
+  <div class="text-center p-4 fade-in" *ngIf="notes.length < 1">
     <span class="display-6">There are no notes yet! :(</span>
   </div>
-  <ngx-masonry *ngIf="sortedNotes.length >= 1" [options]="masonryOptions" [ordered]="true"
+  <ngx-masonry *ngIf="notes.length >= 1" [options]="masonryOptions" [ordered]="true"
                class="mx-auto pt-2 pt-lg-3 row justify-content-center">
-    <div ngxMasonryItem *ngFor="let note of notes$ | async" class="masonry-item p-2 col col-md-6 col-lg-4 col-xl-3">
+    <div ngxMasonryItem *ngFor="let note of notes" class="masonry-item p-2 col col-md-6 col-lg-4 col-xl-3">
       <div class="card shadow">
         <!--        <div class="card-header position-relative" [ngClass]="{'highlight-header': loggedInUser.userId == note.user.userId}">-->
         <div class="card-header position-relative d-flex align-items-center justify-content-between">
@@ -35,31 +35,24 @@
     </div>
   </ngx-masonry>
 
-  <div class="fixed-bottom" [ngClass]="{'d-none': selectedWorkfieldFromNavbar != this.user.specialty.toLowerCase()}"
+  <div class="fixed-bottom" [ngClass]="{'d-none': selectedWorkfieldFromNavbar != this.user?.specialty.toLowerCase()}"
        [ngTemplateOutlet]="createNote === true ? addNote : editNote === true ? viewNote : null">
-    <!--   Create note button mobile   -->
-    <button type="button" class="btn btn-primary d-lg-none shadow p-1 me-3 mb-3 float-end"
+    <button type="button" class="btn btn-primary shadow p-0 me-3 mb-3 float-end"
             (click)="onCreateNote(false)">
-      <img src="assets/images/create_white.svg" height="35" width="35" alt="add note">
-    </button>
-    <!--   Create note button desktop   -->
-    <button type="button" class="btn btn-primary d-none d-lg-block shadow px-3 me-3 mb-3 fw-bold float-end"
-            (click)="onCreateNote(false)">
-      Create Note
+      <!--   Create note button desktop  -->
+      <span class="d-none d-lg-block fw-bold px-3 py-1">Create Note</span>
+      <!--   Create note button mobile   -->
+      <img class="d-lg-none" src="assets/images/create_white.svg" height="35" width="35" alt="add note">
     </button>
   </div>
+
   <ng-template #addNote>
-    <ng-container>
-      <app-share-notes (unselectedEvent)="onCreateNote($event)">
-      </app-share-notes>
-    </ng-container>
+    <app-share-notes (unselectedEvent)="onCreateNote($event)">
+    </app-share-notes>
   </ng-template>
   <ng-template #viewNote>
-    <ng-container>
-      <app-edit-notes [(selectedNoteFromNotes)]="selectedNote"
-                      (unselectedEvent)="onEditNote($event, null)">
-      </app-edit-notes>
-    </ng-container>
+    <app-edit-notes [(selectedNoteFromNotes)]="selectedNote" (unselectedEvent)="onEditNote($event, null)">
+    </app-edit-notes>
   </ng-template>
 </div>
 

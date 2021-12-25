@@ -19,8 +19,7 @@ import {PostNote} from "../models/postNote";
 export class NotesService {
   private visitedPage: Subject<boolean> = new BehaviorSubject<boolean>(false);
   currentVisitedPage = this.visitedPage.asObservable();
-  public notes: Note[] = [];
-  resourceUrl: string = "";
+  resourceUrl: string;
   private _notes$: BehaviorSubject<Note[]>;
 
   constructor(private http: HttpClient) {
@@ -41,10 +40,6 @@ export class NotesService {
     this.restGetNotes().subscribe((notes: Note[]) => {
       console.log(notes)
       this._notes$.next(notes.map(note => Note.copyConstructor(note)));
-      let notesArray = notes.map(note => Note.copyConstructor(note));
-      for (let i = 0; i < notes.length; i++) {
-        this.notes.push(notesArray[i]);
-      }
     });
   }
 
@@ -60,9 +55,6 @@ export class NotesService {
   addNote(note: Note, postNote: PostNote) {
     this.restPostNote(postNote).toPromise().then((savedNote) => {
       let notes = this._notes$.getValue();
-      console.log("note", note);
-      console.log("postNote", postNote);
-      console.log("savedNote", savedNote);
       let noteIndex = notes.findIndex(n => n.noteId == savedNote.noteId);
       if (noteIndex > -1) {
         notes[noteIndex] = note;
@@ -71,11 +63,6 @@ export class NotesService {
         notes.push(Note.copyConstructor(savedNote));
       }
       this._notes$.next(notes);
-      /*let noteIndex = this.notes.findIndex(n => n.noteId == savedNote.noteId);
-      if (noteIndex > -1) {
-        this.notes[noteIndex] = savedNote;
-      } else this.notes.push(Note.copyConstructor(savedNote));
-      console.log(this.notes)*/
     });
   }
 

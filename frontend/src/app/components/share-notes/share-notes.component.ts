@@ -22,8 +22,11 @@ export class ShareNotesComponent implements OnInit {
   user: User | null;
   private userSubscription: Subscription;
 
-  constructor(private notesService: NotesService, private router: Router, private activatedRoute: ActivatedRoute,
-              private webStorageService: WebStorageService, private userService: UserService) {
+  constructor(private notesService: NotesService,
+              private router: Router,
+              private activatedRoute: ActivatedRoute,
+              private webStorageService: WebStorageService,
+              private userService: UserService) {
     setInterval(() => {
       this.currentDate()
     }, 1000)
@@ -32,7 +35,6 @@ export class ShareNotesComponent implements OnInit {
   ngOnInit(): void {
     this.userSubscription = this.userService.loggedUser$.subscribe(value => {
       this.user = value;
-      console.log(this.user);
     })
   }
 
@@ -42,15 +44,16 @@ export class ShareNotesComponent implements OnInit {
   }
 
   onSaveNote(title: string, text: string) {
-    var note = new Note(0, this.user, new Date(), title, text);
-    var postNote = new PostNote(0, this.user.id, new Date(), title, text);
+    let note = new Note(0, this.user, new Date(), title, text);
+    let postNote = new PostNote(0, this.user.id, new Date(), title, text);
     this.notesService.addNote(note, postNote);
     this.unselectedEvent.emit(true);
   }
 
   currentDate() {
-    let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    return new Date().getDate() + " " + months[new Date().getMonth()] + " " +
-      new Date().getFullYear() + ", " + new Date().getHours() + ":" + new Date().getMinutes();
+    let options: Intl.DateTimeFormatOptions = {
+      day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: 'numeric'
+    }
+    return new Date().toLocaleString('en-GB', options);
   }
 }
