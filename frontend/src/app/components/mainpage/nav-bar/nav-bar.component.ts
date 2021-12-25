@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {WebStorageService} from "../../../services/storage/web-storage.service";
 import {UserService} from "../../../services/user.service";
 import {User} from "../../../models/user";
@@ -17,14 +17,31 @@ import {NotesService} from "../../../services/notes.service";
   styleUrls: ['./nav-bar.component.css']
 })
 export class NavBarComponent implements OnInit, OnDestroy {
-  user: User | null;
   private userSubscription: Subscription;
+  user: User | null;
   visitedPage: boolean = false;
 
-  constructor(private webStorageService: WebStorageService,
-              private userService: UserService, private notesService: NotesService) {
-    this.user = null;
+  private _screenHeight: number;
+  private _screenWidth: number;
 
+  @ViewChild('mobileMenu') mobileMenu: ElementRef;
+
+  constructor(private elementRef: ElementRef,
+              private webStorageService: WebStorageService,
+              private userService: UserService,
+              private notesService: NotesService) {
+    this.user = null;
+    this._screenHeight = window.innerHeight;
+    this._screenWidth = window.innerWidth;
+  }
+
+
+  get screenHeight(): number {
+    return this._screenHeight;
+  }
+
+  get screenWidth(): number {
+    return this._screenWidth;
   }
 
   ngOnInit(): void {
@@ -43,7 +60,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.userSubscription.unsubscribe();
   }
 
@@ -55,8 +72,28 @@ export class NavBarComponent implements OnInit, OnDestroy {
     this.webStorageService.clear();
   }
 
-  handleImageError(event: Event) {
+  handleImageError(event: Event): void {
     (<HTMLImageElement>event.target).src = "assets/images/default_avatar.svg";
+  }
+
+  @HostListener('window:resize', ['$event'])
+  getScreenSize(event: Event): void {
+    this._screenHeight = window.innerHeight;
+    this._screenWidth = window.innerWidth;
+  }
+
+  @HostListener('document:click', ['$event'])
+  handleClickOutside(event: Event): void {
+    if (!this.elementRef.nativeElement.contains(event.target)) this.closeMobileMenu();
+  }
+
+  closeMobileMenu(): void {
+    let button: HTMLButtonElement = this.mobileMenu?.nativeElement as HTMLButtonElement;
+    if (this.screenWidth < 992) this.closeMenu(button);
+  }
+
+  closeMenu(toggle: HTMLElement) {
+    if (toggle.getAttribute('aria-expanded') == 'true') toggle.click();
   }
 
 }

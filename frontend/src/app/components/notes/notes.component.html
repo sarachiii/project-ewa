@@ -1,50 +1,49 @@
-<p *ngIf="sortedNotes.length < 1">There are no notes yet! :(</p>
 <div class="container position-relative h-100">
+  <div class="text-center p-4" *ngIf="sortedNotes.length < 1">
+    <span class="display-6">There are no notes yet! :(</span>
+  </div>
   <ngx-masonry *ngIf="sortedNotes.length >= 1" [options]="masonryOptions" [ordered]="true"
-               class="mx-auto pt-lg-3 row justify-content-center">
+               class="mx-auto pt-2 pt-lg-3 row justify-content-center">
     <div ngxMasonryItem *ngFor="let note of sortedNotes" class="masonry-item p-2 col col-md-6 col-lg-4 col-xl-3">
       <div class="card shadow">
         <!--        <div class="card-header position-relative" [ngClass]="{'highlight-header': loggedInUser.userId == note.user.userId}">-->
-        <div class="card-header position-relative">
-          {{note.title}}
+        <div class="card-header position-relative d-flex align-items-center justify-content-between">
+          <span class="text-truncate">{{note.title}}</span>
           <!--          <span *ngIf="note.isRead == false" class="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger p-2">-->
           <span class="position-absolute">
             <span class="visually-hidden">unread messages</span>
           </span>
-          <a id="edit-screen">
-            <button type="button" id="deleteButton" class="float-end" *ngIf="note.userId == this.user.id"
-                    (click)="onDeleteNote(note.noteId)">
-              <img src="assets/images/delete_icon.png" alt="deleteNote" height="22" width="22"></button>
-
-            <button type="button" id="editNoteButton" *ngIf="note.userId == this.user.id" class="float-end"
-                    (click)="onEditNote(false, note)">
-              <img src="assets/edit.svg" alt="edit"></button>
-          </a>
+          <div id="edit-screen" class="d-flex ms-1">
+            <button type="button" id="editNoteButton" class="d-inline-flex align-items-center px-0 me-1"
+                    *ngIf="note.userId == this.user.id" (click)="onEditNote(false, note)">
+              <img src="assets/images/edit.svg" alt="edit" height="22" width="22">
+            </button>
+            <button type="button" id="deleteButton" class="d-inline-flex align-items-center px-0"
+                    *ngIf="note.userId == this.user.id" (click)="onDeleteNote(note.noteId)">
+              <img src="assets/images/delete.svg" alt="deleteNote">
+            </button>
+          </div>
         </div>
         <div class="card-body">
           <p class="card-text">{{note.noteText}}</p>
-          <div class="row text-muted">
-            <div class="col-5">
-              {{note.username}}
-            </div>
-            <div class="text-end col-7">
-              {{note.convertedDate()}}
-            </div>
+          <div class="text-muted d-flex justify-content-between">
+            <span>{{note.username}}</span>
+            <span class="text-end">{{note.convertedDate()}}</span>
           </div>
         </div>
       </div>
     </div>
   </ngx-masonry>
 
-  <div class="position-absolute bottom-0 end-0 p-5" [ngClass]="{'d-none': selectedWorkfieldFromNavbar != 'botany'}"
+  <div class="fixed-bottom" [ngClass]="{'d-none': selectedWorkfieldFromNavbar != 'botany'}"
        [ngTemplateOutlet]="createNote === true ? addNote : editNote === true ? viewNote : null">
     <!--   Create note button mobile   -->
-    <button type="button" class="btn btn-success size d-lg-none shadow fixed-bottom mb-3 mr-3"
+    <button type="button" class="btn btn-primary d-lg-none shadow p-1 me-3 mb-3 float-end"
             (click)="onCreateNote(false)">
-      <img class="button-img" src="https://icon-library.com/images/compose-icon/compose-icon-1.jpg" alt="add note">
+      <img src="assets/images/create_white.svg" height="35" width="35" alt="add note">
     </button>
     <!--   Create note button desktop   -->
-    <button type="button" class="btn btn-success d-none d-lg-block shadow fixed-bottom mb-3 mr-3"
+    <button type="button" class="btn btn-primary d-none d-lg-block shadow px-3 me-3 mb-3 fw-bold float-end"
             (click)="onCreateNote(false)">
       Create Note
     </button>

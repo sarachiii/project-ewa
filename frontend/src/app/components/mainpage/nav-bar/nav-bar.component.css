@@ -9,7 +9,7 @@
   padding: 16px 8px;
   text-align: center;
 }
-.nav-link:hover, .nav-link:focus, .nav-link-active{
+.nav-link:hover, .nav-link:focus, .nav-link.active{
   color: var(--bs-dark);
   background-color: white;
 }
@@ -29,7 +29,7 @@
 .dropdown-divider {
   background-color: var(--cc-darkgreen);
 }
-.dropdown-item:active {
+.dropdown-item:active, .dropdown-item.active {
   color: white;
   background-color: var(--cc-green);
 }

@@ -27,6 +27,7 @@ import { EditNotesComponent } from './components/edit-notes/edit-notes.component
 import { TeamsComponent } from './components/teams/teams.component';
 import { ViewTeamsComponent } from './components/teams/view-teams/view-teams.component';
 import { MembersComponent } from './components/teams/view-teams/members/members.component';
+import { AddUserComponent } from './components/teams/add-user/add-user.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { MembersComponent } from './components/teams/view-teams/members/members.
     EditNotesComponent,
     TeamsComponent,
     ViewTeamsComponent,
-    MembersComponent
+    MembersComponent,
+    AddUserComponent
   ],
   imports: [
     BrowserModule,
