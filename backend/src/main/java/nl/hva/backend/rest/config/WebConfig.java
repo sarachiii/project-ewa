@@ -5,34 +5,46 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-@EnableWebMvc
+@EnableScheduling
 public class WebConfig implements WebMvcConfigurer {
 
-  @Value("${ccu.api.url}")
-  private String ccuApiUrl;
+    @Value("${api.url}")
+    private String apiUrl;
 
-  @Bean
-  public WebClient ccuApiClient() {
-    return WebClient.builder()
-            .baseUrl(ccuApiUrl)
-            .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-            .build();
-  }
+    @Value("${ccu.api.url}")
+    private String ccuApiUrl;
 
-  @Override
-  public void addCorsMappings(CorsRegistry registry) {
-    registry.addMapping("/**")
-      .allowedMethods("GET", "POST", "PUT", "DELETE")
-      .allowedOrigins("http://localhost:4200", "http://localhost:8084", ccuApiUrl);
-  }
+    @Bean
+    public WebClient apiClient() {
+        return WebClient.builder()
+                .baseUrl(apiUrl)
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .build();
+    }
 
-  public String getCcuApiUrl() {
-    return ccuApiUrl;
-  }
+    @Bean
+    public WebClient ccuApiClient() {
+        return WebClient.builder()
+                .baseUrl(ccuApiUrl)
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .build();
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedMethods("GET", "POST", "PUT", "DELETE")
+                .allowedOrigins("http://localhost:4200", "http://localhost:8084", ccuApiUrl);
+    }
+
+    public String getCcuApiUrl() {
+        return ccuApiUrl;
+    }
 }
