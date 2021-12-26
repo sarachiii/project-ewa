@@ -1,0 +1,40 @@
+<div class="card shadow p-3 mb-3 fade-in">
+  <div class="p-2">
+    <div class="d-flex justify-content-between mb-3">
+      <h1 class="h2 px-2 mb-1 text-truncate">{{sensor.sensorName}}</h1>
+      <button *ngIf="sensor.name != 'lighting_rgb'" class="btn btn-primary mx-2 d-inline-block fw-bold" (click)="asTable=!asTable">
+        {{ asTable ? 'View as Chart' : 'View as Table' }}
+      </button>
+    </div>
+    <hr class="my-2 opacity-100">
+  </div>
+  <div *ngIf="sensor.name != 'lighting_rgb' && !asTable" class="fade-in">
+    <canvas class="p-2" [id]="sensor.nameCamelCase" baseChart
+            [chartType]="chartData.type"
+            [datasets]="chartData.dataSets"
+            [labels]="chartData.labels"
+            [options]="chartData.options"
+            [legend]="chartData.legend"
+            [plugins]="chartData.plugins"
+            [colors]="chartData.colors">
+    </canvas>
+  </div>
+  <div *ngIf="sensor.name == 'lighting_rgb' || asTable" class="px-2 pb-2 fade-in">
+    <table class="table mb-2">
+      <thead>
+      <tr>
+        <th scope="col">Time</th>
+        <th scope="col">{{sensor.sensorName}}</th>
+        <th scope="col">CO<sub>2</sub> Level</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of sensorData; index as i">
+        <th scope="row">{{data["timestamp"]}}</th>
+        <td>{{data["newValue"]}}</td>
+        <td>{{co2Levels[i]["newValue"]}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -27,6 +27,7 @@ import { EditNotesComponent } from './components/edit-notes/edit-notes.component
 import { TeamsComponent } from './components/teams/teams.component';
 import { ViewTeamsComponent } from './components/teams/view-teams/view-teams.component';
 import { TeamComponent } from './components/teams/view-teams/team/team.component';
+import { HistoryDataComponent } from './components/mainpage/home/history-data/history-data.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { TeamComponent } from './components/teams/view-teams/team/team.component
     EditNotesComponent,
     TeamsComponent,
     ViewTeamsComponent,
-    TeamComponent
+    TeamComponent,
+    HistoryDataComponent
   ],
   imports: [
     BrowserModule,

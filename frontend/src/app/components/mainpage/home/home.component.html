@@ -1,42 +1,40 @@
-<div class="container pt-4">
-  <ng-container *ngFor="let sensor of sensors">
-    <div class="card shadow p-3 mb-3">
-      <canvas *ngIf="sensor.name != 'lighting_rgb'" class="p-2" [id]="sensor.nameCamelCase" baseChart
-              [chartType]="data.get(sensor.nameCamelCase).type"
-              [datasets]="data.get(sensor.nameCamelCase).dataSets"
-              [labels]="data.get(sensor.nameCamelCase).labels"
-              [options]="data.get(sensor.nameCamelCase).options"
-              [legend]="data.get(sensor.nameCamelCase).legend"
-              [plugins]="data.get(sensor.nameCamelCase).plugins"
-              [colors]="data.get(sensor.nameCamelCase).colors">
-      </canvas>
-      <table class="table table-dark">
-        <thead>
-        <tr>
-          <th scope="col">First</th>
-          <th scope="col">Last</th>
-          <th scope="col">Handle</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>Otto</td>
-          <td>@mdo</td>
-        </tr>
-        <tr>
-          <th scope="row">2</th>
-          <td>Thornton</td>
-          <td>@fat</td>
-        </tr>
-        <tr>
-          <th scope="row">3</th>
-          <td>Larry</td>
-          <td>the Bird</td>
-          <td>@twitter</td>
-        </tr>
-        </tbody>
-      </table>
+<div *ngIf="sensors as sensors" class="container pt-4 fade-in">
+  <div  class="card p-3 mb-3">
+    <div class="d-flex justify-content-between">
+      <button class="btn btn-primary p-1 align-items-center d-flex" type="button" data-bs-target="#sensorsCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      </button>
+      <div class="dropdown w-100 mx-3">
+        <button #sensorDropdown class="btn btn-primary dropdown-toggle d-flex align-items-center py-2 w-100 fw-bold text-start"
+                type="button" id="sensorsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+          {{sensors[0]?.sensorName}}
+        </button>
+        <ul class="dropdown-menu w-100" aria-labelledby="sensorsDropdown">
+          <li *ngFor="let sensor of sensors; index as i; first as isFirst">
+            <button class="dropdown-item" type="button" data-bs-target="#sensorsCarousel"
+               [attr.data-bs-slide-to]="i" [attr.aria-current]="isFirst" [ngClass]="{'active': isFirst}" [attr.aria-label]="'Slide '+i" (click)="sensorDropdown.innerHTML=sensor.sensorName">
+              {{sensor.sensorName}}
+            </button>
+          </li>
+        </ul>
+      </div>
+      <button class="btn btn-primary p-1 align-items-center d-flex" type="button" data-bs-target="#sensorsCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      </button>
     </div>
-  </ng-container>
+  </div>
+
+  <div id="sensorsCarousel" class="carousel slide" data-bs-interval="false">
+    <div class="carousel-inner overflow-visible">
+      <ng-container *ngFor="let sensor of sensors; first as isFirst">
+        <div class="carousel-item" [class.active]="isFirst">
+          <app-history-data class="fade-in"
+                            [sensor]="sensor"
+                            [sensorData]="sensorsData.get(sensor.name)"
+                            [co2Levels]="sensorsData.get('co2_level')">
+          </app-history-data>
+        </div>
+      </ng-container>
+    </div>
+  </div>
 </div>
