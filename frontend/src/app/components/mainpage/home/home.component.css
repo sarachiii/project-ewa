@@ -1,21 +1,38 @@
-.chart-airHumidity{
-  display: inline-block;
-  width: 400px;
-  height: 400px;
-  float: left;
-}
-.chart-airTemperature{
-  display: inline-block;
-  width: 400px;
-  /*height: 400px;*/
-  float: left;
-}
-.background{
-  background-color: rgba(227, 214, 214, 0.28);
-  border-radius: 50px;
-  padding: 30px;
-}
 .card{
   border-color: rgb(130,174,28);
   border-radius: 10px;
+}
+.card > .list-group:last-child {
+  border-bottom-width: 0;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+.card > .list-group:first-child {
+  border-top-width: 0;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+}
+.list-group-item.active{
+  background-color: var(--cc-green);
+  border-color: var(--cc-green);
+}
+.dropdown > .btn::after {
+  margin-left: auto;
+  margin-right: 0.255em;
+  transition: transform 0.2s ease-in-out;
+}
+.dropdown > .btn.show::after {
+  transform: rotate(-180deg);
+}
+.dropdown > .btn {
+  border-radius: 10px;
+}
+.dropdown-item.active {
+  background-color: var(--cc-green);
+}
+.min-w-0 {
+  min-width: 0;
+}
+.h-min-content {
+  height: min-content;
 }

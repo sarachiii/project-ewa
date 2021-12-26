@@ -2,11 +2,9 @@
   border-color: var(--cc-darkgreen);
   border-radius: 10px;
 }
-.dropdown > .btn::after {
-  margin-left: auto;
-  margin-right: 0.255em;
-  transition: transform 0.2s ease-in-out;
+.btn {
+  border-radius: 10px;
 }
-.dropdown > .btn.show::after {
-  transform: rotate(-180deg);
+.min-w-0 {
+  min-width: 0;
 }
