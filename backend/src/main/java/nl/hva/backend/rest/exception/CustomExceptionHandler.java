@@ -36,6 +36,7 @@ class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
     }
 
+
     @ExceptionHandler(PreConditionFailed.class)
     public final ResponseEntity<ExceptionResponse> handlePreConditionFailedException(Exception ex, WebRequest wr){
         String path = ((ServletWebRequest)wr).getRequest().getRequestURI();
@@ -47,6 +48,18 @@ class CustomExceptionHandler extends ResponseEntityExceptionHandler {
                 path);
 
         return new ResponseEntity<>(exceptionResponse, HttpStatus.PRECONDITION_FAILED);
+    }
+    @ExceptionHandler(SimulatorNotWorking.class)
+    public final ResponseEntity<ExceptionResponse> handleSimulaorNotWorking(Exception ex, WebRequest wr){
+        String path = ((ServletWebRequest)wr).getRequest().getRequestURI();
+
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                HttpStatus.SERVICE_UNAVAILABLE.value(),
+                "Service is unavailable",
+                ex.getMessage(),
+                path);
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.SERVICE_UNAVAILABLE);
     }
 
     @ExceptionHandler(AlreadyExist.class)

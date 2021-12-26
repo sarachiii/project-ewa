@@ -2,32 +2,200 @@ package nl.hva.backend.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Random;
 
 /**
  * this method <description of functionality
  *
- * @author arashnasrat
+ * @author Mohamad Hassan
  */
+@Entity
+
+@NamedQueries({
+        @NamedQuery(name = "History.findAll", query = "SELECT h FROM History h"),
+        @NamedQuery(name = "History.findByGreenHouseId", query = "SELECT h FROM History h where h.ghId= :ghid")
+//        @NamedQuery(name = "History.saveHistoryRecord", query = "INSERT INTO History ()values(?,?,?,?,?,?,?,?,?)")
+        /*
+         INSERT INTO `pad_oba_2_ewa_dev`.`history`
+         (`timestamp`, `gh_id`, `air_temp_c`, `air_humidity`,
+         `soil_temp_c`, `soil_humidity`, `soil_mix_id`, `water_ph`,
+         `water_mix_id`, `lighting_rgb`, `daily_exposure`, `CO2_level`)
+         VALUES
+         ('2021-12-21 20:33:04', '2', '11', '12',
+          '21', '41', '1', '3',
+           '1', '#dddfff', '1', '901.2');
+         */
+})
 public class History {
-    @JsonFormat(pattern = "HH:mm:ss")
-    private LocalDateTime timestamp;
+
+    @Id
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private ZonedDateTime timestamp;
+    @Column(name = "gh_id")
+    private long ghId;
+    @Column(name = "air_temp_c")
+    private double airTemp;
+    @Column(name = "air_humidity")
+    private double airHumidity;
+    @Column(name = "soil_temp_c")
+    private double soilTemp;
+    @Column(name = "soil_humidity")
+    private double soilHumidity;
+    @Column(name = "soil_mix_id")
+    private double soilMixId;
+    @Column(name = "water_ph")
+    private double waterPh;
+    @Column(name = "water_mix_id")
+    private double waterMixId;
+    @Column(name = "lighting_rgb")
+    private String lightingRgb;
+    @Column(name = "daily_exposure")
+    private double dailyExposure;
+    @Column(name = "CO2_level")
+    private double co2Level;
+
+
+    public History() {
+    }
+
+    public History(ZonedDateTime timestamp, long ghId, double airTemp, double airHumidity, double soilTemp, double soilHumidity, double soilMixId, double waterPh, double waterMixId, String lightingRgb, double dailyExposure, double co2Level) {
+        this.timestamp = timestamp;
+        this.ghId = ghId;
+        this.airTemp = airTemp;
+        this.airHumidity = airHumidity;
+        this.soilTemp = soilTemp;
+        this.soilHumidity = soilHumidity;
+        this.soilMixId = soilMixId;
+        this.waterPh = waterPh;
+        this.waterMixId = waterMixId;
+        this.lightingRgb = lightingRgb;
+        this.dailyExposure = dailyExposure;
+        this.co2Level = co2Level;
+
+    }
+
+    public static List<History> generateFakeData() {
+
+        return null;
+    }
+
+    public double getSoilHumidity() {
+        return soilHumidity;
+    }
+
+    public void setSoilHumidity(double soilHumidity) {
+        this.soilHumidity = soilHumidity;
+    }
+
+    public void setTimestamp(ZonedDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public void setGhId(long ghId) {
+        this.ghId = ghId;
+    }
+
+    public void setAirTemp(double airTemp) {
+        this.airTemp = airTemp;
+    }
+
+    public void setAirHumidity(double airHumidaity) {
+        this.airHumidity = airHumidaity;
+    }
+
+    public void setSoilTemp(double soilTemp) {
+        this.soilTemp = soilTemp;
+    }
+
+    public void setSoilMixId(double soilMixId) {
+        this.soilMixId = soilMixId;
+    }
+
+    public void setWaterPh(double waterPh) {
+        this.waterPh = waterPh;
+    }
+
+    public void setWaterMixId(double waterMixId) {
+        this.waterMixId = waterMixId;
+    }
+
+    public void setLightingRgb(String lightingRgb) {
+        this.lightingRgb = lightingRgb;
+    }
+
+    public void setDailyExposure(double dailyExposure) {
+        this.dailyExposure = dailyExposure;
+    }
+
+    public void setCo2Level(double co2Level) {
+        this.co2Level = co2Level;
+    }
+
+    public ZonedDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    public long getGhId() {
+        return ghId;
+    }
+
+    public double getAirTemp() {
+        return airTemp;
+    }
+
+    public double getAirHumidity() {
+        return airHumidity;
+    }
+
+    public double getSoilTemp() {
+        return soilTemp;
+    }
+
+    public double getSoilMixId() {
+        return soilMixId;
+    }
+
+    public double getWaterPh() {
+        return waterPh;
+    }
+
+    public double getWaterMixId() {
+        return waterMixId;
+    }
+
+    public String getLightingRgb() {
+        return lightingRgb;
+    }
+
+    public double getDailyExposure() {
+        return dailyExposure;
+    }
+
+    public double getCo2Level() {
+        return co2Level;
+    }
+    //old code of Arash (hardCoded)
+    /*
+
     private Integer userId;
-    /*Integer greenHouseId;*/
+    Integer greenHouseId;
     private String sensorType;
     private String newValue;
     private String oldValue;
 
     public History(LocalDateTime timestamp, Integer userId, String sensorType, String newValue, String oldValue) {
+        this();
         this.timestamp = timestamp;
         this.userId = userId;
         this.sensorType = sensorType;
         this.newValue = newValue;
         this.oldValue = oldValue;
     }
+
 
     public LocalDateTime getTimestamp() {
         return timestamp;
@@ -111,4 +279,6 @@ public class History {
         }
         return sensorData;
     }
+
+ */
 }
