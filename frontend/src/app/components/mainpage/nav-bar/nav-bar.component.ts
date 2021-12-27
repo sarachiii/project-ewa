@@ -84,6 +84,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
 
   @HostListener('document:click', ['$event'])
   handleClickOutside(event: Event): void {
+    // If the component doesn't contain the target, click event occurred outside the component
     if (!this.elementRef.nativeElement.contains(event.target)) this.closeMobileMenu();
   }
 

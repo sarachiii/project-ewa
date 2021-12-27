@@ -1,13 +1,9 @@
-import {AfterContentChecked, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {ChartDataSets, ChartOptions, ChartType} from 'chart.js';
-import {Color, Label, PluginServiceGlobalRegistrationAndOptions, SingleOrMultiDataSet} from 'ng2-charts';
-import {Chart} from "chart.js";
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {HistoryService} from "../../../services/history.service";
 import {SensorsService} from "../../../services/sensors.service";
 import {Sensor} from "../../../models/sensor";
-import {EField} from "../../../models/field";
 import {UserService} from "../../../services/user.service";
-import {History} from "../../../models/history";
+import {Subscription, timer} from "rxjs";
 
 @Component({
   selector: 'app-home',
@@ -15,7 +11,7 @@ import {History} from "../../../models/history";
   styleUrls: ['./home.component.css'],
   providers: [SensorsService]
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   selectedSensor: Sensor | null;
   sensors: Sensor[];
   sensorsData: Map<string, (string | number)[]>
@@ -26,35 +22,38 @@ export class HomeComponent implements OnInit {
     ["Hydrology", "water_ph"],
     ["Climate Science", "air_humidity"]
   ]);
-
-  isActive: boolean;
+  private timerSubscription: Subscription;
 
   constructor(private historyService: HistoryService,
               private sensorsService: SensorsService,
-              private userService: UserService,
-              private cdRef: ChangeDetectorRef) {
+              private userService: UserService) {
     this.sensors = [];
     this.selectedSensor = null;
     this.sensorsData = new Map<string, (string | number)[]>();
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.userService.loggedUser$.subscribe(value => {
       this.sensorsService.getSensors().then(sensors => {
         // Sort sensors to show controlled element of specialty first
         this.sensors = sensors;//.sort((sensorOne) => sensorOne.name == this.specialtyPrefs.get(value.specialty) ? -1 : 0);
         this.selectedSensor = this.sensors.find(sensor => sensor.name == this.specialtyPrefs.get(value.specialty));
 
-        // Get the sensor data to populate charts/tables
-        this.historyService.getSensorData(2).subscribe((history) => {
-          this.sensorsData.set('co2_level', history.map((h) => h.co2Level));
-          this.sensorsData.set('timestamp', history.map((h) => h.convertedDate()));
-          for (let sensor of this.sensors) {
-            this.sensorsData.set(sensor.name, history.map(h => h[sensor.nameCamelCase]));
-          }
+        this.timerSubscription = timer(0, 60000).subscribe(() => {
+          // Get the sensor data to populate charts/tables
+          this.historyService.getHistory(2).toPromise().then((history) => {
+            this.sensorsData.set('co2_level', history.map((h) => h.co2Level));
+            this.sensorsData.set('timestamp', history.map((h) => h.convertedDate()));
+            for (let sensor of this.sensors) {
+              this.sensorsData.set(sensor.name, history.map(h => h[sensor.nameCamelCase]));
+            }
+          }).catch(console.error);
         })
       }).catch(console.error);
     })
   }
 
+  ngOnDestroy(): void {
+    this.timerSubscription && this.timerSubscription.unsubscribe();
+  }
 }

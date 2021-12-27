@@ -30,7 +30,7 @@ export class History {
   convertedDate(locale: string = 'en-GB', options?: Intl.DateTimeFormatOptions): string {
     if (!options) {
       options = {
-        day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'
+        day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit'
       };
     }
     return new Date(this.timestamp).toLocaleString(locale, options);

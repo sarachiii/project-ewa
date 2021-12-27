@@ -29,7 +29,7 @@
     </div>
     <ng-container *ngIf="sensors.length && selectedSensor">
       <ng-container *ngFor="let sensor of sensors">
-        <div class="flex-grow-1 min-w-0" *ngIf="selectedSensor.id == sensor.id">
+        <div class="flex-grow-1 min-w-0" [ngClass]="{'d-none': selectedSensor.id != sensor.id}">
           <app-history-data class="fade-in"
                             [sensor]="sensor"
                             [sensorData]="sensorsData.get(sensor.name)"

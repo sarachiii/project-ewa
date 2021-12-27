@@ -34,11 +34,11 @@
       </tr>
       </thead>
       <tbody>
-      <ng-container *ngIf="sensorData?.length && co2Levels?.length && timestamps?.length">
-        <tr *ngFor="let data of sensorData; index as i">
-          <th scope="row">{{timestamps[i]}}</th>
+      <ng-container *ngIf="sensorData?.length && co2Levels?.length && timestamps?.length && { timestamps: timestamps | reverse, sensorData: sensorData | reverse, co2Levels: co2Levels | reverse } as reversed">
+        <tr *ngFor="let data of reversed.sensorData; index as i">
+          <th scope="row">{{reversed.timestamps[i]}}</th>
           <td>{{data}}</td>
-          <td>{{co2Levels[i]}}</td>
+          <td>{{reversed.co2Levels[i]}}</td>
         </tr>
       </ng-container>
       </tbody>

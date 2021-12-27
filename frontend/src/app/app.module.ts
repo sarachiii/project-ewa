@@ -28,6 +28,7 @@ import { TeamsComponent } from './components/teams/teams.component';
 import { ViewTeamsComponent } from './components/teams/view-teams/view-teams.component';
 import { TeamComponent } from './components/teams/view-teams/team/team.component';
 import { HistoryDataComponent } from './components/mainpage/home/history-data/history-data.component';
+import { ReversePipe } from './shared/pipes/reverse.pipe';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { HistoryDataComponent } from './components/mainpage/home/history-data/hi
     TeamsComponent,
     ViewTeamsComponent,
     TeamComponent,
-    HistoryDataComponent
+    HistoryDataComponent,
+    ReversePipe
   ],
   imports: [
     BrowserModule,
