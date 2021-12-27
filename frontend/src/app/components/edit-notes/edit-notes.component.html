@@ -5,9 +5,6 @@
     <div class="card-header d-flex">
       <input maxLength="50" autocomplete="off" type="text" id="title" class="form-control titleColor col-sm-8"
              name="title" #title value="{{note.title}}">
-      <!--      <button type="button" class="float-end"-->
-      <!--              (click)="onSaveNote(title.value, text.value)" style="border: 0; background: transparent;">-->
-      <!--        <img src="assets/edit.svg" alt="edit"></button>-->
       <button type="button" class="btn btn-success float-end m-1 btnsize justify-content-end col-sm-2"
               (click)="onSaveNote(title.value, text.value)">
         ✓

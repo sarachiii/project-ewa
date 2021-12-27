@@ -1,16 +1,17 @@
-import {Component, Input, OnChanges, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {Workfield} from "../../models/workfield";
 import {NgxMasonryComponent, NgxMasonryOptions} from "ngx-masonry";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Note} from "../../models/note";
 import {NotesService} from "../../services/notes.service";
-import {first, skipWhile} from "rxjs/operators";
+import {first, map, skipWhile} from "rxjs/operators";
 import {User} from "../../models/user";
 import {UserService} from "../../services/user.service";
-import {interval} from "rxjs";
+import {interval, Observable} from "rxjs";
 
 /**
- * This is the notes component. It takes care of showing the notes on the notes page. It shows the newest notes first and than the older ones.
+ * This is the notes component. It takes care of showing the notes on the notes page.
+ * It shows the newest notes first and than the older ones.
  *
  * @author Sarah Chrzanowska-Buth
  */
@@ -26,23 +27,11 @@ export class NotesComponent implements OnInit, OnChanges {
   editNote: boolean = false;
   deleteNote: boolean;
   selectedNote: Note = <Note>{};
-
-
-  notes: Note[] = [];
-  filteredNotes: Note[] = [];
   test: boolean = false;
   user: User;
+  notes$: Observable<Note[]>;
 
-  get sortedNotes(): Note[] {
-    // this.filteredNotes = this.notes.filter(note => this.selectedWorkfieldFromNavbar.charAt(0) == note.workfield.toLocaleLowerCase().charAt(0)); //the notes are filtered by workfield and are shown on the correct page
-    // TODO: Maybe placing the filter here is exhausting too many resources
-    this.notes = this.notesService.notes.filter(note => this.selectedWorkfieldFromNavbar.charAt(0) == note.workfield.toLocaleLowerCase().charAt(0)); //the notes are filtered by workfield and are shown on the correct page
-    // if (this.masonry) this.reloadMasonry();
-    // console.log(this.notes)
-    return this.notes.sort((a, b) => new Date(b.timestamp).valueOf() - new Date(a.timestamp).valueOf());
-  }
-
-  @Input() selectedWorkfieldFromNavbar: Workfield;
+  @Input() selectedWorkfieldFromNavbar: string;
 
   @ViewChild(NgxMasonryComponent) masonry: NgxMasonryComponent;
   masonryOptions: NgxMasonryOptions;
@@ -58,35 +47,37 @@ export class NotesComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    //TODO: set the workfield to the workfield of the logged in user
-    this.router.navigate(["botany"], {relativeTo: this.activatedRoute}) //the initial notes page is equal to the workfield of the user
-      .catch(reason => console.error(reason));
     this.isVisited = true;
     this.notesService.updateVisitedPage(this.isVisited);
-    this.selectedWorkfieldFromNavbar = Workfield.BOTANY; //TODO: set the workfield to the workfield of the logged in user
-    this.notesService.restGetNotes().toPromise().then(value => {
-      this.notesService.notes = value.map(note => Note.copyConstructor(note));
-      // this.notes = this.notesService.notes.filter(note => this.selectedWorkfieldFromNavbar.charAt(0) == note.workfield.toLocaleLowerCase().charAt(0)); //the notes are filtered by workfield and are shown on the correct page
-      // this.notes = this.notesService.notes;
-      // this.filteredNotes = this.notes.filter(note => this.selectedWorkfieldFromNavbar.charAt(0) == note.workfield.toLocaleLowerCase().charAt(0)); //the notes are filtered by workfield and are shown on the correct page
-    }).catch(console.log);
-    // this.notesService.notes$.subscribe(value => {
-    //   console.log(value)
-    //   if (this.masonry) this.reloadMasonry();
-    // })
-    // this.filteredNotes = this.notes.filter(note => this.selectedWorkfieldFromNavbar.charAt(0) == note.workfield.toLocaleLowerCase().charAt(0)); //the notes are filtered by workfield and are shown on the correct page
-    // console.log(this.filteredNotes)
-    this.userService.loggedUser$.pipe(skipWhile(value => Object.keys(value).length === 0), first()).subscribe(value => {
-      this.user = value;
-    });
+
+    this.userService.loggedUser$
+      .pipe(skipWhile(value => Object.keys(value).length === 0), first())
+      .subscribe(value => {
+        this.user = value;
+        // The initial notes page is equal to the workfield of the user
+        this.router.navigate([this.user.specialty.toLowerCase()], {relativeTo: this.activatedRoute})
+          .catch(reason => console.error(reason));
+        this.selectedWorkfieldFromNavbar = this.user.specialty.toLowerCase();
+      });
+
+    this.notes$.subscribe(value => {
+      if (value.length && this.masonry) this.reloadMasonry();
+    })
   }
 
-  ngOnChanges(): void {
+  ngOnChanges(changes: SimpleChanges): void {
     this.masonryOptions = {
       percentPosition: true,
       horizontalOrder: true,
     };
-    // this.filteredNotes = this.notes.filter(note => this.selectedWorkfieldFromNavbar.charAt(0) == note.workfield.toLocaleLowerCase().charAt(0));
+
+    this.notes$ = this.notesService.notes$
+      .pipe(map(notes => {
+        return notes
+          .filter((note) =>
+            this.selectedWorkfieldFromNavbar.charAt(0) == note.user.specialty.toLocaleLowerCase().charAt(0))
+          .sort((a, b) => new Date(b.timestamp).valueOf() - new Date(a.timestamp).valueOf());
+      }));
   }
 
   reloadMasonry(): void {
@@ -104,9 +95,8 @@ export class NotesComponent implements OnInit, OnChanges {
   }
 
   onDeleteNote(noteId: number) {
-    if(confirm("Are you sure you want to delete this note?")){
+    if (confirm("Are you sure you want to delete this note?")) {
       this.notesService.deleteNote(noteId);
-      window.location.reload();
     }
   }
 }

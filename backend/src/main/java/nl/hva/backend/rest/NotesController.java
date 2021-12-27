@@ -1,5 +1,7 @@
 package nl.hva.backend.rest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import nl.hva.backend.models.Note;
 import nl.hva.backend.repositories.NotesRepository;
 import nl.hva.backend.rest.exception.ResourceNotFound;
@@ -17,6 +19,8 @@ public class NotesController {
     @Autowired
     private NotesRepository notesRepository;
 
+    @Autowired
+    private ObjectMapper mapper;
 
     //Get all notes
     @GetMapping("all")
@@ -30,24 +34,23 @@ public class NotesController {
         if (note.noteText.length() <= 0 && note.title.length() <= 0) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         } else if (note.noteText.length() <= 500 && note.title.length() <= 50) {
-            notesRepository.insertOrUpdateNote(note);
-            return ResponseEntity.ok().build();
+            Note savedNote = notesRepository.insertOrUpdateNote(note);
+            return ResponseEntity.ok().body(savedNote);
         } else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
 
-    //Delete a scooter by id from the scooters list
+    //Delete a note by id from the note list
     @DeleteMapping("delete/{id}")
-    @ResponseBody
-    public ResponseEntity<String> deleteScooterById(@PathVariable int id) {
-        if (!notesRepository.deleteNoteById(id))
-            throw new ResourceNotFound("id-" + id);
-        return ResponseEntity.ok().body("Note with id " + id + " was deleted.");
+    public ResponseEntity<ObjectNode> deleteNoteById(@PathVariable int id) {
+        if (!notesRepository.deleteNoteById(id)) throw new ResourceNotFound("id-" + id);
+        ObjectNode response = mapper.createObjectNode();
+        response.put("message", "Note with id " + id + " was deleted.");
+        return ResponseEntity.ok(response);
     }
 
-    //GET one note by id
+//    GET one note by id
 //    @GetMapping("{id}")
-//    @ResponseBody
-//    public Note getScooterById(@PathVariable int id) {
+//    public Note getNoteById(@PathVariable int id) {
 //        Note note = notesRepository.findNoteById(id);
 //
 //        if (note == null)
