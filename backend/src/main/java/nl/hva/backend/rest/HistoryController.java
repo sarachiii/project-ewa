@@ -121,7 +121,11 @@ public class HistoryController {
 
     }
 
-    /*@Scheduled(fixedRate = 60000)
+    /**
+     * Periodically saves data to the history
+     * Period = 60 seconds
+     */
+    @Scheduled(fixedRate = 60000)
     public void scheduleSaveSensorData() {
         ResponseEntity<JsonNode> response = webClient.get()
                 .uri(uriBuilder -> uriBuilder
@@ -152,5 +156,4 @@ public class HistoryController {
         }
 
     }
-*/
 }

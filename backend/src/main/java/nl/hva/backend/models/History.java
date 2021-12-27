@@ -92,8 +92,8 @@ public class History {
         this.airTempC = airTemp;
     }
 
-    public void setAirHumidity(double airHumidaity) {
-        this.airHumidity = airHumidaity;
+    public void setAirHumidity(double airHumidity) {
+        this.airHumidity = airHumidity;
     }
 
     public void setSoilTempC(double soilTemp) {

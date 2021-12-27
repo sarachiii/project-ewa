@@ -39,7 +39,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.sensors = sensors;//.sort((sensorOne) => sensorOne.name == this.specialtyPrefs.get(value.specialty) ? -1 : 0);
         this.selectedSensor = this.sensors.find(sensor => sensor.name == this.specialtyPrefs.get(value.specialty));
 
-        this.timerSubscription = timer(0, 60000).subscribe(() => {
+        this.timerSubscription = timer(0, 30000).subscribe(() => {
           // Get the sensor data to populate charts/tables
           this.historyService.getHistory(2).toPromise().then((history) => {
             this.sensorsData.set('co2_level', history.map((h) => h.co2Level));

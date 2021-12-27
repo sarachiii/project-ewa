@@ -22,7 +22,7 @@ export class HistoryService{
     url.searchParams.set('gh', ghId.toString())
     return this.httpClient.get<History[]>(url.toString())
       .pipe( // Slice last 10 records
-        map(histories => histories.slice(-10).map(history => Object.assign(new History(), history)))
+        map(histories => histories.slice(-10).reverse().map(history => Object.assign(new History(), history)))
       );
   }
 }
