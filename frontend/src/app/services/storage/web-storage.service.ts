@@ -16,8 +16,8 @@ export class WebStorageService {
     return this.getAsNumber("userId");
   }
 
-  setStorage(rememberMe: boolean) {
-    if (rememberMe) {
+  setStorage(retainData: boolean) {
+    if (retainData) {
       localStorage.setItem("rememberMe", "true");
       this.webStorage = localStorage;
     } else {

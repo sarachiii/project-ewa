@@ -28,7 +28,7 @@ import java.util.*;
 /**
  * This method is the controller of all the sensors
  *
- * @author Jechillo Huang
+ * @author Hashim Mohammad
  */
 
 @RestController

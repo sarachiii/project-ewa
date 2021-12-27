@@ -19,7 +19,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/sensor/history")
+@RequestMapping("/sensors/history")
 public class HistoryController {
     private static final int SENSOR_DATA_LIMIT = 100;
 

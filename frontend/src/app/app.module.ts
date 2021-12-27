@@ -26,7 +26,8 @@ import { SimpleNotificationsModule } from "angular2-notifications";
 import { EditNotesComponent } from './components/edit-notes/edit-notes.component';
 import { TeamsComponent } from './components/teams/teams.component';
 import { ViewTeamsComponent } from './components/teams/view-teams/view-teams.component';
-import { TeamComponent } from './components/teams/view-teams/team/team.component';
+import { MembersComponent } from './components/teams/view-teams/members/members.component';
+import { AddUserComponent } from './components/teams/add-user/add-user.component';
 import { HistoryDataComponent } from './components/mainpage/home/history-data/history-data.component';
 import { ReversePipe } from './shared/pipes/reverse.pipe';
 
@@ -48,7 +49,8 @@ import { ReversePipe } from './shared/pipes/reverse.pipe';
     EditNotesComponent,
     TeamsComponent,
     ViewTeamsComponent,
-    TeamComponent,
+    MembersComponent,
+    AddUserComponent,
     HistoryDataComponent,
     ReversePipe
   ],

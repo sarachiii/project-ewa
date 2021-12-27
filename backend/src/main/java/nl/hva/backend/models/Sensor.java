@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * This is the model for all the sensors
  *
- * @author Hashim Mohammad & Jechillo Huang
+ * @author Hashim Mohammad
  */
 @Entity
 @NamedQueries({

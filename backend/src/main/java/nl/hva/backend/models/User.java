@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "user")
 public class User {
 
     @Id
@@ -43,9 +42,14 @@ public class User {
     @PrimaryKeyJoinColumn
     private Preferences preferences;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(targetEntity = Note.class, mappedBy = "user")
     @JsonBackReference
     private List<Note> notes = new ArrayList<>();
+    
+    @ManyToOne(targetEntity = Team.class)
+    @JsonBackReference
+    @JoinColumn(name = "team_id", insertable = false, updatable = false)
+    private Team team;
 
     public enum Specialty {
         A("Agronomy"),

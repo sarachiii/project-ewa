@@ -18,7 +18,7 @@ export class HistoryService{
   }
 
   getHistory(ghId: number): Observable<History[]> {
-    let url = new URL(`/sensor/history`, this.resourceUrl);
+    let url = new URL('/sensors/history', this.resourceUrl);
     url.searchParams.set('gh', ghId.toString())
     return this.httpClient.get<History[]>(url.toString())
       .pipe( // Slice last 10 records

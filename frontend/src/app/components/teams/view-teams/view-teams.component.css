@@ -16,3 +16,13 @@
   background-color: var(--cc-green);
   font-weight: bold;
 }
+.modal-content {
+  border-radius: 10px;
+  border-color: var(--cc-darkgreen);
+}
+.modal-header {
+  border-bottom-color: var(--cc-darkgreen);
+}
+.modal-footer {
+  border-top-color: var(--cc-darkgreen);
+}

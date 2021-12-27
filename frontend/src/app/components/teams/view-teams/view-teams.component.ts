@@ -1,21 +1,34 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from "rxjs";
+import {TeamService} from "../../../services/team.service";
+import {UserService} from "../../../services/user.service";
+import {Role, User} from "../../../models/user";
+import {Team} from "../../../models/team";
 
 @Component({
   selector: 'app-view-teams',
   templateUrl: './view-teams.component.html',
-  styleUrls: ['./view-teams.component.css', '../teams.component.css']
+  styleUrls: ['./view-teams.component.css', '../teams.component.css'],
+  providers: [TeamService]
 })
 export class ViewTeamsComponent implements OnInit, OnDestroy {
+  readonly Role = Role;
   private _selectedTeamId: number;
   protected paramsSubscription: Subscription | null;
-  // Mocking teams ids
-  teams = [{id: 1}, {id: 2}, {id: 3}, {id: 4}, {id: 5}]
+  user: User;
+  teams: Team[] = [];
 
   constructor(private router: Router,
-              private activatedRoute: ActivatedRoute) {
+              private activatedRoute: ActivatedRoute,
+              private teamService: TeamService,
+              private userService: UserService) {
     this.paramsSubscription = null;
+    this.userService.loggedUser$.subscribe(value => {
+      this.user = value;
+      this.onSelect(this.user.teamId);
+    })
+    this.teams = this.teamService.findAll();
   }
 
   get selectedTeamId(): number {
@@ -42,8 +55,11 @@ export class ViewTeamsComponent implements OnInit, OnDestroy {
   onSelect(id: number) {
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
-      queryParams: { team: id }
+      queryParams: {team: id}
     }).catch(console.error)
   }
 
+  addNewTeam(): void {
+    return null;
+  }
 }

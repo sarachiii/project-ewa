@@ -30,3 +30,6 @@
   border-bottom-left-radius: 11px;
   border-bottom-right-radius: 11px;
 }*/
+.btn {
+  border-radius: 10px;
+}
