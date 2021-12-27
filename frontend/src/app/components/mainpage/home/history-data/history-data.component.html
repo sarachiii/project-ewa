@@ -1,0 +1,47 @@
+<div class="card shadow p-3 fade-in">
+  <div class="p-2">
+    <div class="d-flex justify-content-between mb-3">
+      <h1 class="h2 px-2 mb-1 text-truncate">{{sensor.sensorName}}</h1>
+      <button *ngIf="sensor.name != 'lighting_rgb'" class="btn btn-primary px-2 px-sm-3 mx-2 d-inline-flex align-items-center fw-bold" (click)="asTable=!asTable">
+        <span class="d-none d-sm-inline">
+          {{ asTable ? 'View as Graph' : 'View as Table' }}
+        </span>
+        <img class="d-sm-none"
+             [src]="asTable ? 'assets/images/history/line_chart.svg' : 'assets/images/history/table_chart.svg'"
+             [alt]="asTable ? 'View as Graph' : 'View as Table'">
+      </button>
+    </div>
+    <hr class="my-2 opacity-100">
+  </div>
+  <div *ngIf="sensor.name != 'lighting_rgb' && !asTable" class="fade-in">
+    <canvas class="p-2" [id]="sensor.nameCamelCase" baseChart
+            [chartType]="chartData.type"
+            [datasets]="chartData.dataSets"
+            [labels]="chartData.labels"
+            [options]="chartData.options"
+            [legend]="chartData.legend"
+            [plugins]="chartData.plugins"
+            [colors]="chartData.colors">
+    </canvas>
+  </div>
+  <div *ngIf="sensor.name == 'lighting_rgb' || asTable" class="px-3 pb-2 fade-in">
+    <table class="table mb-2">
+      <thead>
+      <tr>
+        <th scope="col">Date</th>
+        <th scope="col">{{sensor.sensorName}}</th>
+        <th scope="col">CO<sub>2</sub> Level</th>
+      </tr>
+      </thead>
+      <tbody>
+      <ng-container *ngIf="sensorData?.length && co2Levels?.length && timestamps?.length && { timestamps: timestamps | reverse, sensorData: sensorData | reverse, co2Levels: co2Levels | reverse } as reversed">
+        <tr *ngFor="let data of reversed.sensorData; index as i">
+          <th scope="row">{{reversed.timestamps[i]}}</th>
+          <td>{{data}}</td>
+          <td>{{reversed.co2Levels[i]}}</td>
+        </tr>
+      </ng-container>
+      </tbody>
+    </table>
+  </div>
+</div>

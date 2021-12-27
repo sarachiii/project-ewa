@@ -1,0 +1,10 @@
+.card{
+  border-color: var(--cc-darkgreen);
+  border-radius: 10px;
+}
+.btn {
+  border-radius: 10px;
+}
+.min-w-0 {
+  min-width: 0;
+}

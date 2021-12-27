@@ -2,18 +2,27 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {Observable} from "rxjs";
+import {History} from "../models/history";
+import {map} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
 })
 export class HistoryService{
   sensorHistory: any[][];
+  resourceUrl: URL;
 
   constructor(private httpClient: HttpClient) {
     this.sensorHistory = [];
+    this.resourceUrl = new URL(environment.apiUrl);
   }
 
-  getSensorData(sensor: string = ""): Observable<any> {
-    return this.httpClient.get(`${environment.apiUrl}/sensor/history/${sensor}`);
+  getHistory(ghId: number): Observable<History[]> {
+    let url = new URL(`/sensor/history`, this.resourceUrl);
+    url.searchParams.set('gh', ghId.toString())
+    return this.httpClient.get<History[]>(url.toString())
+      .pipe( // Slice last 10 records
+        map(histories => histories.slice(-10).map(history => Object.assign(new History(), history)))
+      );
   }
 }

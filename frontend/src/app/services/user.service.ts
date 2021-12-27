@@ -71,7 +71,7 @@ export class UserService implements CRUDService<User> {
 
   updateLoggedUser(id: number) {
     this.getUserById(id).pipe(shareReplay(1)).toPromise().then(value => {
-      this._loggedUser$.next(value);
+      this._loggedUser$.next(Object.assign(new User(), value));
     }).catch(reason => { console.log(reason); });
       /*.pipe(shareReplay(1)).subscribe(value => {
       this._loggedUser$.next(value);

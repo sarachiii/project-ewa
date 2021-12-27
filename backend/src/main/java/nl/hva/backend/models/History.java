@@ -228,33 +228,36 @@ public class History {
 
     public static List<History> generateFakeData() {
         List<History> sensorData = new ArrayList<>();
-        String[] sensors = { "air_temp_c", "air_humidity", "soil_temp_c", "soil_humidity", "soil_mix_id",
-                "water_ph", "water_mix_id", "lighting_rgb", "daily_exposure" };
+        String[] sensors = { "airTempC", "airHumidity", "soilTempC", "soilHumidity", "soilMixId",
+                "waterPh", "waterMixId", "lightingRgb", "dailyExposure", "co2Level" };
         for (int i = 0; i < 10; i++) {
             LocalDateTime timestamp = LocalDateTime.now().plusMinutes(i + 1);
             for (String sensor : sensors) {
                 String value;
                 switch (sensor) {
-                    case "air_temp_c":
-                    case "soil_temp_c":
+                    case "airTempC":
+                    case "soilTempC":
                         value = String.valueOf((int)(Math.random() * 30 + 10));
                         break;
-                    case "air_humidity":
-                    case "soil_humidity":
+                    case "airHumidity":
+                    case "soilHumidity":
                         value = String.valueOf((int)(Math.random() * (77) + 12));
                         break;
-                    case "soil_mix_id":
-                    case "water_mix_id":
+                    case "soilMixId":
+                    case "waterMixId":
                         value = String.valueOf((int)(Math.random() * (9999) + 1));
                         break;
-                    case "water_ph":
+                    case "waterPh":
                         value = String.valueOf((int)(Math.random() * (3) + 5));
                         break;
-                    case "lighting_rgb":
+                    case "lightingRgb":
                         value = "#" + Integer.toHexString((int)(Math.random() * (16777215)));
                         break;
-                    case "daily_exposure":
+                    case "dailyExposure":
                         value = String.valueOf((int)(Math.random() * (23) + 1));
+                        break;
+                    case "co2Level":
+                        value = String.valueOf((int)(Math.random() * (1000) + 1000));
                         break;
                     default:
                         value = "";

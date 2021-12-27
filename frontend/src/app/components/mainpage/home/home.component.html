@@ -1,34 +1,43 @@
-<div class="container pt-4">
-  <div class="row py-3">
-    <div class="col-6">
-      <div class="card shadow p-3">
-        <canvas id="baseChart" class="chart"></canvas>
-      </div>
-    </div>
-    <div class="col-6">
-      <div class="card shadow p-3">
-        <canvas id="airTemperature" class="airTemperature"></canvas>
-      </div>
-    </div>
-  </div>
-  <div class="row py-3">
-    <div class="col-6">
-      <div class="card shadow p-3">
-        <canvas id="soilTemperature" class="airTemperature"></canvas>
-      </div>
-    </div>
-    <div class="col-6">
-      <div class="card shadow p-3">
-        <canvas id="soilHumidity" class="airTemperature"></canvas>
-      </div>
+<div *ngIf="sensors as sensors" class="container-fluid container-lg pt-4 fade-in">
+  <div *ngIf="sensors.length && selectedSensor" class="card p-3 mb-3 d-md-none fade-in">
+    <div class="dropdown">
+      <button class="btn btn-primary dropdown-toggle d-flex align-items-center py-2 w-100 fw-bold text-start"
+              type="button" id="sensorsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        {{selectedSensor.sensorName}}
+      </button>
+      <ul class="dropdown-menu w-100" aria-labelledby="sensorsDropdown">
+        <li *ngFor="let sensor of sensors">
+          <button class="dropdown-item fw-bold" type="button"
+                  [ngClass]="{'active': selectedSensor.id == sensor.id}"
+                  (click)="selectedSensor=sensor">
+            {{sensor.sensorName}}
+          </button>
+        </li>
+      </ul>
     </div>
   </div>
-  <div class="row py-3">
-    <div class="col-6">
-      <div class="card shadow p-3">
-        <canvas id="soilmix" class="airTemperature"></canvas>
-      </div>
-    </div>
 
+  <div class="d-flex">
+    <div *ngIf="sensors.length && selectedSensor" class="card shadow p-3 me-3 flex-grow-0 fade-in d-none d-md-flex h-min-content">
+      <div class="list-group fade-in">
+        <button *ngFor="let sensor of sensors" type="button" class="list-group-item list-group-item-action px-3 py-2 fw-bold"
+                [ngClass]="{'active': selectedSensor.id == sensor.id}"
+                (click)="selectedSensor=sensor">
+          {{sensor.sensorName}}
+        </button>
+      </div>
+    </div>
+    <ng-container *ngIf="sensors.length && selectedSensor">
+      <ng-container *ngFor="let sensor of sensors">
+        <div class="flex-grow-1 min-w-0" [ngClass]="{'d-none': selectedSensor.id != sensor.id}">
+          <app-history-data class="fade-in"
+                            [sensor]="sensor"
+                            [sensorData]="sensorsData.get(sensor.name)"
+                            [co2Levels]="sensorsData.get('co2_level')"
+                            [timestamps]="sensorsData.get('timestamp')">
+          </app-history-data>
+        </div>
+      </ng-container>
+    </ng-container>
   </div>
 </div>
