@@ -18,13 +18,14 @@
 .card > hr {
   background-color: var(--cc-darkgreen);
 }
-
 .btn {
-  /*padding: 0.375rem 0.5rem;*/
+  border-radius: 0.5rem;
+}
+
+.fixed-bottom .btn {
   border-radius: 10px;
   height: 50px;
   min-width: 50px;
-
 }
 
 .form-control {
@@ -65,13 +66,6 @@ input[type=color] {
   #sensors > .card {
     width: 100%;
   }
-}
-
-.fixed-bottom {
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  left: 0;
 }
 
 

@@ -40,10 +40,6 @@ export class SensorsService {
     // return null;
   }
 
-  getSensorData(ghId: number | string) {
-    return this.http.get(`http://www.sneltec.com/hva/hva.php?gh_id=${ghId}`)
-  }
-
   getCurrentData(ghId: number | string = 2): Observable<any> {
     return this.http.get(new URL(`sensors/data/api?id=${ghId}&view=raw`, this.resourceUrl).toString());
   }

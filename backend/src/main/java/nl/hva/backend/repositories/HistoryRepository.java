@@ -20,14 +20,14 @@ public class HistoryRepository {
     @PersistenceContext
     EntityManager entityManager;
 
-    public List<History> findAll(){
+    public List<History> findAll(int limit){
         TypedQuery<History> namedQuery= entityManager.createNamedQuery("History.findAll",History.class);
-        return  namedQuery.getResultList();
+        return  namedQuery.setMaxResults(limit).getResultList();
     }
-    public List<History> findByGreenHouseId(Long id){
+    public List<History> findByGreenHouseId(Long id, int limit){
         TypedQuery<History> namedQuery= entityManager.createNamedQuery("History.findByGreenHouseId",History.class);
         namedQuery.setParameter("ghid",id);
-        return namedQuery.getResultList();
+        return namedQuery.setMaxResults(limit).getResultList();
 
     }
     public History saveHistoryRecord(History history){

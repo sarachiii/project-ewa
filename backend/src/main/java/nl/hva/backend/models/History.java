@@ -16,19 +16,8 @@ import java.util.List;
 @Entity
 
 @NamedQueries({
-        @NamedQuery(name = "History.findAll", query = "SELECT h FROM History h"),
-        @NamedQuery(name = "History.findByGreenHouseId", query = "SELECT h FROM History h where h.ghId= :ghid")
-//        @NamedQuery(name = "History.saveHistoryRecord", query = "INSERT INTO History ()values(?,?,?,?,?,?,?,?,?)")
-        /*
-         INSERT INTO `pad_oba_2_ewa_dev`.`history`
-         (`timestamp`, `gh_id`, `air_temp_c`, `air_humidity`,
-         `soil_temp_c`, `soil_humidity`, `soil_mix_id`, `water_ph`,
-         `water_mix_id`, `lighting_rgb`, `daily_exposure`, `CO2_level`)
-         VALUES
-         ('2021-12-21 20:33:04', '2', '11', '12',
-          '21', '41', '1', '3',
-           '1', '#dddfff', '1', '901.2');
-         */
+        @NamedQuery(name = "History.findAll", query = "SELECT h FROM History h ORDER BY h.timestamp DESC"),
+        @NamedQuery(name = "History.findByGreenHouseId", query = "SELECT h FROM History h WHERE h.ghId= :ghid ORDER BY h.timestamp DESC")
 })
 public class History {
 
@@ -38,11 +27,11 @@ public class History {
     @Column(name = "gh_id")
     private long ghId;
     @Column(name = "air_temp_c")
-    private double airTemp;
+    private double airTempC;
     @Column(name = "air_humidity")
     private double airHumidity;
     @Column(name = "soil_temp_c")
-    private double soilTemp;
+    private double soilTempC;
     @Column(name = "soil_humidity")
     private double soilHumidity;
     @Column(name = "soil_mix_id")
@@ -62,12 +51,12 @@ public class History {
     public History() {
     }
 
-    public History(ZonedDateTime timestamp, long ghId, double airTemp, double airHumidity, double soilTemp, double soilHumidity, double soilMixId, double waterPh, double waterMixId, String lightingRgb, double dailyExposure, double co2Level) {
+    public History(ZonedDateTime timestamp, long ghId, double airTempC, double airHumidity, double soilTempC, double soilHumidity, double soilMixId, double waterPh, double waterMixId, String lightingRgb, double dailyExposure, double co2Level) {
         this.timestamp = timestamp;
         this.ghId = ghId;
-        this.airTemp = airTemp;
+        this.airTempC = airTempC;
         this.airHumidity = airHumidity;
-        this.soilTemp = soilTemp;
+        this.soilTempC = soilTempC;
         this.soilHumidity = soilHumidity;
         this.soilMixId = soilMixId;
         this.waterPh = waterPh;
@@ -99,16 +88,16 @@ public class History {
         this.ghId = ghId;
     }
 
-    public void setAirTemp(double airTemp) {
-        this.airTemp = airTemp;
+    public void setAirTempC(double airTemp) {
+        this.airTempC = airTemp;
     }
 
     public void setAirHumidity(double airHumidaity) {
         this.airHumidity = airHumidaity;
     }
 
-    public void setSoilTemp(double soilTemp) {
-        this.soilTemp = soilTemp;
+    public void setSoilTempC(double soilTemp) {
+        this.soilTempC = soilTemp;
     }
 
     public void setSoilMixId(double soilMixId) {
@@ -143,16 +132,16 @@ public class History {
         return ghId;
     }
 
-    public double getAirTemp() {
-        return airTemp;
+    public double getAirTempC() {
+        return airTempC;
     }
 
     public double getAirHumidity() {
         return airHumidity;
     }
 
-    public double getSoilTemp() {
-        return soilTemp;
+    public double getSoilTempC() {
+        return soilTempC;
     }
 
     public double getSoilMixId() {

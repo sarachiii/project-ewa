@@ -114,10 +114,6 @@ export class SensorComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.sensorsService.getSensorData(2).subscribe(response => {
-      console.log(response)
-      console.log(JSON.parse(response['msg']))
-    })
     console.log(this.sensors)
     this.userSubscription = this.userService.loggedUser$.subscribe(value => {
       this.user = value;

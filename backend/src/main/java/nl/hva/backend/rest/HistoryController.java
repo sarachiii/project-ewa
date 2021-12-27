@@ -1,16 +1,11 @@
 package nl.hva.backend.rest;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectReader;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import nl.hva.backend.models.History;
 import nl.hva.backend.repositories.HistoryRepository;
 import nl.hva.backend.rest.exception.BadRequestException;
 import nl.hva.backend.rest.exception.PreConditionFailed;
 import nl.hva.backend.rest.exception.ResourceNotFound;
-import nl.hva.backend.rest.exception.SimulatorNotWorking;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -20,17 +15,16 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.IOException;
-import java.sql.Wrapper;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 
 @RestController
 @RequestMapping("/sensor/history")
 public class HistoryController {
+    private static final int SENSOR_DATA_LIMIT = 100;
+
     @Autowired
     private HistoryRepository historyRepository;
-
 
     @Autowired
     @Qualifier("apiClient")
@@ -41,7 +35,18 @@ public class HistoryController {
 
 
     @GetMapping()
-    public List<History> getAllSensorData(@RequestParam(required = false) String gh) {
+    public List<History> getAllSensorData(@RequestParam(required = false) String gh,
+                                          @RequestParam(defaultValue = "10") String limit) {
+        int lim;
+        try {
+            lim = Integer.parseInt(limit);
+        } catch (NumberFormatException e) {
+            throw new PreConditionFailed("Limit parameter value is not a number");
+        }
+
+        // If requested limit exceeds the data limit, set it to the data limit
+        if (lim > SENSOR_DATA_LIMIT) lim = SENSOR_DATA_LIMIT;
+
         if (gh != null) {
             long id;
             try {
@@ -49,9 +54,10 @@ public class HistoryController {
             } catch (NumberFormatException e) {
                 throw new PreConditionFailed("Enter a number value pleeeeeeeeeeeeeeeeeas!");
             }
-            return historyRepository.findByGreenHouseId(id);
+            return historyRepository.findByGreenHouseId(id, lim);
         }
-        return historyRepository.findAll();
+
+        return historyRepository.findAll(lim);
     }
 
     @PostMapping()
@@ -125,12 +131,9 @@ public class HistoryController {
                         .build())
                 .retrieve().toEntity(JsonNode.class).block();
 
-        System.out.println("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
-
         if (response != null && response.getStatusCode().equals(HttpStatus.OK) && response.getBody() != null) {
             JsonNode responseNode = response.getBody();
             History history = new History(
-//                    ZonedDateTime.parse(responseNode.get("date_time").asText()),
                     ZonedDateTime.now(),
                     responseNode.get("gh_id").asLong(),
                     responseNode.get("air_temp_c").asDouble(),
@@ -144,8 +147,6 @@ public class HistoryController {
                     responseNode.get("daily_exposure").asDouble(),
                     responseNode.get("CO2_level").asDouble()
             );
-            history.setGhId(responseNode.get("gh_id").asLong());
-
 
             this.postData(history);
         }
