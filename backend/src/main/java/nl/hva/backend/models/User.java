@@ -1,8 +1,7 @@
 package nl.hva.backend.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import javax.persistence.*;
@@ -26,8 +25,7 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
 
-//    @JsonInclude()
-//    @Transient
+    @JsonIgnore
     private String password;
 
     @Enumerated(EnumType.STRING)
@@ -41,7 +39,7 @@ public class User {
     @Column(name = "team_id")
     private Long teamId;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(targetEntity = Preferences.class, mappedBy = "user", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private Preferences preferences;
 

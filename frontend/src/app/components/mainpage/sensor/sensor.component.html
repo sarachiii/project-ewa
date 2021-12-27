@@ -1,51 +1,60 @@
-<div class="container">
+<div class="container fade-in">
   <!--Sensors Header-->
   <div class="row justify-content-center pt-4 pb-2">
-    <div class="col col-lg-6">
+    <div class="col col-md-10 col-lg-5 col-xl-5">
       <div class="card shadow px-3 py-2">
         <div class="row">
-          <strong class="fs-2">Green House 2</strong>
+          <strong class="fs-2 text-center">Green House 2</strong>
         </div>
         <hr class="my-2 opacity-100">
-        <div class="row align-items-center">
-          <strong class="co2-title fs-2">CO<sup>2</sup> level</strong>
+        <div class="row justify-content-center">
+          <strong class="co2-title fs-2">CO<sub>2</sub> level</strong>
           <div class="co2-levels py-1">
             <div class="input-group">
-              <span class="form-control text-center fs-5"><strong>1.09</strong></span>
-              <button class="btn btn-primary py-1" type="button" id="sync">
-                <img class="white-filter" src="../../../../assets/sync_white_24dp.svg" alt="Synchronise">
-              </button>
+              <span class="form-control text-center fs-5"><strong>{{co2level}}</strong></span>
             </div>
           </div>
-          <div class="col">
-            <button (click)="onSuccess('Data saved successfully')" class="btn btn-primary fw-bold" type="button" id="submit">SUBMIT </button>
-          </div>
-          <simple-notifications></simple-notifications>
-<!--          <div class="col">-->
-<!--            <button (click)="onCreatePost('test')" class="btn btn-primary fw-bold" type="button" id="submit">SUBMIT </button>-->
-<!--          </div>-->
         </div>
       </div>
-      </div>
+    </div>
   </div>
   <!--Sensors Modules-->
-  <div id="sensors" class="row justify-content-center py-3">
-    <div *ngFor="let sensor of sensors" [id]="sensor.nameCamelCase" class="card shadow align-items-center p-3 m-2">
-      <strong class="text-center fs-5">{{sensor.name}}</strong>
-      <img class="flex-grow-1 py-3" [src]="sensor.imagePath" [alt]="sensor.name">
+  <form [formGroup]="sensorForm" id="sensors" class="row justify-content-center py-3 mx-auto col-xl-10 p-0">
+    <div *ngFor="let sensor of sensors" [id]="sensor.nameCamelCase"
+         class="card shadow fade-in align-items-center p-3 m-2">
+      <strong class="text-center fs-5">{{sensor.sensorName}}</strong>
+      <div class="d-flex flex-grow-1">
+        <img class="py-3" [src]="sensor.imagePath" [alt]="sensor.name">
+        <h3 class="float-end my-auto ps-1">
+          <ng-container *ngIf="sensor.currentValue else loadingSensor">
+            <span class="fade-in">{{sensor.currentValue}}</span>
+          </ng-container>
+          <ng-template #loadingSensor>
+            <div class="spinner-border border-3"></div>
+          </ng-template>
+        </h3>
+      </div>
       <div class="input-group">
-        <ng-container *ngIf="sensor.type=='text' else elseBlock">
+        <ng-container *ngIf="sensor.sensorName != factor.LIGHTING_RGB else colorField">
           <button class="btn btn-primary py-1 fw-bold" type="button" (click)="decrementValue(sensor)">-</button>
-          <input type="text" class="form-control text-center" placeholder="value" [(ngModel)]="sensor.value">
+          <input [formControlName]="sensor.nameCamelCase" type="text" class="form-control text-center"
+                 placeholder="value" [(ngModel)]="sensor.desiredValue"
+                 [ngClass]="{'is-invalid': sensorForm.get(sensor.nameCamelCase).invalid}">
           <button class="btn btn-primary py-1 fw-bold" type="button" (click)="incrementValue(sensor)">+</button>
         </ng-container>
-        <ng-template #elseBlock>
+        <ng-template #colorField>
           <div class="form-control overflow-hidden p-0 position-relative">
-            <input class="position-absolute start-50 top-50 translate-middle" type="color" [(ngModel)]="sensor.value">
+            <input [formControlName]="sensor.nameCamelCase" class="position-absolute start-50 top-50 translate-middle"
+                   type="color" [(ngModel)]="sensor.desiredValue">
           </div>
         </ng-template>
       </div>
     </div>
-  </div>
-
+  </form>
 </div>
+<div class="fixed-bottom" *ngIf="showSubmit == true">
+  <button class="btn btn-primary fw-bold d-lg-block float-end px-3 me-3 mb-3 shadow" type="button" id="submit"
+          (click)="onSuccess('Data saved successfully')">SUBMIT
+  </button>
+</div>
+<simple-notifications></simple-notifications>
