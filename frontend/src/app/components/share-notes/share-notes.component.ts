@@ -1,11 +1,11 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {NotesService} from "../../services/notes.service";
 import {Note} from "../../models/note";
 import {WebStorageService} from "../../services/storage/web-storage.service";
 import {UserService} from "../../services/user.service";
 import {User} from "../../models/user";
-import {Subscription} from "rxjs";
+import {interval, Subscription, TimeInterval} from "rxjs";
 import {PostNote} from "../../models/postNote";
 
 @Component({
@@ -13,7 +13,7 @@ import {PostNote} from "../../models/postNote";
   templateUrl: './share-notes.component.html',
   styleUrls: ['./share-notes.component.css']
 })
-export class ShareNotesComponent implements OnInit {
+export class ShareNotesComponent implements OnInit, OnDestroy {
 
   @Output() unselectedEvent = new EventEmitter();
   title: string;
@@ -21,13 +21,14 @@ export class ShareNotesComponent implements OnInit {
   note: Note;
   user: User | null;
   private userSubscription: Subscription;
+  interval: number
 
   constructor(private notesService: NotesService,
               private router: Router,
               private activatedRoute: ActivatedRoute,
               private webStorageService: WebStorageService,
               private userService: UserService) {
-    setInterval(() => {
+    this.interval = setInterval(() => {
       this.currentDate()
     }, 1000)
   }
@@ -36,6 +37,10 @@ export class ShareNotesComponent implements OnInit {
     this.userSubscription = this.userService.loggedUser$.subscribe(value => {
       this.user = value;
     })
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.interval)
   }
 
   onReturnToNotes(title: string, text: string) {
