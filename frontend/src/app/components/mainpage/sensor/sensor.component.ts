@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Factor, Sensor} from "../../../models/sensor";
 import {HttpClient} from "@angular/common/http";
@@ -15,7 +15,7 @@ import {User} from "../../../models/user";
   styleUrls: ['./sensor.component.css'],
   providers: [SensorsService]
 })
-export class SensorComponent implements OnInit {
+export class SensorComponent implements OnInit, OnDestroy {
   showSubmit = true;
   factor = Factor;
   sensorsData: any;
@@ -25,6 +25,7 @@ export class SensorComponent implements OnInit {
   sensorForm: FormGroup;
   user: User | null;
   private userSubscription: Subscription;
+  private subscription: Subscription;
 
   constructor(private http: HttpClient,
               private service: NotificationsService,
@@ -68,7 +69,7 @@ export class SensorComponent implements OnInit {
       console.log("", value)
     });
 
-    timer(0, 5000).subscribe(t => {
+    this.subscription = timer(0, 5000).subscribe(t => {
       console.log(t);
       this.sensorsService.getCurrentData().toPromise().then((value) => {
         console.log(value)
@@ -82,6 +83,10 @@ export class SensorComponent implements OnInit {
         }
       })
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   onSuccess(message) {
