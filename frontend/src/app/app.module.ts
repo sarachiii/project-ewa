@@ -27,8 +27,6 @@ import { EditNotesComponent } from './components/edit-notes/edit-notes.component
 import { TeamsComponent } from './components/teams/teams.component';
 import { ViewTeamsComponent } from './components/teams/view-teams/view-teams.component';
 import { TeamComponent } from './components/teams/view-teams/team/team.component';
-import { AdminHomeComponent } from './components/admin-home/admin-home.component';
-import { AdminNavbarComponent } from './components/admin-home/admin-navbar/admin-navbar.component';
 
 @NgModule({
   declarations: [
@@ -48,9 +46,7 @@ import { AdminNavbarComponent } from './components/admin-home/admin-navbar/admin
     EditNotesComponent,
     TeamsComponent,
     ViewTeamsComponent,
-    TeamComponent,
-    AdminHomeComponent,
-    AdminNavbarComponent
+    TeamComponent
   ],
   imports: [
     BrowserModule,

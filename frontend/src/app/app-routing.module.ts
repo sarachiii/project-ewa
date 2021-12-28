@@ -14,7 +14,6 @@ import { AuthGuardService } from "./services/auth-guard.service";
 import {TeamsComponent} from "./components/teams/teams.component";
 import {ViewTeamsComponent} from "./components/teams/view-teams/view-teams.component";
 import {TeamComponent} from "./components/teams/view-teams/team/team.component";
-import {AdminHomeComponent} from "./components/admin-home/admin-home.component";
 import {AdminGuardGuard} from "./services/admin-guard.guard";
 
 const routes: Routes = [
@@ -36,7 +35,8 @@ const routes: Routes = [
   { path: 'teams', component: TeamsComponent, canActivate: [AuthGuardService], canActivateChild: [AuthGuardService],
     children: [
       { path: '', redirectTo: 'view', pathMatch: 'full' },
-      { path: 'view', component: ViewTeamsComponent }
+      { path: 'view', component: ViewTeamsComponent },
+      { path: 'add-user', component: ErrorComponent, canActivate: [AdminGuardGuard]}
     ]
   },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuardService], canActivateChild: [AuthGuardService],
@@ -46,12 +46,6 @@ const routes: Routes = [
       { path: 'preferences', component: PreferencesComponent }
     ]
   },
-  { path: 'admin', component: AdminHomeComponent, canActivate: [AuthGuardService],
-  },
-  // { path: 'admin', component: AdminHomeComponent, canActivate: [AdminGuardGuard],
-  // },
-
-
   { path: '**', component: ErrorComponent, canActivate: [AuthGuardService] },
 ];
 
