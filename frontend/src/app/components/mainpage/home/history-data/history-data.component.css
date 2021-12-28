@@ -8,3 +8,7 @@
 .min-w-0 {
   min-width: 0;
 }
+.no-x-border {
+  border-left: none;
+  border-right: none;
+}

@@ -1,6 +1,5 @@
 package nl.hva.backend.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonValue;
 
@@ -24,13 +23,13 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
 
-    @JsonIgnore
     private String password;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    private String specialty;
+    @Enumerated(EnumType.STRING)
+    private Specialty specialty;
 
     @Column(name = "image_path")
     private String profilePicture;
@@ -40,23 +39,24 @@ public class User {
 
     @OneToOne(targetEntity = Preferences.class, mappedBy = "user", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
+    @JsonBackReference(value = "preferences")
     private Preferences preferences;
 
     @OneToMany(targetEntity = Note.class, mappedBy = "user")
-    @JsonBackReference
+    @JsonBackReference(value="user")
     private List<Note> notes = new ArrayList<>();
-    
+
     @ManyToOne(targetEntity = Team.class)
     @JsonBackReference
     @JoinColumn(name = "team_id", insertable = false, updatable = false)
     private Team team;
 
     public enum Specialty {
-        A("Agronomy"),
-        B("Botany"),
-        G("Geology"),
-        H("Hydrology"),
-        CS("Climate-Science");
+        Agronomy("Agronomy"),
+        Botany("Botany"),
+        Geology("Geology"),
+        Hydrology("Hydrology"),
+        Climate_Science("Climate-Science");
 
         private final String string;
 
@@ -64,6 +64,7 @@ public class User {
             this.string = string;
         }
 
+        @JsonValue
         @Override
         public String toString() {
             return this.string;
@@ -71,9 +72,21 @@ public class User {
     }
 
     public enum Role {
-        SUPER_ADMIN,
-        ADMIN,
-        MEMBER
+        SUPER_ADMIN("Super Admin"),
+        ADMIN("Admin"),
+        MEMBER("Member");
+
+        private final String string;
+
+        Role(String string) {
+            this.string = string;
+        }
+
+        @JsonValue
+        @Override
+        public String toString() {
+            return this.string;
+        }
     }
 
     public User() {
@@ -86,7 +99,7 @@ public class User {
     }
 
     public User(String emailAddress, String firstName, String lastName, String password,
-                String specialty, String profilePicture, Long teamId) {
+                Specialty specialty, String profilePicture, Long teamId) {
         this();
         this.emailAddress = emailAddress;
         this.firstName = firstName;
@@ -129,6 +142,7 @@ public class User {
         this.lastName = lastName;
     }
 
+    //    @JsonIgnore
     public String getPassword() {
         return this.password;
     }
@@ -145,11 +159,11 @@ public class User {
         this.role = role;
     }
 
-    public String getSpecialty() {
-        return Specialty.valueOf(this.specialty).toString();
+    public Specialty getSpecialty() {
+        return this.specialty;
     }
 
-    public void setSpecialty(String specialty) {
+    public void setSpecialty(Specialty specialty) {
         this.specialty = specialty;
     }
 

@@ -17,7 +17,9 @@ import java.util.List;
 
 @NamedQueries({
         @NamedQuery(name = "History.findAll", query = "SELECT h FROM History h ORDER BY h.timestamp DESC"),
-        @NamedQuery(name = "History.findByGreenHouseId", query = "SELECT h FROM History h WHERE h.ghId= :ghid ORDER BY h.timestamp DESC")
+        @NamedQuery(name = "History.findByGreenHouseId", query = "SELECT h FROM History h WHERE h.ghId = :ghId ORDER BY h.timestamp DESC"),
+        @NamedQuery(name = "History.countAll", query = "SELECT COUNT(h.timestamp) FROM History h"),
+        @NamedQuery(name = "History.countByGreenHouseId", query = "SELECT COUNT(h.timestamp) FROM History h WHERE h.ghId = :ghId")
 })
 public class History {
 
@@ -271,3 +273,4 @@ public class History {
 
  */
 }
+

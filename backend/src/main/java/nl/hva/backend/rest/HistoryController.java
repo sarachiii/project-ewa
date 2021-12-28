@@ -1,6 +1,9 @@
 package nl.hva.backend.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import nl.hva.backend.models.History;
 import nl.hva.backend.repositories.HistoryRepository;
 import nl.hva.backend.rest.exception.BadRequestException;
@@ -21,7 +24,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/sensors/history")
 public class HistoryController {
-    private static final int SENSOR_DATA_LIMIT = 100;
+    private static final int SENSOR_DATA_LIMIT_MIN = 10;
+    private static final int SENSOR_DATA_LIMIT_MAX = 100;
 
     @Autowired
     private HistoryRepository historyRepository;
@@ -33,10 +37,13 @@ public class HistoryController {
     @Autowired
     private WebClient ccuApiClient;
 
+    @Autowired
+    private ObjectMapper mapper;
 
     @GetMapping()
-    public List<History> getAllSensorData(@RequestParam(required = false) String gh,
-                                          @RequestParam(defaultValue = "10") String limit) {
+    public ResponseEntity<ObjectNode> getAllSensorData(@RequestParam(required = false) String gh,
+                                                       @RequestParam(defaultValue = "10") String limit,
+                                                       @RequestParam(defaultValue = "0") String page) {
         int lim;
         try {
             lim = Integer.parseInt(limit);
@@ -44,25 +51,47 @@ public class HistoryController {
             throw new PreConditionFailed("Limit parameter value is not a number");
         }
 
-        // If requested limit exceeds the data limit, set it to the data limit
-        if (lim > SENSOR_DATA_LIMIT) lim = SENSOR_DATA_LIMIT;
+        int p;
+        try {
+            p = Integer.parseInt(page);
+        } catch (NumberFormatException e) {
+            throw new PreConditionFailed("Page parameter value is not a number");
+        }
 
+        // If requested limit exceeds the data limit, set it to the data limit
+        if (lim < SENSOR_DATA_LIMIT_MIN) lim = SENSOR_DATA_LIMIT_MIN;
+        if (lim > SENSOR_DATA_LIMIT_MAX) lim = SENSOR_DATA_LIMIT_MAX;
+
+        ObjectNode responseNode = mapper.createObjectNode();
+
+        long id = 0;
         if (gh != null) {
-            long id;
             try {
                 id = Long.parseLong(gh);
             } catch (NumberFormatException e) {
-                throw new PreConditionFailed("Enter a number value pleeeeeeeeeeeeeeeeeas!");
+                throw new PreConditionFailed("Greenhouse parameter value is not a number");
             }
-            return historyRepository.findByGreenHouseId(id, lim);
         }
 
-        return historyRepository.findAll(lim);
+        // Get the total count of entities in database
+        long count = gh != null ? historyRepository.countAll() : historyRepository.countByGreenHouseId(id);
+
+        int pageCount = (int) (count / lim);
+        if (p > pageCount) p = pageCount;
+
+        List<History> history = gh != null ? historyRepository.findAll(p, lim) : historyRepository.findByGreenHouseId(id, p, lim);
+
+        responseNode.put("pageCount", pageCount);
+        // Cast to ArrayNode because addAll is ambiguous
+        responseNode.putArray("history").addAll((ArrayNode) mapper.valueToTree(history));
+
+
+        return ResponseEntity.ok(responseNode);
     }
 
     @PostMapping()
     public ResponseEntity<?> postData(@RequestBody History history) {
-        History savedHistoryRecord = historyRepository.saveHistoryRecord(history);
+        History savedHistoryRecord = historyRepository.save(history);
         return ResponseEntity.ok().body(savedHistoryRecord);
     }
 

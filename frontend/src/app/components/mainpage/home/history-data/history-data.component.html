@@ -44,4 +44,15 @@
       </tbody>
     </table>
   </div>
+  <div class="input-group justify-content-center my-2" role="group" aria-label="Chart pagination">
+    <button type="button" class="btn btn-primary p-6px" (click)="nextPage()" [disabled]="page == pageCount">
+      <img src="assets/images/arrow_back.svg" alt="Backwards">
+    </button>
+    <div class="form-control flex-grow-0 w-min-content no-x-border">
+      <span class="text-nowrap">{{ pageCount - page + 1 }} / {{ pageCount + 1 }}</span>
+    </div>
+    <button type="button" class="btn btn-primary p-6px" (click)="previousPage()" [disabled]="page == 0">
+      <img src="assets/images/arrow_forward.svg" alt="Forwards">
+    </button>
+  </div>
 </div>

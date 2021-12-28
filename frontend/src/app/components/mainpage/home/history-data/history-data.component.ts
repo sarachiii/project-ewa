@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {Sensor} from "../../../../models/sensor";
 import {ChartDataSets, ChartOptions, ChartType} from "chart.js";
 import {Color, Label, PluginServiceGlobalRegistrationAndOptions} from "ng2-charts";
@@ -29,6 +29,14 @@ export class HistoryDataComponent implements OnInit, OnChanges {
   @Input()
   sensorData: (string | number)[];
   chartData: ChartData | null;
+
+  @Input()
+  page: number;
+  @Output()
+  pageChange: EventEmitter<number>;
+  @Input()
+  pageCount: number;
+
   private _asTable: boolean;
 
   constructor() {
@@ -36,6 +44,7 @@ export class HistoryDataComponent implements OnInit, OnChanges {
     this.co2Levels = [];
     this.sensorData = [];
     this.chartData = null;
+    this.pageChange = new EventEmitter<number>();
     this._asTable = false;
   }
 
@@ -66,8 +75,7 @@ export class HistoryDataComponent implements OnInit, OnChanges {
             yAxes: [
               { id: this.sensor.nameCamelCase, type: 'linear', position: 'left', scaleLabel: { display: true, labelString: this.sensor.sensorName } },
               { id: 'co2Level', type: 'linear', position: 'right', scaleLabel: { display: true, labelString: 'CO₂ level' } }
-            ],
-
+            ]
           },
           animation: {
             duration: 0
@@ -85,4 +93,17 @@ export class HistoryDataComponent implements OnInit, OnChanges {
     }
   }
 
+  previousPage() {
+    if (this.page > 0) {
+      --this.page;
+      this.pageChange.emit(this.page);
+    }
+  }
+
+  nextPage() {
+    if (this.page < this.pageCount) {
+      ++this.page;
+      this.pageChange.emit(this.page);
+    }
+  }
 }
