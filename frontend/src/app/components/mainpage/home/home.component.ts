@@ -16,11 +16,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   sensors: Sensor[];
   sensorsData: Map<string, (string | number)[]>
   private specialtyPrefs: Map<string, string> = new Map<string, string>([
-    ["Agronomy", "soil_temp_c"],
-    ["Botany", "daily_exposure"],
-    ["Geology", "soil_humidity"],
-    ["Hydrology", "water_ph"],
-    ["Climate Science", "air_humidity"]
+    ["A", "soil_temp_c"],
+    ["B", "daily_exposure"],
+    ["G", "soil_humidity"],
+    ["H", "water_ph"],
+    ["CS", "air_humidity"]
   ]);
   private timerSubscription: Subscription;
 
