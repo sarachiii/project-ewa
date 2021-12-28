@@ -13,7 +13,8 @@ import { PreferencesComponent } from "./components/settings/preferences/preferen
 import { AuthGuardService } from "./services/auth-guard.service";
 import {TeamsComponent} from "./components/teams/teams.component";
 import {ViewTeamsComponent} from "./components/teams/view-teams/view-teams.component";
-import {TeamComponent} from "./components/teams/view-teams/team/team.component";
+import {MembersComponent} from "./components/teams/view-teams/members/members.component";
+import {AddUserComponent} from "./components/teams/add-user/add-user.component";
 import {AdminGuardGuard} from "./services/admin-guard.guard";
 
 const routes: Routes = [

@@ -1,5 +1,7 @@
 package nl.hva.backend.rest.exception;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDateTime;
 
 /**
@@ -7,14 +9,14 @@ import java.time.LocalDateTime;
  *
  * @author Mohamad Hassan
  */
-public class ExceptionResponse<T> {
+public class ExceptionResponse {
     private LocalDateTime timestamp;
     private int status;
-    private T error;
+    private String error;
     private String message;
     private String path;
 
-    public ExceptionResponse(int status, T error, String message, String path) {
+    public ExceptionResponse(int status, String error, String message, String path) {
         this.timestamp = LocalDateTime.now();
         this.status = status;
         this.error = error;
@@ -22,6 +24,7 @@ public class ExceptionResponse<T> {
         this.path = path;
     }
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     public LocalDateTime getTimestamp() {
         return timestamp;
     }
@@ -30,7 +33,7 @@ public class ExceptionResponse<T> {
         return status;
     }
 
-    public T getError() {
+    public String getError() {
         return error;
     }
 
@@ -50,7 +53,7 @@ public class ExceptionResponse<T> {
         this.status = status;
     }
 
-    public void setError(T error) {
+    public void setError(String error) {
         this.error = error;
     }
 

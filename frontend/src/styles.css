@@ -81,13 +81,21 @@ app-root {
   box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25) !important;
 }
 .fade-in {
-  -webkit-animation: fade-in ease-in 0.2s;
-  -moz-animation: fade-in ease-in 0.2s;
-  animation: fade-in ease-in 0.2s;
+  -webkit-animation: fade-in ease-in-out 0.2s;
+  -moz-animation: fade-in ease-in-out 0.2s;
+  animation: fade-in ease-in-out 0.2s;
 }
 @-webkit-keyframes fade-in { from {opacity: 0;} to {opacity: 1;} }
 @-moz-keyframes fade-in { from {opacity: 0;} to {opacity: 1;} }
 @keyframes fade-in { from {opacity: 0;} to {opacity: 1;} }
+.fade-out {
+  -webkit-animation: fade-out ease-in 0.2s;
+  -moz-animation: fade-out ease-in 0.2s;
+  animation: fade-out ease-in 0.2s;
+}
+@-webkit-keyframes fade-out { from {opacity: 1;} to {opacity: 0;} }
+@-moz-keyframes fade-out { from {opacity: 1;} to {opacity: 0;} }
+@keyframes fade-out { from {opacity: 1;} to {opacity: 0;} }
 .slide-in {
   -webkit-animation: slide-up ease-in 0.2s;
 }

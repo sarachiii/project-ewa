@@ -1,0 +1,46 @@
+<form [formGroup]="newUserForm" (ngSubmit)="onSubmit()" autocomplete="off" class="container px-1">
+  <div class="row mt-3">
+    <div class="col w-100">
+      <label class="form-label fw-bold" for="fname">First name:</label>
+      <input class="form-control py-2 mb-3" formControlName="firstName" autocomplete="off" type="text" id="fname" name="fname" value="">
+      <label class="form-label fw-bold" for="lname">Last name:</label>
+      <input class="form-control py-2 mb-3" formControlName="lastName" autocomplete="off" type="text" id="lname" name="lname" value="">
+      <label class="form-label fw-bold" for="email">Email:</label>
+      <input class="form-control py-2 mb-3" formControlName="email" autocomplete="off" type="email" id="email" name="email" value="">
+      <label class="form-label fw-bold" for="password">Temporary password:</label>
+      <input class="form-control py-2 mb-3" formControlName="password" autocomplete="off" type="password" id="password" name="password" value="">
+    </div>
+    <div class="col w-100">
+      <label for="role" class="form-label fw-bold">Role</label>
+      <select formControlName="role" id="role" class="form-select py-2 mb-3">
+        <option disabled hidden>Choose a team</option>
+        <option value="member" selected>Member</option>
+        <option value="admin">Admin</option>
+        <option value="superAdmin">Super admin</option>
+      </select>
+      <label for="specialtyPicker" class="form-label fw-bold">Specialty</label>
+      <select formControlName="specialty" id="specialtyPicker" class="form-select py-2 mb-3">
+        <option disabled hidden>Choose a specialty</option>
+        <option value="agronomy" selected>Agronomy</option>
+        <option value="botany">Botany</option>
+        <option value="geology">Geology</option>
+        <option value="hydrology">Hydrology</option>
+        <option value="climateScience">Climate Science</option>
+      </select>
+      <label for="team" class="form-label fw-bold">Team</label>
+      <select formControlName="teamId" id="team" class="form-select py-2 mb-3">
+        <option disabled hidden>Choose a team</option>
+        <ng-container *ngFor="let team of teams; first as isFirst">
+          <option [value]="team.id">Team {{team.id}}</option>
+        </ng-container>
+      </select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-6 offset-6">
+      <button class="btn btn-outline-primary fw-bold float-end" type="submit">
+        SUBMIT
+      </button>
+    </div>
+  </div>
+</form>

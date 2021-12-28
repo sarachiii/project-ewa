@@ -2,9 +2,9 @@ import { Preferences } from "./preferences";
 import {EField} from "./field";
 
 export enum Role {
+  SUPER_ADMIN = "super_admin",
   ADMIN = "admin",
-  TEAM_LEADER = "team_leader",
-  TEAM_MEMBER = "team_member",
+  MEMBER = "member",
   UNKNOWN = ""
 }
 

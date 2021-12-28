@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { CRUDService } from "./interfaces/crud.service";
-import { Role, User } from "../models/user";
-import {BehaviorSubject, Observable} from "rxjs";
+import { User } from "../models/user";
+import { BehaviorSubject, Observable } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../environments/environment";
-import {shareReplay} from "rxjs/operators";
+import { shareReplay } from "rxjs/operators";
 
 // TODO: Maybe find a way to separate User Storage and Service
 @Injectable({
@@ -58,7 +58,7 @@ export class UserService implements CRUDService<User> {
   }
 
   getAllUsers(): Observable<User[]> {
-    return this.httpClient.get<User[]>(new URL(`/users`, this.resourceUrl).toString());
+    return this.httpClient.get<User[]>(new URL('/users', this.resourceUrl).toString());
   }
 
   getUserById(id: number): Observable<User> {
@@ -69,9 +69,13 @@ export class UserService implements CRUDService<User> {
     return this.httpClient.get<User>(new URL(`/users?username=${username}`, this.resourceUrl).toString());
   }
 
+  saveUser(user: User): Observable<User> {
+    return this.httpClient.post<User>(new URL(`/users`, this.resourceUrl).toString(), user);
+  }
+
   updateLoggedUser(id: number) {
     this.getUserById(id).pipe(shareReplay(1)).toPromise().then(value => {
-      this._loggedUser$.next(value);
+      this._loggedUser$.next(Object.assign(new User(), value));
     }).catch(reason => { console.log(reason); });
       /*.pipe(shareReplay(1)).subscribe(value => {
       this._loggedUser$.next(value);

@@ -1,7 +1,7 @@
 import {Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {WebStorageService} from "../../../services/storage/web-storage.service";
 import {UserService} from "../../../services/user.service";
-import {Role, User} from "../../../models/user";
+import {User} from "../../../models/user";
 import {Subscription} from "rxjs";
 import {NotesService} from "../../../services/notes.service";
 /**
@@ -84,6 +84,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
 
   @HostListener('document:click', ['$event'])
   handleClickOutside(event: Event): void {
+    // If the component doesn't contain the target, click event occurred outside the component
     if (!this.elementRef.nativeElement.contains(event.target)) this.closeMobileMenu();
   }
 
