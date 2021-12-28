@@ -54,7 +54,7 @@ export class NotesComponent implements OnInit, OnChanges {
       .pipe(skipWhile(value => Object.keys(value).length === 0), first())
       .subscribe(value => {
         this.user = value;
-        // The initial notes page is equal to the workfield of the user
+        // The initial notes page is equal to the specialty of the user
         this.router.navigate([this.user.specialty.toLowerCase()], {relativeTo: this.activatedRoute})
           .catch(reason => console.error(reason));
         this.selectedWorkfieldFromNavbar = this.user.specialty.toLowerCase();
@@ -75,7 +75,7 @@ export class NotesComponent implements OnInit, OnChanges {
       .pipe(map(notes => {
         return notes
           .filter((note) =>
-            this.selectedWorkfieldFromNavbar.charAt(0) == note.user.specialty.toLocaleLowerCase().charAt(0))
+            this.selectedWorkfieldFromNavbar == note.user.specialty.toLocaleLowerCase())
           .sort((a, b) => new Date(b.timestamp).valueOf() - new Date(a.timestamp).valueOf());
       }));
   }

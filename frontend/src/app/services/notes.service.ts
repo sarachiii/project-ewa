@@ -55,10 +55,13 @@ export class NotesService {
   addNote(note: Note, postNote: PostNote) {
     this.restPostNote(postNote).toPromise().then((savedNote) => {
       let notes = this._notes$.getValue();
+      //search if the note already exists by index
       let noteIndex = notes.findIndex(n => n.noteId == savedNote.noteId);
+      //if note does exist, update the note in the list
       if (noteIndex > -1) {
         notes[noteIndex] = note;
       } else {
+        //if note doesn't exist, add the new note to the list
         savedNote.user = note.user;
         notes.push(Note.copyConstructor(savedNote));
       }

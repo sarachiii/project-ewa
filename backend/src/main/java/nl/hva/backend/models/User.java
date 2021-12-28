@@ -1,6 +1,7 @@
 package nl.hva.backend.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -50,11 +51,11 @@ public class User {
     private Team team;
 
     public enum Specialty {
-        A("Agronomy"),
-        B("Botany"),
-        G("Geology"),
-        H("Hydrology"),
-        CS("Climate-Science");
+        Agronomy("Agronomy"),
+        Botany("Botany"),
+        Geology("Geology"),
+        Hydrology("Hydrology"),
+        Climate_Science("Climate-Science");
 
         private final String string;
 
@@ -62,6 +63,7 @@ public class User {
             this.string = string;
         }
 
+        @JsonValue
         @Override
         public String toString() {
             return this.string;
@@ -69,9 +71,21 @@ public class User {
     }
 
     public enum Role {
-        SUPER_ADMIN,
-        ADMIN,
-        MEMBER
+        SUPER_ADMIN("Super Admin"),
+        ADMIN("Admin"),
+        MEMBER("Member");
+
+        private final String string;
+
+        Role(String string) {
+            this.string = string;
+        }
+
+        @JsonValue
+        @Override
+        public String toString() {
+            return this.string;
+        }
     }
 
     public User() {
