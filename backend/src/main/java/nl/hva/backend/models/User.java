@@ -1,8 +1,6 @@
 package nl.hva.backend.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonValue;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -24,13 +22,13 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
 
-    @JsonIgnore
     private String password;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    private String specialty;
+    @Enumerated(EnumType.STRING)
+    private Specialty specialty;
 
     @Column(name = "image_path")
     private String profilePicture;
@@ -43,7 +41,7 @@ public class User {
     private Preferences preferences;
 
     @OneToMany(targetEntity = Note.class, mappedBy = "user")
-    @JsonBackReference
+    @JsonBackReference(value="user")
     private List<Note> notes = new ArrayList<>();
     
     @ManyToOne(targetEntity = Team.class)
@@ -86,7 +84,7 @@ public class User {
     }
 
     public User(String emailAddress, String firstName, String lastName, String password,
-                String specialty, String profilePicture, Long teamId) {
+                Specialty specialty, String profilePicture, Long teamId) {
         this();
         this.emailAddress = emailAddress;
         this.firstName = firstName;
@@ -129,6 +127,7 @@ public class User {
         this.lastName = lastName;
     }
 
+//    @JsonIgnore
     public String getPassword() {
         return this.password;
     }
@@ -145,11 +144,11 @@ public class User {
         this.role = role;
     }
 
-    public String getSpecialty() {
-        return Specialty.valueOf(this.specialty).toString();
+    public Specialty getSpecialty() {
+        return this.specialty;
     }
 
-    public void setSpecialty(String specialty) {
+    public void setSpecialty(Specialty specialty) {
         this.specialty = specialty;
     }
 

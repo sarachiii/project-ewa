@@ -20,7 +20,7 @@ export class AddUserComponent implements OnInit {
     this.newUserForm = new FormGroup({
       firstName: new FormControl("", Validators.required),
       lastName: new FormControl("", Validators.required),
-      email: new FormControl("", Validators.required),
+      emailAddress: new FormControl("", Validators.required),
       password: new FormControl("", Validators.required),
       role: new FormControl("", Validators.required),
       specialty: new FormControl("", Validators.required),
