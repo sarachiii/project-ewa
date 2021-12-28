@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import {FormControl, FormGroup, ValidationErrors, Validators} from "@angular/forms";
 import { User } from "../../../models/user";
 import { SettingsService } from "../../../services/settings.service";
 import { passwordPatternValidator, passwordValidator} from "../../../shared/validators/password.validator";
@@ -8,6 +8,7 @@ import {WebStorageService} from "../../../services/storage/web-storage.service";
 import {UserService} from "../../../services/user.service";
 import {Subscription} from "rxjs";
 import {first, skipWhile} from "rxjs/operators";
+import {HttpErrorResponse, HttpStatusCode} from "@angular/common/http";
 
 @Component({
   selector: 'app-account',
@@ -121,14 +122,11 @@ export class AccountComponent implements OnInit {
       this.accountForm.patchValue(this.copyUser);
       this.password.reset('');
       // console.log(this.copyUser)
-      this.password.setValidators([Validators.required, passwordValidator(this.copyUser.password)]);
+      this.password.removeValidators(Validators.required);
     }, error => console.error)
   }
 
   onSubmit() {
-    // Re-evaluate the password
-    this.password.setValidators([Validators.required, passwordValidator(this.copyUser.password)])
-    this.password.updateValueAndValidity();
 
     // Update user if form is (still) valid
     if (this.accountForm.valid) {
@@ -151,20 +149,34 @@ export class AccountComponent implements OnInit {
         updatedUser.profilePicture = this.url.value;
       }
 
-      // Update the user
-      //this.settingsService.save(Object.assign<User, User>(this.copyUser, updatedUser));
-      this.settingsService.updateProfile(this.webStorageService.getAsNumber('userId'),
+      this.settingsService.updateProfile(
+        this.user.id,
         {
           ...this.accountForm.value,
           newPasswordForm: this.newPasswordForm.value,
           deleteProfilePicture: this.deleteProfilePicture
-        }).subscribe(e=>{
-        console.log(e)
+        }).subscribe(e => {
+          console.log(e);
+          this.password.setErrors(null);
+          this.userService.updateLoggedUser(this.user.id);
+        }, error => {
+          try {
+            let httpErrorResponse = (<HttpErrorResponse>error);
+            if (httpErrorResponse.status == HttpStatusCode.BadRequest) {
+              let message = httpErrorResponse.error["message"];
 
-        this.userService.updateLoggedUser(this.webStorageService.getUserId());
-        // this.userService.loggedUser$.pipe(first()).subscribe(value => {this.copyUser = value})
-      }, error => {
-        console.log(error)})
+              // Evaluate the password
+              if (message && message == 'Password is wrong') {
+                let errors: ValidationErrors = {
+                  mismatch: true
+                };
+                this.password.setErrors(errors);
+              }
+            }
+          } catch (e) {
+            console.error(e);
+          }
+        });
 
 
       // TODO: stuff with frontend service and backend UserController

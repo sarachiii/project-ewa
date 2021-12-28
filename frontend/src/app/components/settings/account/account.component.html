@@ -1,6 +1,6 @@
 <div class="container px-0 my-2 fade-in">
   <h2 class="fw-bold">Account</h2>
-  <form [formGroup]="accountForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="accountForm" (ngSubmit)="onSubmit()" autocomplete="off">
     <!--Name-->
     <div class="row">
       <div class="col-md-6 my-2">
@@ -93,7 +93,7 @@
         <input type="password"
                [ngClass]="{'is-valid': password.valid && password.dirty, 'is-invalid': password.invalid && password.dirty}"
                class="form-control py-2" id="password" placeholder="Enter your password"
-               formControlName="password" required>
+               formControlName="password" required autocomplete="new-password">
         <div *ngIf="password.invalid && password.dirty" class="invalid-feedback">
           <ng-container *ngIf="password.errors.required">Password is required!</ng-container>
           <ng-container *ngIf="password.errors.mismatch && password.value">Password is wrong!</ng-container>
