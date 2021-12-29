@@ -16,6 +16,7 @@ import {ViewTeamsComponent} from "./components/teams/view-teams/view-teams.compo
 import {MembersComponent} from "./components/teams/view-teams/members/members.component";
 import {AddUserComponent} from "./components/teams/add-user/add-user.component";
 import {AdminGuardGuard} from "./services/admin-guard.guard";
+import {RoleGuard} from "./services/role.guard";
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },

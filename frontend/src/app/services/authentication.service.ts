@@ -26,9 +26,10 @@ export class AuthenticationService {
     sessionStorage.removeItem('username')
   }
 
-  adminIsLoggedIn(){
-    return !!sessionStorage.getItem('adminId')
-  }
+  // adminIsLoggedIn(){
+  //   return !!sessionStorage.getItem('adminId')
+  // }
+
 
 
 
