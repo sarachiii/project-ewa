@@ -21,6 +21,15 @@ app-root {
 .white-filter {
   filter: brightness(100) !important;
 }
+.h-min-content {
+  height: min-content !important;
+}
+.w-min-content {
+  width: min-content !important;
+}
+.p-6px {
+  padding: 6px !important;
+}
 .card hr, .card .vr {
   background-color: var(--cc-darkgreen);
 }
