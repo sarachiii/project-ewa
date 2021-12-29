@@ -1,5 +1,8 @@
 package nl.hva.backend.rest.config;
 
+import com.azure.storage.blob.BlobClientBuilder;
+import com.azure.storage.blob.BlobContainerClientBuilder;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,15 +14,27 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.sql.Blob;
+
 @Configuration
 @EnableScheduling
 public class WebConfig implements WebMvcConfigurer {
 
     @Value("${api.url}")
     private String apiUrl;
-
     @Value("${ccu.api.url}")
     private String ccuApiUrl;
+    // Azure Storage
+    @Value("${azure.storage.account-name}")
+    private String accountName;
+    @Value("${azure.storage.account-key}")
+    private String accountKey;
+    @Value("${azure.storage.container-name}")
+    private String containerName;
+    @Value("${azure.storage.blob-endpoint}")
+    private String blobEndpoint;
+    @Value("${azure.storage.file-endpoint}")
+    private String fileEndpoint;
 
     @Bean
     public WebClient apiClient() {
@@ -35,6 +50,15 @@ public class WebConfig implements WebMvcConfigurer {
                 .baseUrl(ccuApiUrl)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
+    }
+
+    @Bean
+    public BlobClientBuilder blobClientBuilder() {
+        StorageSharedKeyCredential storageSharedKeyCredential = new StorageSharedKeyCredential(accountName, accountKey);
+        return new BlobClientBuilder()
+                .credential(storageSharedKeyCredential)
+                .endpoint(blobEndpoint)
+                .containerName(containerName);
     }
 
     @Override

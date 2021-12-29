@@ -1,5 +1,6 @@
 import { Preferences } from "./preferences";
 import {EField} from "./field";
+import {environment} from "../../environments/environment";
 
 export enum Role {
   SUPER_ADMIN = "super_admin",
@@ -30,5 +31,9 @@ export class User {
     this.emailAddress = emailAddress || "";
     this.password = password || "";
     this.profilePicture = profilePicture || "";
+  }
+
+  get pictureUrl(): string {
+    return this.profilePicture ? `${environment.apiUrl}/${this.profilePicture}` : this.profilePicture;
   }
 }

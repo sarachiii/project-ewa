@@ -5,15 +5,19 @@ import nl.hva.backend.models.forms.Login;
 import nl.hva.backend.rest.exception.BadRequestException;
 import nl.hva.backend.rest.exception.ResourceNotFound;
 import nl.hva.backend.rest.exception.AlreadyExist;
+import nl.hva.backend.services.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import nl.hva.backend.models.User;
 import nl.hva.backend.repositories.UserRepository;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
@@ -22,30 +26,35 @@ import java.util.Map;
 @RestController
 public class UserController {
 
+    private static final String DEFAULT_IMAGE = "image";
+
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private FileService fileService;
+
     @GetMapping("users")
-    public List<User> getUsersList(){
+    public List<User> getUsersList() {
         return this.userRepository.findAll();
     }
 
     @GetMapping(value = "users", params = "id")
-    public User getUserById(@RequestParam Long id){
+    public User getUserById(@RequestParam Long id) {
         User user = this.userRepository.findUserById(id);
         if (user == null) { throw new ResourceNotFound("No user with this id "); }
         return user;
     }
 
     @GetMapping(value = "users", params = "username")
-    public User getUserByUsername(@RequestParam String username){
+    public User getUserByUsername(@RequestParam String username) {
         User user = this.userRepository.findByEmailAddress(username);
         if (user == null) { throw new ResourceNotFound("username does not exist"); }
         return user;
     }
 
     @PostMapping("users")
-    public ResponseEntity<User> createUser(@RequestBody User u){
+    public ResponseEntity<User> createUser(@RequestBody User u) {
        boolean check = false;
        for (User user : this.userRepository.findAll()) {
            if (user.getEmailAddress().equals(u.getEmailAddress())) {
@@ -63,7 +72,7 @@ public class UserController {
     }
 
     @DeleteMapping("users/{id}")
-    public ResponseEntity<Boolean> deleteUser(@PathVariable Long id){
+    public ResponseEntity<Boolean> deleteUser(@PathVariable Long id) {
         if (this.userRepository.existsById(id)){
             this.userRepository.deleteById(id);
             return ResponseEntity.ok(true);
@@ -73,7 +82,7 @@ public class UserController {
     }
 
     @PutMapping("users/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user){
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
         User userToUpdate = this.userRepository.findUserById(id);
         if (this.userRepository.existsById(id)){
             user.setId(id);
@@ -116,12 +125,46 @@ public class UserController {
         return ResponseEntity.ok(true);
     }
 
+    @GetMapping(
+            value = "users/{id}/avatar/{filename:.+}",
+            produces = { MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE }
+    )
+    public byte[] downloadAvatar(@PathVariable long id, @PathVariable String filename) {
+        User user = getUserById(id);
+        String requestedPicture = String.format("users/%d/avatar/%s", id, filename);
+        if (user.getProfilePicture() == null || !user.getProfilePicture().equals(requestedPicture))
+            throw new ResourceNotFound("Could not find requested resource");
+
+        byte[] data = fileService.download(user.getProfilePicture());
+
+        if (data == null) throw new ResourceNotFound("Could not fifnd requested resource");
+
+        return data;
+    }
+
+    @PostMapping("users/{id}/avatar")
+    public ResponseEntity<Boolean> uploadAvatar(@RequestParam MultipartFile file, @PathVariable long id)
+            throws IOException {
+        if (file == null) throw new BadRequestException("File is not supplied!");
+        String filePrefix = String.format("users/%d/avatar/%s", id, DEFAULT_IMAGE);
+
+        String filename = fileService.upload(file, filePrefix);
+
+        User user = getUserById(id);
+
+        user.setProfilePicture(filename);
+        userRepository.save(user);
+
+        return ResponseEntity.ok(true);
+    }
+
     @PostMapping("login")
-    public Long authenticateLogin(@RequestBody Login login){
+    public Long authenticateLogin(@RequestBody Login login) {
         User user = this.userRepository.findByEmailAddress(login.getUsername());
 
         if (user == null) { throw new ResourceNotFound("username does not exist"); }
 
         return login.getPassword().equals(user.getPassword()) ? user.getId() : null;
     }
+
 }

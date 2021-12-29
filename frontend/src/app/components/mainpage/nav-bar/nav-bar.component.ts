@@ -49,7 +49,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
     this.notesService.currentVisitedPage.subscribe(val => this.visitedPage = val);
     this.userSubscription = this.userService.loggedUser$.subscribe(value => {
       this.user = value;
-      console.log(this.user);
+      console.log(this.user.pictureUrl);
     })
     if (this.isLoggedIn()) {
       // this.userService.getUserById(this.webStorageService.getUserId()).toPromise().then(value => {

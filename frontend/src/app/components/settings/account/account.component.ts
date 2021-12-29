@@ -17,7 +17,7 @@ import {HttpErrorResponse, HttpStatusCode} from "@angular/common/http";
 })
 export class AccountComponent implements OnInit {
   user: User;
-  copyUser: User = <User>{};
+  copyUser: User = new User();
   // TODO: change name to profileForm
   accountForm: FormGroup;
   newPasswordForm: FormGroup;
