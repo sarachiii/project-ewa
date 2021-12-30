@@ -37,14 +37,14 @@ export class SensorComponent implements OnInit, OnDestroy {
 
     this.sensorForm = new FormGroup({
       airTempC: new FormControl(''),
-      airHumidity: new FormControl(''),
-      soilTempC: new FormControl(''),
-      soilHumidity: new FormControl(''),
+      airHumidity: new FormControl({value: '', disabled: true}),
+      soilTempC: new FormControl({value: '', disabled: true}),
+      soilHumidity: new FormControl({value: '', disabled: true}),
       soilMixId: new FormControl(''),
-      waterPh: new FormControl(''),
+      waterPh: new FormControl({value: '', disabled: true}),
       waterMixId: new FormControl(''),
       lightingRgb: new FormControl(''),
-      dailyExposure: new FormControl('')
+      dailyExposure: new FormControl({value: '', disabled: true})
     })
 
     this.sensorsService.getSensors().then(sensors => {
@@ -64,18 +64,15 @@ export class SensorComponent implements OnInit, OnDestroy {
     }
     this.sensors = this.sensorsService.findAll();
 
-    console.log(this.sensorsData);
     this.sensorsService.getDesiredValues("2").subscribe(value => {
       console.log("", value)
     });
 
-    this.subscription = timer(0, 5000).subscribe(t => {
-      console.log(t);
+    this.subscription = timer(1000, 60000).subscribe(t => {
       this.sensorsService.getCurrentData().toPromise().then((value) => {
-        console.log(value)
         this.co2level = Math.round(value["CO2_level"] * 100) / 100;
         for (let i = 0; i < this.sensors.length; i++) {
-          if (!isNaN(<number>this.sensors[i].currentValue) && !isNaN(parseFloat(<string>this.sensors[i].currentValue))) {
+          if (!isNaN(value[this.sensors[i].name])) {
             this.sensors[i].currentValue = Math.round(value[this.sensors[i].name] * 100) / 100;
           } else {
             this.sensors[i].currentValue = value[this.sensors[i].name];
@@ -93,13 +90,12 @@ export class SensorComponent implements OnInit, OnDestroy {
     console.log(this.sensorForm.value)
     this.showSubmit = false
     this.service.success("Success", message, {
-      // position: ["top", "left"],
       timeOut: 4000,
       animate: 'fade',
       showProgressBar: true
     });
     let postData = {
-      "gh_id": 2, //TODO, change to user gh...............
+      "gh_id": 2,
       "user_id": this.user.id,
       ...this.sensors.reduce((sensorsData, sensor) => {
         sensorsData[sensor.name] = sensor.desiredValue;
@@ -114,10 +110,21 @@ export class SensorComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log(this.sensors)
+    console.log(this.sensorForm.value)
     this.userSubscription = this.userService.loggedUser$.subscribe(value => {
       this.user = value;
-      console.log(this.user);
+      console.log(this.user)
+      if (this.user.specialty === "Agronomy") {
+        this.sensorForm.get('soilTempC').enable();
+      } else if (this.user.specialty === "Botany") {
+        this.sensorForm.get('dailyExposure').enable();
+      } else if (this.user.specialty === "Geology") {
+        this.sensorForm.get('soilHumidity').enable();
+      } else if (this.user.specialty === "Hydrology") {
+        this.sensorForm.get('waterPh').enable();
+      } else if (this.user.specialty === "Agronomy") {
+        this.sensorForm.get('airHumidity').enable();
+      }
     })
   }
 
