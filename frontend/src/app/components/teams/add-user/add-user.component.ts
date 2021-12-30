@@ -40,6 +40,8 @@ export class AddUserComponent implements OnInit {
       this.userService.saveUser(newUser).toPromise().then(user => {
         console.log(user)
       }).catch(console.error);
+    } else {
+
     }
     console.log(this.newUserForm.valid);
     console.log(this.newUserForm.value);
