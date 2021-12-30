@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {NotesService} from "../../services/notes.service";
 import {Note} from "../../models/note";
@@ -13,7 +13,7 @@ import {PostNote} from "../../models/postNote";
   templateUrl: './edit-notes.component.html',
   styleUrls: ['../share-notes/share-notes.component.css']
 })
-export class EditNotesComponent implements OnInit {
+export class EditNotesComponent implements OnInit, OnDestroy {
   private _selectedNoteFromNotes: Note;
   title: string;
   text: string;
@@ -44,6 +44,10 @@ export class EditNotesComponent implements OnInit {
     this.userSubscription = this.userService.loggedUser$.subscribe(value => {
       this.user = value;
     })
+  }
+
+  ngOnDestroy(): void {
+    this.userSubscription.unsubscribe()
   }
 
   onReturnToNotes(title: string, text: string) {

@@ -41,6 +41,7 @@ export class ShareNotesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     clearInterval(this.interval)
+    this.userSubscription.unsubscribe();
   }
 
   onReturnToNotes(title: string, text: string) {
