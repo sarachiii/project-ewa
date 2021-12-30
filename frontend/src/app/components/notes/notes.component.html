@@ -18,9 +18,9 @@
                     *ngIf="note.user.id == this.user.id" (click)="onEditNote(false, note)">
               <img src="assets/images/edit.svg" alt="edit" height="22" width="22">
             </button>
-            <button type="button" id="deleteButton" class="d-inline-flex align-items-center px-0"
+            <button type="button" class="deleteButton d-inline-flex align-items-center px-0"
                     *ngIf="note.user.id == this.user.id" (click)="onDeleteNote(note.noteId)">
-              <img src="assets/images/delete.svg" alt="deleteNote">
+              <img src="assets/images/delete_red.svg" alt="deleteNote">
             </button>
           </div>
         </div>
