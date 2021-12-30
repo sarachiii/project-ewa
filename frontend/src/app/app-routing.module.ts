@@ -15,6 +15,8 @@ import {TeamsComponent} from "./components/teams/teams.component";
 import {ViewTeamsComponent} from "./components/teams/view-teams/view-teams.component";
 import {MembersComponent} from "./components/teams/view-teams/members/members.component";
 import {AddUserComponent} from "./components/teams/add-user/add-user.component";
+import {AdminGuardGuard} from "./services/admin-guard.guard";
+import {RoleGuard} from "./services/role.guard";
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -34,9 +36,9 @@ const routes: Routes = [
   },
   { path: 'teams', component: TeamsComponent, canActivate: [AuthGuardService], canActivateChild: [AuthGuardService],
     children: [
-      { path: '', redirectTo: 'view', pathMatch: 'full' },
-      { path: 'view', component: ViewTeamsComponent },
-      { path: 'add-user', component:  AddUserComponent}
+      // { path: '', redirectTo: 'view', pathMatch: 'full' },
+      { path: 'view', component: ViewTeamsComponent, canActivate: [AdminGuardGuard]},
+      { path: 'add-user', component: ErrorComponent, canActivate: [AdminGuardGuard]}
     ]
   },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuardService], canActivateChild: [AuthGuardService],
@@ -46,7 +48,7 @@ const routes: Routes = [
       { path: 'preferences', component: PreferencesComponent }
     ]
   },
-  { path: '**', component: ErrorComponent, canActivate: [AuthGuardService] }
+  { path: '**', component: ErrorComponent, canActivate: [AuthGuardService] },
 ];
 
 @NgModule({
