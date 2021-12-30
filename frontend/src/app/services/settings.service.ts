@@ -17,7 +17,7 @@ export class SettingsService {
     this.resourceUrl = new URL(environment.apiUrl);
   }
 
-  updateProfile(id: number, accountForm: { [ key: string]: string }): Observable<boolean> {
+  updateProfile(id: number, accountForm: FormData): Observable<boolean> {
     console.log(accountForm)
     return this.httpClient.put<boolean>(`${this.resourceUrl}/users/${id}/account`, accountForm);
   }

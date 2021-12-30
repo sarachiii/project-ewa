@@ -52,7 +52,7 @@ public class HistoryController {
             try {
                 id = Long.parseLong(gh);
             } catch (NumberFormatException e) {
-                throw new PreConditionFailed("Enter a number value pleeeeeeeeeeeeeeeeeas!");
+                throw new PreConditionFailed("Greenhouse parameter value is not a number");
             }
             return historyRepository.findByGreenHouseId(id, lim);
         }

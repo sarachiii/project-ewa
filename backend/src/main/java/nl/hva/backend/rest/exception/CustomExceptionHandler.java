@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.reactive.function.UnsupportedMediaTypeException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.HashMap;
@@ -24,26 +25,25 @@ import java.util.Map;
 @ControllerAdvice
 class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ResourceNotFound.class)
-    public final ResponseEntity<ExceptionResponse> handleNotFoundExceptions(Exception ex, WebRequest wr){
+    public final ResponseEntity<ExceptionResponse> handleNotFound(Exception ex, WebRequest wr){
         String path = ((ServletWebRequest)wr).getRequest().getRequestURI();
 
         ExceptionResponse exceptionResponse = new ExceptionResponse(
                 HttpStatus.NOT_FOUND.value(),
-                "Resource not found",
+                "Resource Not Found",
                 ex.getMessage(),
                 path);
 
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
     }
 
-
     @ExceptionHandler(PreConditionFailed.class)
-    public final ResponseEntity<ExceptionResponse> handlePreConditionFailedException(Exception ex, WebRequest wr){
+    public final ResponseEntity<ExceptionResponse> handlePreConditionFailed(Exception ex, WebRequest wr){
         String path = ((ServletWebRequest)wr).getRequest().getRequestURI();
 
         ExceptionResponse exceptionResponse = new ExceptionResponse(
                 HttpStatus.PRECONDITION_FAILED.value(),
-                "PreCondition failed",
+                HttpStatus.PRECONDITION_FAILED.getReasonPhrase(),
                 ex.getMessage(),
                 path);
 
@@ -81,11 +81,24 @@ class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
         ExceptionResponse exceptionResponse = new ExceptionResponse(
                 HttpStatus.BAD_REQUEST.value(),
-                "Bad Request",
+                HttpStatus.BAD_REQUEST.getReasonPhrase(),
                 ex.getMessage(),
                 path);
 
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UnsupportedMediaTypeException.class)
+    public final ResponseEntity<ExceptionResponse> handleUnsupportedMediaType(Exception ex, WebRequest wr){
+        String path = ((ServletWebRequest)wr).getRequest().getRequestURI();
+
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(),
+                HttpStatus.UNSUPPORTED_MEDIA_TYPE.getReasonPhrase(),
+                ex.getMessage(),
+                path);
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.UNSUPPORTED_MEDIA_TYPE);
     }
 
     //@ExceptionHandler(MethodArgumentNotValidException.class)
