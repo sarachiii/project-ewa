@@ -12,8 +12,6 @@ public class AccountForm {
     private String firstName;
     @NotBlank(message = "Last name is required")
     private String lastName;
-    @NotNull
-    private PictureForm pictureForm;
     @NotBlank
     @Email(message = "Email is invalid!\nFormat: name@example.com")
     private String emailAddress;
@@ -22,37 +20,6 @@ public class AccountForm {
     @NotNull
     private NewPasswordForm newPasswordForm;
     private Boolean deleteProfilePicture;
-
-    public static class PictureForm {
-        // Add custom validation
-        private String file;
-        private String url;
-
-        public PictureForm(String file, String url) {
-            this.file = file;
-            this.url = url;
-        }
-
-        protected PictureForm() {
-            this("", "");
-        }
-
-        public String getFile() {
-            return file;
-        }
-
-        public void setFile(String file) {
-            this.file = file;
-        }
-
-        public String getUrl() {
-            return url;
-        }
-
-        public void setUrl(String url) {
-            this.url = url;
-        }
-    }
 
     public static class NewPasswordForm {
         @Size(min = 8, message = "Must be at least 8 characters long")
@@ -89,12 +56,11 @@ public class AccountForm {
         }
     }
 
-    public AccountForm(String firstName, String lastName, PictureForm pictureForm,
+    public AccountForm(String firstName, String lastName,
                        String emailAddress, String password, NewPasswordForm newPasswordForm,
                        Boolean deleteProfilePicture) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.pictureForm = pictureForm;
         this.emailAddress = emailAddress;
         this.password = password;
         this.newPasswordForm = newPasswordForm;
@@ -102,7 +68,7 @@ public class AccountForm {
     }
 
     protected AccountForm() {
-        this("", "", new PictureForm(), "", "", new NewPasswordForm(), false);
+        this("", "", "", "", new NewPasswordForm(), false);
     }
 
     public String getFirstName() {
@@ -119,14 +85,6 @@ public class AccountForm {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public PictureForm getPictureForm() {
-        return pictureForm;
-    }
-
-    public void setPictureForm(PictureForm pictureForm) {
-        this.pictureForm = pictureForm;
     }
 
     public String getEmailAddress() {
