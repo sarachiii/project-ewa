@@ -36,8 +36,8 @@ const routes: Routes = [
   },
   { path: 'teams', component: TeamsComponent, canActivate: [AuthGuardService], canActivateChild: [AuthGuardService],
     children: [
-      { path: '', redirectTo: 'view', pathMatch: 'full' },
-      { path: 'view', component: ViewTeamsComponent },
+      // { path: '', redirectTo: 'view', pathMatch: 'full' },
+      { path: 'view', component: ViewTeamsComponent, canActivate: [AdminGuardGuard]},
       { path: 'add-user', component: ErrorComponent, canActivate: [AdminGuardGuard]}
     ]
   },
