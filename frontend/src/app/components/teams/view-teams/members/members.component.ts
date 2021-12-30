@@ -32,4 +32,8 @@ export class MembersComponent implements OnInit, OnChanges {
     });
     this.editTeam = false;
   }
+
+  deleteMember() {
+    console.log("test");
+  }
 }

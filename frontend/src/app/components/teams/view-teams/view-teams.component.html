@@ -10,7 +10,11 @@
           </div>
           <div class="list-group mt-3 w-100 d-flex">
             <a *ngFor="let team of teams" type="button" class="list-group-item list-group-item-action"
-               (click)="onSelect(team.id)" [ngClass]="{'active': selectedTeamId == team.id}">Team {{team.id}}</a>
+               (click)="onSelect(team.id)" [ngClass]="{'active': selectedTeamId == team.id}">Team {{team.id}}
+              <button *ngIf="user.role==Role.SUPER_ADMIN" type="button" class="deleteButton float-end" data-bs-toggle="modal" data-bs-target="#deleteTeamModal">
+                <img src="assets/images/delete_red.svg" alt="deleteTeam">
+              </button>
+            </a>
           </div>
         </div>
         <div class="dropdown d-lg-none">
@@ -45,6 +49,24 @@
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><strong>No</strong></button>
                 <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="addNewTeam()"><strong>Yes</strong></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="deleteTeamModal" data-bs-keyboard="false" tabindex="-1"
+             aria-labelledby="deleteTeamModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="deleteTeamModalLabel">Delete team</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                Are you sure you want to delete the team with all the members?
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><strong>No</strong></button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="deleteTeam()"><strong>Yes</strong></button>
               </div>
             </div>
           </div>

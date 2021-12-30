@@ -51,6 +51,28 @@
       </div>
     </div>
   </form>
+
+  <!-- Activity list -->
+  <div class="card shadow p-3 mb-5 fade-in">
+  <div class="px-3 pb-2 fade-in table-responsive">
+  <h1 class="h2 px-2 mb-1 text-truncate">Activity list</h1>
+    <hr class="my-2 opacity-100">
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Timestamp(?)</th>
+      <th *ngFor="let sensor of sensors" scope="col">{{sensor.sensorName}}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>Time(?)</td>
+      <td *ngFor="let sensor of sensors">{{sensor.currentValue}}</td>
+    </tr>
+    </tbody>
+  </table>
+  </div>
+  </div>
 </div>
 <div class="fixed-bottom" *ngIf="showSubmit == true">
   <button class="btn btn-primary fw-bold d-lg-block float-end px-3 me-3 mb-3 shadow" type="button" id="submit"

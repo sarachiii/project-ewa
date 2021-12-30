@@ -94,6 +94,10 @@ app-root {
   -moz-animation: fade-in ease-in-out 0.2s;
   animation: fade-in ease-in-out 0.2s;
 }
+.deleteButton{
+  background: transparent;
+  border: 0;
+}
 @-webkit-keyframes fade-in { from {opacity: 0;} to {opacity: 1;} }
 @-moz-keyframes fade-in { from {opacity: 0;} to {opacity: 1;} }
 @keyframes fade-in { from {opacity: 0;} to {opacity: 1;} }

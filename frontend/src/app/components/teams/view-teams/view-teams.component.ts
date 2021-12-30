@@ -62,4 +62,8 @@ export class ViewTeamsComponent implements OnInit, OnDestroy {
   addNewTeam(): void {
     return null;
   }
+
+  deleteTeam() {
+    console.log("test");
+  }
 }
