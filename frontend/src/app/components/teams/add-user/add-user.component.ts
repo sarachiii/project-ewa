@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {TeamService} from "../../../services/team.service";
 import {Team} from "../../../models/team";
 import {UserService} from "../../../services/user.service";
-import {User} from "../../../models/user";
+import {Role, User} from "../../../models/user";
 
 @Component({
   selector: 'app-add-user',
@@ -14,6 +14,7 @@ import {User} from "../../../models/user";
 export class AddUserComponent implements OnInit {
   newUserForm: FormGroup;
   teams: Team[];
+  Role = Role;
 
   constructor(private teamService: TeamService,
               private userService: UserService) {
@@ -22,8 +23,8 @@ export class AddUserComponent implements OnInit {
       lastName: new FormControl("", Validators.required),
       emailAddress: new FormControl("", Validators.required),
       password: new FormControl("", Validators.required),
-      role: new FormControl("", Validators.required),
-      specialty: new FormControl("", Validators.required),
+      role: new FormControl(Role.MEMBER, Validators.required),
+      specialty: new FormControl("Agronomy", Validators.required),
       teamId: new FormControl("", Validators.required)
     })
   }
@@ -31,6 +32,7 @@ export class AddUserComponent implements OnInit {
   ngOnInit(): void {
     this.teamService.getAllTeamIds().subscribe(teams => {
       this.teams = teams;
+      if (this.teams.length) this.newUserForm.get('teamId').patchValue(this.teams[0].id)
     })
   }
 

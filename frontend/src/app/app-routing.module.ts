@@ -38,7 +38,7 @@ const routes: Routes = [
     children: [
       // { path: '', redirectTo: 'view', pathMatch: 'full' },
       { path: 'view', component: ViewTeamsComponent, canActivate: [AdminGuardGuard]},
-      { path: 'add-user', component: ErrorComponent, canActivate: [AdminGuardGuard]}
+      { path: 'add-user', component: AddUserComponent, canActivate: [AdminGuardGuard]}
     ]
   },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuardService], canActivateChild: [AuthGuardService],
