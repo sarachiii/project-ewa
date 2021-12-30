@@ -36,11 +36,13 @@
       </div>
       <div class="input-group">
         <ng-container *ngIf="sensor.sensorName != factor.LIGHTING_RGB else colorField">
-          <button class="btn btn-primary py-1 fw-bold" type="button" (click)="decrementValue(sensor)">-</button>
+          <button [disabled]="sensorForm.get(sensor.nameCamelCase).disabled"
+                  class="btn btn-secondary py-1 fw-bold" type="button" (click)="decrementValue(sensor)">-</button>
           <input [formControlName]="sensor.nameCamelCase" type="text" class="form-control text-center"
                  placeholder="value" [(ngModel)]="sensor.desiredValue"
                  [ngClass]="{'is-invalid': sensorForm.get(sensor.nameCamelCase).invalid}">
-          <button class="btn btn-primary py-1 fw-bold" type="button" (click)="incrementValue(sensor)">+</button>
+          <button [disabled]="sensorForm.get(sensor.nameCamelCase).disabled"
+                  class="btn btn-secondary py-1 fw-bold" type="button" (click)="incrementValue(sensor)">+</button>
         </ng-container>
         <ng-template #colorField>
           <div class="form-control overflow-hidden p-0 position-relative">
