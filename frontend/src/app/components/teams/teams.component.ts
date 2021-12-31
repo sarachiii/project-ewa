@@ -25,5 +25,4 @@ export class TeamsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.userSubscription.unsubscribe();
   }
-
 }

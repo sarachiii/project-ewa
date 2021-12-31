@@ -18,6 +18,7 @@ export class ViewTeamsComponent implements OnInit, OnDestroy {
   protected paramsSubscription: Subscription | null;
   user: User;
   teams: Team[] = [];
+  public GREENHOUSE_ID: number = 2;
 
   constructor(private router: Router,
               private activatedRoute: ActivatedRoute,
@@ -60,7 +61,10 @@ export class ViewTeamsComponent implements OnInit, OnDestroy {
   }
 
   addNewTeam(): void {
-    return null;
+    let team = new Team(0, this.GREENHOUSE_ID);
+    this.teamService.addTeam(team).subscribe(value => {
+      this.teamService.addTeamToList(value);
+    });
   }
 
   deleteTeam() {
