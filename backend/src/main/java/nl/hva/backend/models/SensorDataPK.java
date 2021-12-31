@@ -3,6 +3,7 @@ package nl.hva.backend.models;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 
 /**
  * This class <description of functionality>
@@ -13,19 +14,23 @@ import java.io.Serializable;
 @Embeddable
 public class SensorDataPK implements Serializable {
 
+    @Column
+    private ZonedDateTime timestamp;
+
     @Column(name = "gh_id")
     private long greenhouseId;
 
     @Column(name = "sensor_id")
     private long sensorId;
 
-    public SensorDataPK(long greenhouseId, long sensorId) {
+    public SensorDataPK(ZonedDateTime timestamp, long greenhouseId, long sensorId) {
+        this.timestamp = timestamp;
         this.greenhouseId = greenhouseId;
         this.sensorId = sensorId;
     }
 
     public SensorDataPK() {
-        this(0 ,0);
+        this(null, 0, 0);
     }
 
     public long getGreenhouseId() {

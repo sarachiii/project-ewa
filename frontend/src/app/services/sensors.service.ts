@@ -7,7 +7,7 @@ import {map, shareReplay} from "rxjs/operators";
 
 @Injectable()
 export class SensorsService {
-  private resourceUrl: URL;
+  private readonly resourceUrl: URL;
   private sensors: Sensor[];
 
   constructor(protected http: HttpClient) {
@@ -16,7 +16,7 @@ export class SensorsService {
 
     this.getSensors().then((value) => {
       this.sensors.push(...value);
-      this.getDesiredValues().toPromise().then((sensorData: any[]) => {
+      this.getDesiredValues(2, 9).toPromise().then((sensorData: any[]) => {
         for (let sd of sensorData) {
           let sensor: Sensor = this.sensors.find(sensor => sensor.id == sd["sensorId"]);
           sensor.desiredValue = sensor.sensorName != Factor.LIGHTING_RGB ? sd["value"] : "#" + sd["value"].toString(16);
@@ -34,21 +34,33 @@ export class SensorsService {
     console.log(postData)
 
     return this.http.post(new URL(`sensors/data`, this.resourceUrl).toString(), postData);
-    // return this.http.post(
-    //   `http://www.sneltec.com/hva/hva.php?gh_id=${postData.ghId}&user_id=${postData.userId}&air_temp_c=${postData.airTemperature}&air_humidity=${postData.airHumidity}&soil_temp_c=${postData.soilTemperature}&soil_humidity=${postData.soilHumidity}&soil_mix_id=${postData.soilMixID}&water_ph=${postData.waterpH}&water_mix_id=${postData.waterMixID}&daily_exposure=${postData.exposure}`,
-    //   postData)
-    // return null;
   }
 
   getCurrentData(ghId: number | string = 2): Observable<any> {
-    return this.http.get(new URL(`sensors/data/api?id=${ghId}&view=raw`, this.resourceUrl).toString());
+    // Create new url from the resource url with the correct endpoint
+    let currentDataUrl = new URL(`sensors/data/api?id=${ghId}`, this.resourceUrl);
+
+    // Add function parameter as query parameter
+    currentDataUrl.searchParams.set("id", ghId.toString());
+
+    // Send request to the backend
+    return this.http.get(currentDataUrl.toString());
   }
 
-  getDesiredValues(ghId: number | string = 2): Observable<any> {
-    return this.http.get(new URL(`sensors/data/db?id=${ghId}`, this.resourceUrl).toString());
+  getDesiredValues(ghId: number | string = 2, limit?: number): Observable<any> {
+    // Create new url from the resource url with the correct endpoint
+    let desiredValuesUrl = new URL('sensors/data/db', this.resourceUrl);
+
+    // Add function parameters as query parameters
+    desiredValuesUrl.searchParams.set('id', ghId.toString());
+    if (limit) desiredValuesUrl.searchParams.set('limit', limit.toString());
+
+    // Send request to the backend
+    return this.http.get(desiredValuesUrl.toString());
   }
 
   getSensors(): Promise<Sensor[]> {
+    // Convert sensor to Sensor object with map and repeat response
     return this.http.get<Sensor[]>(new URL('sensors', this.resourceUrl).toString()).pipe(
       map(sensors => sensors.map(sensor => Object.assign(new Sensor(), sensor))),
       shareReplay(1)
