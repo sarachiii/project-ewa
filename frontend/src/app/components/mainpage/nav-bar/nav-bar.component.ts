@@ -46,7 +46,6 @@ export class NavBarComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
    	//give the visitedPage boolean the right value based on if the notes page was visited or not
-    this.notesService.currentVisitedPage.subscribe(val => this.visitedPage = val);
     this.userSubscription = this.userService.loggedUser$.subscribe(value => {
       this.user = value;
     })

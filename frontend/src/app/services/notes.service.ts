@@ -17,8 +17,6 @@ import {PostNote} from "../models/postNote";
   providedIn: 'root'
 })
 export class NotesService {
-  private visitedPage: Subject<boolean> = new BehaviorSubject<boolean>(false);
-  currentVisitedPage = this.visitedPage.asObservable();
   resourceUrl: string;
   private _notes$: BehaviorSubject<Note[]>;
 
@@ -80,10 +78,5 @@ export class NotesService {
       if (noteIndex > -1) notes.splice(noteIndex, 1);
       this._notes$.next(notes);
     }, error => console.log(error));
-  }
-
-  // This method sets the boolean for if the notes page was visited by the user or not
-  updateVisitedPage(visited: boolean) {
-    this.visitedPage.next(visited);
   }
 }

@@ -1,5 +1,4 @@
-import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
-import {Workfield} from "../../models/workfield";
+import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {NgxMasonryComponent, NgxMasonryOptions} from "ngx-masonry";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Note} from "../../models/note";
@@ -7,7 +6,7 @@ import {NotesService} from "../../services/notes.service";
 import {first, map, skipWhile} from "rxjs/operators";
 import {User} from "../../models/user";
 import {UserService} from "../../services/user.service";
-import {interval, Observable} from "rxjs";
+import {Observable} from "rxjs";
 
 /**
  * This is the notes component. It takes care of showing the notes on the notes page.
@@ -22,10 +21,8 @@ import {interval, Observable} from "rxjs";
   styleUrls: ['./notes.component.css']
 })
 export class NotesComponent implements OnInit, OnChanges {
-  isVisited: boolean = false;
   createNote: boolean = false;
   editNote: boolean = false;
-  deleteNote: boolean;
   selectedNote: Note = <Note>{};
   test: boolean = false;
   user: User;
@@ -47,9 +44,6 @@ export class NotesComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    this.isVisited = true;
-    this.notesService.updateVisitedPage(this.isVisited);
-
     this.userService.loggedUser$
       .pipe(skipWhile(value => Object.keys(value).length === 0), first())
       .subscribe(value => {
@@ -71,13 +65,13 @@ export class NotesComponent implements OnInit, OnChanges {
       horizontalOrder: true,
     };
 
-    this.notes$ = this.notesService.notes$
-      .pipe(map(notes => {
-        return notes
-          .filter((note) =>
-            this.selectedWorkfieldFromNavbar == note.user.specialty.toLocaleLowerCase())
-          .sort((a, b) => new Date(b.timestamp).valueOf() - new Date(a.timestamp).valueOf());
-      }));
+      this.notes$ = this.notesService.notes$
+        .pipe(map(notes => {
+          return notes
+            .filter((note) =>
+              this.selectedWorkfieldFromNavbar == note.user.specialty.toLocaleLowerCase())
+            .sort((a, b) => new Date(b.timestamp).valueOf() - new Date(a.timestamp).valueOf());
+        }));
   }
 
   reloadMasonry(): void {
@@ -95,8 +89,6 @@ export class NotesComponent implements OnInit, OnChanges {
   }
 
   onDeleteNote(noteId: number) {
-    if (confirm("Are you sure you want to delete this note?")) {
-      this.notesService.deleteNote(noteId);
-    }
+    this.notesService.deleteNote(noteId);
   }
 }
