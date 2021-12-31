@@ -69,22 +69,16 @@ input[type=color] {
 }
 
 button[disabled=disabled], button:disabled {
-  border: 0;
+  border: transparent;
   background-color: #cccccc;
   color: #666666;
-}
-
-.btn-secondary,
-.btn-secondary:hover,
-.btn-outline-secondary,
-.btn-outline-secondary.active,
-.btn-outline-secondary:hover {
-  background-color: var(--cc-green);
-  border-color: var(--cc-green);
-  color: white;
 }
 
 .form-control:disabled{
   background-color: #eeeeee;
   border-color: #eeeeee;
+}
+
+.form-control input[type=color] {
+  cursor: pointer;
 }

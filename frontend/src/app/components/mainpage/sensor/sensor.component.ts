@@ -8,6 +8,7 @@ import {Subscription, timer} from "rxjs";
 import {WebStorageService} from "../../../services/storage/web-storage.service";
 import {UserService} from "../../../services/user.service";
 import {User} from "../../../models/user";
+import {History} from "../../../models/history";
 
 @Component({
   selector: 'app-sensor',
@@ -23,6 +24,7 @@ export class SensorComponent implements OnInit, OnDestroy {
   sensors: Sensor[] = [];
   co2level: number;
   sensorForm: FormGroup;
+  records: History[];
   user: User | null;
   private userSubscription: Subscription;
   private subscription: Subscription;
@@ -33,6 +35,8 @@ export class SensorComponent implements OnInit, OnDestroy {
               private fb: FormBuilder,
               private webStorageService: WebStorageService,
               private userService: UserService) {
+    this.records = [];
+
     this.sensorForm = new FormGroup({});
 
     this.sensorForm = new FormGroup({
@@ -56,6 +60,22 @@ export class SensorComponent implements OnInit, OnDestroy {
           Validators.pattern(/^\d*\.?\d*$/)
         ]);
       }
+
+      this.sensorsService.getDesiredValues(2).subscribe((sd) => {
+        let timestamps = [...new Set(sd.map(value => value.timestamp))];
+        for (const timestamp of timestamps) {
+          let record: History = new History();
+          record.timestamp = timestamp;
+
+          for (const sensor of sensors) {
+            let data = sd.find(value => value.sensorId == sensor.id && value.timestamp == timestamp);
+            record[sensor.nameCamelCase] = sensor.sensorName == Factor.LIGHTING_RGB ? data.getHexColor() : data.value;
+          }
+
+          this.records.push(record);
+        }
+
+      });
     });
 
     this.sensorsData = new Map();
@@ -64,9 +84,7 @@ export class SensorComponent implements OnInit, OnDestroy {
     }
     this.sensors = this.sensorsService.findAll();
 
-    this.sensorsService.getDesiredValues("2").subscribe(value => {
-      console.log("", value)
-    });
+
 
     this.subscription = timer(1000, 60000).subscribe(t => {
       this.sensorsService.getCurrentData().toPromise().then((value) => {

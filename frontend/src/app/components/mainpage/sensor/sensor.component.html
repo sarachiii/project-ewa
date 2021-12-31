@@ -37,12 +37,14 @@
       <div class="input-group">
         <ng-container *ngIf="sensor.sensorName != factor.LIGHTING_RGB else colorField">
           <button [disabled]="sensorForm.get(sensor.nameCamelCase).disabled"
-                  class="btn btn-secondary py-1 fw-bold" type="button" (click)="decrementValue(sensor)">-</button>
+                  [ngClass]="sensorForm.get(sensor.nameCamelCase).enabled? 'btn-primary' : 'btn-secondary'"
+                  class="btn py-1 fw-bold" type="button" (click)="decrementValue(sensor)">-</button>
           <input [formControlName]="sensor.nameCamelCase" type="text" class="form-control text-center"
                  placeholder="value" [(ngModel)]="sensor.desiredValue"
                  [ngClass]="{'is-invalid': sensorForm.get(sensor.nameCamelCase).invalid}">
           <button [disabled]="sensorForm.get(sensor.nameCamelCase).disabled"
-                  class="btn btn-secondary py-1 fw-bold" type="button" (click)="incrementValue(sensor)">+</button>
+                  [ngClass]="sensorForm.get(sensor.nameCamelCase).enabled? 'btn-primary' : 'btn-secondary'"
+                  class="btn py-1 fw-bold" type="button" (click)="incrementValue(sensor)">+</button>
         </ng-container>
         <ng-template #colorField>
           <div class="form-control overflow-hidden p-0 position-relative">
@@ -55,25 +57,25 @@
   </form>
 
   <!-- Activity list -->
-  <div class="card shadow p-3 mb-5 fade-in">
-  <div class="px-3 pb-2 fade-in table-responsive">
-  <h1 class="h2 px-2 mb-1 text-truncate">Activity list</h1>
-    <hr class="my-2 opacity-100">
-  <table class="table">
-    <thead>
-    <tr>
-      <th>Timestamp(?)</th>
-      <th *ngFor="let sensor of sensors" scope="col">{{sensor.sensorName}}</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-      <td>Time(?)</td>
-      <td *ngFor="let sensor of sensors">{{sensor.currentValue}}</td>
-    </tr>
-    </tbody>
-  </table>
-  </div>
+  <div *ngIf="sensors as sensors" class="card shadow p-3 mb-5 fade-in">
+    <div class="px-3 pb-2 fade-in table-responsive">
+      <h1 class="h2 px-2 mb-1 text-truncate">Recent activity</h1>
+      <hr class="my-2 opacity-100">
+      <table class="table">
+        <thead>
+        <tr>
+          <th>Timestamp</th>
+          <th *ngFor="let sensor of sensors" scope="col">{{sensor.sensorName}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let record of records">
+          <th>{{record.convertedDate()}}</th>
+          <td *ngFor="let sensor of sensors">{{record[sensor.nameCamelCase]}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 <div class="fixed-bottom" *ngIf="showSubmit == true">

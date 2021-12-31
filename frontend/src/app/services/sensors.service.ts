@@ -4,6 +4,7 @@ import {environment} from "../../environments/environment";
 import {Observable, of} from "rxjs";
 import {Factor, Sensor} from "../models/sensor";
 import {map, shareReplay} from "rxjs/operators";
+import {SensorData} from "../models/sensor-data";
 
 @Injectable()
 export class SensorsService {
@@ -16,9 +17,9 @@ export class SensorsService {
 
     this.getSensors().then((value) => {
       this.sensors.push(...value);
-      this.getDesiredValues(2, 9).toPromise().then((sensorData: any[]) => {
+      this.getDesiredValues(2, 9).toPromise().then((sensorData) => {
         for (let sd of sensorData) {
-          let sensor: Sensor = this.sensors.find(sensor => sensor.id == sd["sensorId"]);
+          let sensor: Sensor = this.sensors.find(sensor => sensor.id == sd.sensorId);
           sensor.desiredValue = sensor.sensorName != Factor.LIGHTING_RGB ? sd["value"] : "#" + sd["value"].toString(16);
         }
       })
@@ -47,7 +48,7 @@ export class SensorsService {
     return this.http.get(currentDataUrl.toString());
   }
 
-  getDesiredValues(ghId: number | string = 2, limit?: number): Observable<any> {
+  getDesiredValues(ghId: number | string = 2, limit?: number): Observable<SensorData[]> {
     // Create new url from the resource url with the correct endpoint
     let desiredValuesUrl = new URL('sensors/data/db', this.resourceUrl);
 
@@ -56,7 +57,9 @@ export class SensorsService {
     if (limit) desiredValuesUrl.searchParams.set('limit', limit.toString());
 
     // Send request to the backend
-    return this.http.get(desiredValuesUrl.toString());
+    return this.http.get<SensorData[]>(desiredValuesUrl.toString()).pipe(
+      map(sensorData => sensorData.map(sd => Object.assign(new SensorData(), sd)))
+    );
   }
 
   getSensors(): Promise<Sensor[]> {

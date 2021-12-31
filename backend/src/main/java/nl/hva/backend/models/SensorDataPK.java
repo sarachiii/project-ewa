@@ -18,14 +18,14 @@ public class SensorDataPK implements Serializable {
     private ZonedDateTime timestamp;
 
     @Column(name = "gh_id")
-    private long greenhouseId;
+    private long ghId;
 
     @Column(name = "sensor_id")
     private long sensorId;
 
-    public SensorDataPK(ZonedDateTime timestamp, long greenhouseId, long sensorId) {
+    public SensorDataPK(ZonedDateTime timestamp, long ghId, long sensorId) {
         this.timestamp = timestamp;
-        this.greenhouseId = greenhouseId;
+        this.ghId = ghId;
         this.sensorId = sensorId;
     }
 
@@ -33,12 +33,12 @@ public class SensorDataPK implements Serializable {
         this(null, 0, 0);
     }
 
-    public long getGreenhouseId() {
-        return greenhouseId;
+    public long getGhId() {
+        return ghId;
     }
 
-    public void setGreenhouseId(long greenhouseId) {
-        this.greenhouseId = greenhouseId;
+    public void setGhId(long ghId) {
+        this.ghId = ghId;
     }
 
     public long getSensorId() {
