@@ -167,7 +167,7 @@ public class SensorController {
         }
 
         // Save all the sensor data to the database
-        this.sensorRepository.saveAll(sensorData);
+        List<SensorData> savedSensorData = this.sensorRepository.saveAll(sensorData);
 
         // Get unique timestamps, hard limited to 10
         List<ZonedDateTime> timestamps = this.sensorRepository.getTimestampsByGhId(ghId);
@@ -175,7 +175,10 @@ public class SensorController {
         this.sensorRepository.deleteByGhIdExcludeTimestamps(ghId, timestamps);
 
         // Return the API result
-        return this.getSensorDataAPI("2", view);
+        return ResponseEntity.ok(savedSensorData);
+
+        // TODO: Sometimes the recent activity is off by one second
+        // return ResponseEntity.ok(getSensorDataDB(sensorNode.get("gh_id").asText(), String.valueOf(sensorData.size())))
     }
 
     @PostMapping("add")

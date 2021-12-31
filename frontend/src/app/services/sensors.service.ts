@@ -30,11 +30,13 @@ export class SensorsService {
     return this.sensors;
   }
 
-  postSensorData(postData: any) {
+  postSensorData(postData: any): Observable<SensorData[]> {
     //This method sends a Http request
     console.log(postData)
 
-    return this.http.post(new URL(`sensors/data`, this.resourceUrl).toString(), postData);
+    return this.http.post<SensorData[]>(new URL(`sensors/data`, this.resourceUrl).toString(), postData).pipe(
+      map(sensorData => sensorData.map(sd => Object.assign(new SensorData(), sd)))
+    );
   }
 
   getCurrentData(ghId: number | string = 2): Observable<any> {

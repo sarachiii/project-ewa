@@ -58,23 +58,32 @@
 
   <!-- Activity list -->
   <div *ngIf="sensors as sensors" class="card shadow p-3 mb-5 fade-in">
-    <div class="px-3 pb-2 fade-in table-responsive">
+    <div class="px-3 py-2 fade-in">
       <h1 class="h2 px-2 mb-1 text-truncate">Recent activity</h1>
       <hr class="my-2 opacity-100">
-      <table class="table">
-        <thead>
-        <tr>
-          <th>Timestamp</th>
-          <th *ngFor="let sensor of sensors" scope="col">{{sensor.sensorName}}</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let record of records">
-          <th>{{record.convertedDate()}}</th>
-          <td *ngFor="let sensor of sensors">{{record[sensor.nameCamelCase]}}</td>
-        </tr>
-        </tbody>
-      </table>
+      <ng-container *ngIf="records.length else loadingRecords">
+        <div class="table-responsive">
+          <table class="table mb-2">
+            <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th *ngFor="let sensor of sensors" scope="col">{{sensor.sensorName}}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let record of records">
+              <th>{{record.convertedDate()}}</th>
+              <td *ngFor="let sensor of sensors">{{record[sensor.nameCamelCase]}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </ng-container>
+      <ng-template #loadingRecords>
+        <div class="d-flex justify-content-center pt-3">
+          <div class="spinner-border border-3"></div>
+        </div>
+      </ng-template>
     </div>
   </div>
 </div>
