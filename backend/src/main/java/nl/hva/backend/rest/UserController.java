@@ -8,6 +8,7 @@ import nl.hva.backend.rest.exception.ConflictException;
 import nl.hva.backend.rest.exception.ResourceNotFound;
 import nl.hva.backend.services.EmailService;
 import nl.hva.backend.services.FileService;
+import nl.hva.backend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -36,10 +37,13 @@ public class UserController {
     private UserRepository userRepository;
 
     @Autowired
-    private FileService fileService;
+    private UserService userService;
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private FileService fileService;
 
     @GetMapping("users")
     public List<User> getUsersList() {
@@ -65,32 +69,27 @@ public class UserController {
     }
 
     @PostMapping("users")
-    public ResponseEntity<User> createUser(@RequestBody User u)
+    public ResponseEntity<User> createUser(@RequestBody User user)
             throws ConflictException, BadGatewayException {
-        User user = this.userRepository.findByEmailAddress(u.getEmailAddress());
+        User u = this.userRepository.findByEmailAddress(user.getEmailAddress());
 
-        if (user != null) {
+        if (u != null) {
             throw new ConflictException("The user already exists in the database");
         }
 
-        User saveUser = this.userRepository.save(u);
+        User savedUser = this.userRepository.save(user);
+        this.userRepository.flush();
 
-        String emailText = String.format(
-                "Dear %s %s,%n%nYou've been invited to join team %d at Climate Cleanup!" +
-                        "%n%nYour username: %s%nYour password: %s%n%n" +
-                        "Please change your password.%n%nSincerely,%n%nClimate Cleanup",
-                saveUser.getFirstName(), saveUser.getLastName(), saveUser.getTeamId(),
-                saveUser.getEmailAddress(), saveUser.getPassword()
-                );
+        HashMap<String, String> mail = userService.generateMail(user);
 
-        emailService.sendSimpleMessage(saveUser.getEmailAddress(), "Welcome!", emailText);
+        emailService.sendSimpleMessage(mail.get("recipient"), mail.get("subject"), mail.get("body"));
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("{id}")
-                .buildAndExpand(saveUser.getId())
+                .buildAndExpand(savedUser.getId())
                 .toUri();
 
-        return ResponseEntity.created(location).body(saveUser);
+        return ResponseEntity.created(location).body(savedUser);
     }
 
     @DeleteMapping("users/{id}")

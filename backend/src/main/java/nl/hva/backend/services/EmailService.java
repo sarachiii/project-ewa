@@ -17,13 +17,13 @@ public class EmailService {
     @Autowired
     private WebConfig webConfig;
 
-    public void sendSimpleMessage(String to, String subject, String text) {
+    public void sendSimpleMessage(String recipient, String subject, String body) {
         SimpleMailMessage message = new SimpleMailMessage();
 
         message.setFrom(webConfig.getMailHost());
-        message.setTo(to);
+        message.setTo(recipient);
         message.setSubject(subject);
-        message.setText(text);
+        message.setText(body);
 
         try {
             emailSender.send(message);
