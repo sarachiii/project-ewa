@@ -13,13 +13,33 @@
       <label class="form-label fw-bold" for="lastName">Last name:</label>
       <input class="form-control py-2 mb-3" formControlName="lastName" type="text" id="lastName"
              name="lastName" placeholder="Enter a last name here">
-      <label class="form-label fw-bold" for="email">Email:</label>
-      <input class="form-control py-2 mb-3" formControlName="emailAddress" type="email" id="email"
-             name="email" placeholder="email@example.com">
-      <label class="form-label fw-bold" for="password">Temporary password:</label>
-      <input class="form-control py-2 mb-3" formControlName="password" autocomplete="new-password" type="password"
-             id="password"
-             name="password" placeholder="Enter a password here">
+      <div class="mb-3">
+        <label class="form-label fw-bold" for="email">Email:</label>
+        <input class="form-control py-2" [ngClass]="{'is-invalid':emailAddress.errors?.email}"
+               formControlName="emailAddress" type="email" id="email"
+               name="email" placeholder="email@example.com">
+        <div class="invalid-feedback">
+          <span>Please enter a valid email</span>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-bold" for="password">Temporary password:</label>
+        <input class="form-control py-2" [ngClass]="{'is-invalid':password.invalid && password.value}"
+               formControlName="password" autocomplete="new-password" type="password"
+               id="password"
+               name="password" placeholder="Enter a password here">
+        <div class="invalid-feedback">
+          Password needs to meet the following criteria:
+          <ul>
+            <li *ngIf="password.errors?.length">Must be at least 8 characters long</li>
+            <li *ngIf="password.errors?.number">Must contain a number</li>
+            <li *ngIf="password.errors?.upperCase">Must contain an uppercase character</li>
+            <li *ngIf="password.errors?.lowerCase">Must contain a lowercase character</li>
+            <li *ngIf="password.errors?.illegalChars">May only contain these special characters: (!@#$%&_=+?~-)
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
     <div class="col-sm-6">
       <label for="role" class="form-label fw-bold">Role</label>
