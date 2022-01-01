@@ -7,6 +7,7 @@ import {UserService} from "../../services/user.service";
 import {User} from "../../models/user";
 import {Subscription} from "rxjs";
 import {PostNote} from "../../models/postNote";
+import {FormControl, FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'app-edit-notes',
@@ -15,15 +16,19 @@ import {PostNote} from "../../models/postNote";
 })
 export class EditNotesComponent implements OnInit, OnDestroy {
   private _selectedNoteFromNotes: Note;
-  title: string;
-  text: string;
+  /*title: string;
+  text: string;*/
   note: Note;
   user: User | null;
+  noteForm: FormGroup;
   private userSubscription: Subscription;
 
   @Input()
   set selectedNoteFromNotes(note: Note) {
     this.note = note;
+    this.title.patchValue(this.note.title);
+    this.text.patchValue(this.note.noteText);
+    this.noteForm.updateValueAndValidity();
   }
 
   get selectedNoteFromNotes(): Note {
@@ -38,6 +43,10 @@ export class EditNotesComponent implements OnInit, OnDestroy {
               private activatedRoute: ActivatedRoute,
               private webStorageService: WebStorageService,
               private userService: UserService) {
+    this.noteForm = new FormGroup({
+      title: new FormControl(''),
+      text: new FormControl('')
+    })
   }
 
   ngOnInit(): void {
@@ -50,9 +59,16 @@ export class EditNotesComponent implements OnInit, OnDestroy {
     this.userSubscription.unsubscribe()
   }
 
-  onReturnToNotes(title: string, text: string) {
-    if (title.trim() === this.note.title && text.trim() === this.note.noteText) this.unselectedEvent.emit(true);
-    else if (confirm("Are you sure you want to discard unsaved changes?")) this.unselectedEvent.emit(true);
+  get title() {
+    return this.noteForm.get('title');
+  }
+
+  get text() {
+    return this.noteForm.get('text');
+  }
+
+  onReturnToNotes() {
+    this.unselectedEvent.emit(true);
   }
 
   onSaveNote(title: string, text: string) {

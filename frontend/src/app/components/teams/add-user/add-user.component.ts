@@ -4,6 +4,7 @@ import {TeamService} from "../../../services/team.service";
 import {Team} from "../../../models/team";
 import {UserService} from "../../../services/user.service";
 import {Role, User} from "../../../models/user";
+import {HttpResponse, HttpStatusCode} from "@angular/common/http";
 
 @Component({
   selector: 'app-add-user',
@@ -15,6 +16,8 @@ export class AddUserComponent implements OnInit {
   newUserForm: FormGroup;
   teams: Team[];
   Role = Role;
+  showErrorMessage: boolean = false;
+  email: string = "";
 
   constructor(private teamService: TeamService,
               private userService: UserService) {
@@ -41,9 +44,13 @@ export class AddUserComponent implements OnInit {
       let newUser: User = Object.assign(new User(), this.newUserForm.value);
       this.userService.saveUser(newUser).toPromise().then(user => {
         console.log(user)
-      }).catch(console.error);
-    } else {
-
+        this.showErrorMessage = false;
+      }).catch((reason: HttpResponse<any>) => {
+        if (reason.status == HttpStatusCode.Conflict) {
+          this.showErrorMessage = true;
+          this.email = (this.newUserForm.get('emailAddress').value as string).slice(0);
+        }
+      });
     }
     console.log(this.newUserForm.valid);
     console.log(this.newUserForm.value);

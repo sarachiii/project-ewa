@@ -88,6 +88,19 @@ class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(ConflictException.class)
+    public final ResponseEntity<ExceptionResponse> handleConflict(Exception ex, WebRequest wr){
+        String path = ((ServletWebRequest)wr).getRequest().getRequestURI();
+
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                HttpStatus.CONFLICT.value(),
+                HttpStatus.CONFLICT.getReasonPhrase(),
+                ex.getMessage(),
+                path);
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler(UnsupportedMediaTypeException.class)
     public final ResponseEntity<ExceptionResponse> handleUnsupportedMediaType(Exception ex, WebRequest wr){
         String path = ((ServletWebRequest)wr).getRequest().getRequestURI();

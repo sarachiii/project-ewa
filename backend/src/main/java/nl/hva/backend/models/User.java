@@ -14,7 +14,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String emailAddress;
 
     @Column(name = "first_name")
@@ -42,9 +42,9 @@ public class User {
     private Preferences preferences;
 
     @OneToMany(targetEntity = Note.class, mappedBy = "user")
-    @JsonBackReference(value="user")
+    @JsonBackReference(value = "user")
     private List<Note> notes = new ArrayList<>();
-    
+
     @ManyToOne(targetEntity = Team.class)
     @JsonBackReference
     @JoinColumn(name = "team_id", insertable = false, updatable = false)
@@ -141,7 +141,7 @@ public class User {
         this.lastName = lastName;
     }
 
-//    @JsonIgnore
+    //    @JsonIgnore
     public String getPassword() {
         return this.password;
     }

@@ -19,7 +19,6 @@ import {NotesService} from "../../../services/notes.service";
 export class NavBarComponent implements OnInit, OnDestroy {
   private userSubscription: Subscription;
   user: User | null;
-  visitedPage: boolean = false;
 
   private _screenHeight: number;
   private _screenWidth: number;
@@ -45,8 +44,6 @@ export class NavBarComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-   	//give the visitedPage boolean the right value based on if the notes page was visited or not
-    this.notesService.currentVisitedPage.subscribe(val => this.visitedPage = val);
     this.userSubscription = this.userService.loggedUser$.subscribe(value => {
       this.user = value;
     })

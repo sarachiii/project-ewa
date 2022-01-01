@@ -1,9 +1,9 @@
 export enum EField {
-  A = "Agronomy",
-  B = "Botany",
-  G = "Geology",
-  H = "Hydrology",
-  CS = "Climate-Science",
+  AGRONOMY = "Agronomy",
+  BOTANY = "Botany",
+  GEOLOGY = "Geology",
+  HYDROLOGY = "Hydrology",
+  CLIMATE_SCIENCE = "Climate-Science",
   UNKNOWN = ""
 }
 
