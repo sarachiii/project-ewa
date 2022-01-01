@@ -22,6 +22,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.time.ZonedDateTime;
 import java.util.*;
 
 
@@ -51,27 +52,40 @@ public class SensorController {
     }
 
     @GetMapping("data/db")
-    public List<SensorData> getSensorDataDB(@RequestParam(defaultValue = "2", required = false) String id) {
+    public List<SensorData> getSensorDataDB(@RequestParam(defaultValue = "2") String id,
+                                            @RequestParam(required = false) String limit) {
         long ghId = 2L;
         try {
             ghId = Long.parseLong(id);
         } catch (NumberFormatException e) {
-            throw new BadRequestException("Id is wrong format: needs to be number");
+            throw new BadRequestException("Parameter id value is not a number!");
         }
+
+        if (limit != null) {
+            int lim;
+            try {
+                lim = Integer.parseInt(limit);
+            } catch (NumberFormatException e) {
+                throw new BadRequestException("Parameter id value is not a number!");
+            }
+            return this.sensorRepository.findByGhIdLimited(ghId, lim);
+        }
+
         return this.sensorRepository.findByGhId(ghId);
     }
 
     @GetMapping("data/api")
-    public ResponseEntity<?> getSensorDataAPI(@RequestParam(defaultValue = "2",required = false) String id,
+    public ResponseEntity<?> getSensorDataAPI(@RequestParam(defaultValue = "2") String id,
                                               @RequestParam(required = false) String view)
             throws BadRequestException, ResourceNotFound {
-        if (view != null && !view.equals("raw"))
-            throw new BadRequestException(String.format("Parameter view=%s is unacceptable, accepted values: raw", view));
+        if (view != null && !view.equals("db"))
+            throw new BadRequestException(String.format("Parameter view=%s is unacceptable, accepted values: db", view));
+
         long ghId = 2L;
         try {
             ghId = Long.parseLong(id);
         } catch (NumberFormatException e) {
-            throw new BadRequestException("Id is wrong format: needs to be number");
+            throw new BadRequestException("Parameter id value is not a number!");
         }
 
         MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
@@ -83,8 +97,8 @@ public class SensorController {
 
         if (response.getBody() == null) throw new ResourceNotFound("Sensor list is empty");
 
-        // If raw view is requested return CCU API response
-        if (view != null) return response;
+        // If db view is not requested return CCU API response
+        if (view == null) return response;
 
         // Unwrap body to reach sensorNode
         JsonNode sensorNode = response.getBody();
@@ -97,7 +111,11 @@ public class SensorController {
             double value = sensor.getName().equals("lighting_rgb") ?
                     SensorData.fromHexColor(sensorNode.get(sensor.getName()).asText()) :
                     sensorNode.get(sensor.getName()).asDouble();
-            SensorData sd = new SensorData(sensorNode.get("gh_id").asLong(), sensor.getId(), value, sensorNode.get("user_id").asLong());
+            SensorData sd = new SensorData(
+                    ZonedDateTime.parse(sensorNode.get("date_time").asText()),
+                    sensorNode.get("gh_id").asLong(), sensor.getId(),
+                    value,
+                    sensorNode.get("user_id").asLong());
             sensorData.add(sd);
         }
 
@@ -108,8 +126,8 @@ public class SensorController {
     public ResponseEntity<?> postSensorData(@RequestBody ObjectNode sensorNode,
                                             @RequestParam(required = false) String view) throws ResourceNotFound, BadRequestException{
         if (sensorNode == null) throw new BadRequestException("Empty body");
-        if (view != null && !view.equals("raw"))
-            throw new BadRequestException(String.format("Parameter view=%s is unacceptable, accepted values: raw", view));
+        if (view != null && !view.equals("db"))
+            throw new BadRequestException(String.format("Parameter view=%s is unacceptable, accepted values: db", view));
 
         // Prepare JSON to post to CCU API
         MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
@@ -120,38 +138,47 @@ public class SensorController {
             queryParams.add(field.getKey(), field.getValue().asText());
         }
 
+        // Send sensor data to the CCU API
         ResponseEntity<JsonNode> response = queryCcuApi(HttpMethod.POST, queryParams);
 
+        // If the CCU API response has error code 400 return the errors
         if (response.getStatusCode().equals(HttpStatus.BAD_REQUEST)) return response;
 
-        List<SensorData> sensorData = this.sensorRepository.findAllData();
-        fields = sensorNode.fields();
-        while (fields.hasNext()) {
-            Map.Entry<String, JsonNode> field = fields.next();
-            if (Sensor.Name.has(field.getKey())) {
-                sensorData.stream()
-                        .filter(sd -> sd.getSensor().getName().equals(field.getKey())).findAny()
-                        .ifPresent(sd -> {
-                            sd.setGreenhouseId(sensorNode.get("gh_id").asLong());
-                            sd.setUserId(sensorNode.get("user_id").asLong());
-                            /*double value;
-                            if (field.getKey().equals(Sensor.Name.LIGHTING_RGB.toString())) {
-                                try {
-                                    value = SensorData.fromHexColor(sensorNode.get(field.getKey()).asText());
-                                } catch (NumberFormatException | IndexOutOfBoundsException e) {
-                                    throw new BadRequestException(String.format("Sensor %s has malformed input value: %s", field.getKey(), field.getValue()));
-                                }
-                            } else {
-                                value = sensorNode.get(field.getKey()).asDouble();
-                            }*/
-                            sd.setValue(field.getKey().equals(Sensor.Name.LIGHTING_RGB.toString()) ?
-                                    SensorData.fromHexColor(field.getValue().asText()) :
-                                    field.getValue().asDouble());
-                        });
-            }
+        long ghId = sensorNode.get("gh_id").asLong();
+
+        // Get all sensors to loop over and add data
+        List<Sensor> sensors = this.sensorRepository.findAll();
+        List<SensorData> sensorData = new ArrayList<>();
+
+        // Set current time before loop so all the sensors' data have the same date value
+        ZonedDateTime currentTime = ZonedDateTime.now();
+        for (Sensor sensor : sensors) {
+            SensorData sd = new SensorData(
+                    currentTime,
+                    ghId,
+                    sensor.getId(),
+                    sensor.getName().equals(Sensor.Name.LIGHTING_RGB.toString()) ?
+                            SensorData.fromHexColor(sensorNode.get(sensor.getName()).asText()) :
+                            sensorNode.get(sensor.getName()).asDouble(),
+                    sensorNode.get("user_id").asLong()
+                    );
+
+            sensorData.add(sd);
         }
 
-        return view == null ? ResponseEntity.ok(this.getSensorDataDB("2")) : this.getSensorDataAPI("2", view);
+        // Save all the sensor data to the database
+        List<SensorData> savedSensorData = this.sensorRepository.saveAll(sensorData);
+
+        // Get unique timestamps, hard limited to 10
+        List<ZonedDateTime> timestamps = this.sensorRepository.getTimestampsByGhId(ghId);
+        // Delete sensors' data of older timestamps
+        this.sensorRepository.deleteByGhIdExcludeTimestamps(ghId, timestamps);
+
+        // Return the API result
+        return ResponseEntity.ok(savedSensorData);
+
+        // TODO: Sometimes the recent activity is off by one second
+        // return ResponseEntity.ok(getSensorDataDB(sensorNode.get("gh_id").asText(), String.valueOf(sensorData.size())))
     }
 
     @PostMapping("add")
@@ -166,9 +193,9 @@ public class SensorController {
      * Queries an API using query parameters
      *
      * @param wc the webclient
-     * @param m the method
-     * @param qp query params
-     * @return ObjectNode
+     * @param m the request method
+     * @param qp the query parameters
+     * @return ObjectNode wrapped in a ResponseEntity
      */
     public ResponseEntity<ObjectNode> queryClient(WebClient wc, HttpMethod m, MultiValueMap<String, String> qp) {
         return wc.method(m)
@@ -180,6 +207,14 @@ public class SensorController {
                 .block();
     }
 
+    /**
+     * Queries the CCU API (simulator)
+     *
+     * @param m the request method
+     * @param qp the query parameters
+     * @return JsonNode wrapped in a ResponseEntity
+     * @throws ResourceNotFound when connection problems with CCU API occur
+     */
     public ResponseEntity<JsonNode> queryCcuApi(HttpMethod m, MultiValueMap<String, String> qp)
             throws ResourceNotFound {
 

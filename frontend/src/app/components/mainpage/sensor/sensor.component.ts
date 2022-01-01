@@ -8,6 +8,8 @@ import {Subscription, timer} from "rxjs";
 import {WebStorageService} from "../../../services/storage/web-storage.service";
 import {UserService} from "../../../services/user.service";
 import {User} from "../../../models/user";
+import {History} from "../../../models/history";
+import {SensorData} from "../../../models/sensor-data";
 
 @Component({
   selector: 'app-sensor',
@@ -23,6 +25,7 @@ export class SensorComponent implements OnInit, OnDestroy {
   sensors: Sensor[] = [];
   co2level: number;
   sensorForm: FormGroup;
+  records: History[];
   user: User | null;
   private userSubscription: Subscription;
   private subscription: Subscription;
@@ -33,6 +36,8 @@ export class SensorComponent implements OnInit, OnDestroy {
               private fb: FormBuilder,
               private webStorageService: WebStorageService,
               private userService: UserService) {
+    this.records = [];
+
     this.sensorForm = new FormGroup({});
 
     this.sensorForm = new FormGroup({
@@ -64,10 +69,6 @@ export class SensorComponent implements OnInit, OnDestroy {
     }
     this.sensors = this.sensorsService.findAll();
 
-    this.sensorsService.getDesiredValues("2").subscribe(value => {
-      console.log("", value)
-    });
-
     this.subscription = timer(1000, 60000).subscribe(t => {
       this.sensorsService.getCurrentData().toPromise().then((value) => {
         this.co2level = Math.round(value["CO2_level"] * 100) / 100;
@@ -78,7 +79,11 @@ export class SensorComponent implements OnInit, OnDestroy {
             this.sensors[i].currentValue = value[this.sensors[i].name];
           }
         }
-      })
+      });
+      this.sensorsService.getDesiredValues(2).toPromise().then((sd) => {
+        // There are no references that need the old array, so it can be replaced
+        this.records = this.generateRecords(sd);
+      });
     });
   }
 
@@ -125,7 +130,14 @@ export class SensorComponent implements OnInit, OnDestroy {
       this.showSubmit = true
     }, 5000);
     console.log(postData);
-    this.sensorsService.postSensorData(postData).subscribe(responseData => console.log(responseData))
+
+    this.sensorsService.postSensorData(postData)
+      .subscribe(responseData => {
+        // generateRecords will only produce one record so deconstruct is allowed
+        let [record] = this.generateRecords(responseData);
+        this.records.pop();
+        this.records.unshift(record);
+      });
   }
 
   decrementValue(sensor: Sensor): void {
@@ -141,6 +153,22 @@ export class SensorComponent implements OnInit, OnDestroy {
       if (sensor.desiredValue >= sensor.minValue && sensor.desiredValue < sensor.maxValue) sensor.desiredValue++;
     }
     this.alert = true
+  }
+
+  generateRecords(sensorData: SensorData[]): History[] {
+    let records: History[] = [];
+    let timestamps = [...new Set(sensorData.map(value => value.timestamp))];
+    for (const timestamp of timestamps) {
+      let record: History = new History();
+      record.timestamp = timestamp;
+
+      for (const sensor of this.sensors) {
+        let sd = sensorData.find(value => value.sensorId == sensor.id && value.timestamp == timestamp);
+        record[sensor.nameCamelCase] = sensor.sensorName == Factor.LIGHTING_RGB ? sd.getHexColor() : sd.value;
+      }
+      records.push(record);
+    }
+    return records;
   }
 }
 

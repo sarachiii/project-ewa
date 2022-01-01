@@ -1,10 +1,12 @@
 package nl.hva.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
+import java.time.ZonedDateTime;
 
 /**
  * This class <description of functionality>
@@ -16,19 +18,29 @@ import javax.persistence.*;
 @BatchSize(size = 10)
 @IdClass(SensorDataPK.class)
 @NamedQueries({
-        @NamedQuery(name = "SensorData.findAll", query = "SELECT sd FROM SensorData sd"),
-        @NamedQuery(name = "SensorData.findByGhId", query = "SELECT sd FROM SensorData sd WHERE sd.greenhouseId = :ghId")
+        @NamedQuery(name = "SensorData.findAll", query = "SELECT sd FROM SensorData sd ORDER BY sd.timestamp DESC, sd.sensorId ASC"),
+        @NamedQuery(name = "SensorData.findByGhId", query = "SELECT sd FROM SensorData sd WHERE sd.ghId = :ghId ORDER BY sd.timestamp DESC, sd.sensorId ASC"),
+        @NamedQuery(name = "SensorData.countTimestampsByGhId", query = "SELECT COUNT(DISTINCT sd.timestamp) FROM SensorData sd WHERE sd.ghId = :ghId"),
+        @NamedQuery(name = "SensorData.timestampsByGhId", query = "SELECT DISTINCT sd.timestamp FROM SensorData sd WHERE sd.ghId = :ghId ORDER BY sd.timestamp DESC"),
+        @NamedQuery(
+                name = "SensorData.deleteByGhIdExcludeTimestamps",
+                query = "DELETE FROM SensorData sd WHERE sd.ghId = :ghId AND sd.timestamp NOT IN :timestamps"
+        )
 })
 public class SensorData {
 
     @Id
-    private long greenhouseId;
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private ZonedDateTime timestamp;
+
+    @Id
+    private long ghId;
 
     @Id
     private long sensorId;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @MapsId("greenhouseId")
+    @MapsId("ghId")
     @JoinColumn(name = "gh_id")
     private Greenhouse greenhouse;
 
@@ -47,23 +59,32 @@ public class SensorData {
     @Transient
     private User user;
 
-    public SensorData(long greenhouseId, long sensorId, double value, long userId) {
-        this.greenhouseId = greenhouseId;
+    public SensorData(ZonedDateTime timestamp, long ghId, long sensorId, double value, long userId) {
+        this.timestamp = timestamp;
+        this.ghId = ghId;
         this.sensorId = sensorId;
         this.value = value;
         this.userId = userId;
     }
 
     protected SensorData() {
-        this(0, 0, 0, 0);
+        this(null, 0, 0, 0, 0);
     }
 
-    public long getGreenhouseId() {
-        return greenhouseId;
+    public ZonedDateTime getTimestamp() {
+        return timestamp;
     }
 
-    public void setGreenhouseId(long greenhouseId) {
-        this.greenhouseId = greenhouseId;
+    public void setTimestamp(ZonedDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public long getGhId() {
+        return ghId;
+    }
+
+    public void setGhId(long ghId) {
+        this.ghId = ghId;
     }
 
     public long getSensorId() {
