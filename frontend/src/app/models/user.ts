@@ -53,4 +53,25 @@ export class User {
   get pictureUrl(): string {
     return this.profilePicture ? `${environment.apiUrl}/${this.profilePicture}` : this.profilePicture;
   }
+
+  get fullName(): string {
+    return this.firstName + " " + this.lastName;
+  }
+
+  get specialist(): string {
+    switch (this.specialty) {
+      case EField.AGRONOMY:
+        return "Agronomist";
+      case EField.BOTANY:
+        return "Botanist";
+      case EField.GEOLOGY:
+        return "Geologist";
+      case EField.HYDROLOGY:
+        return "Hydrologist";
+      case EField.CLIMATE_SCIENCE:
+        return "Climatologist";
+      default:
+        return "";
+    }
+  }
 }

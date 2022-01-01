@@ -17,7 +17,7 @@
               <span>{{user.firstName || 'First name'}}</span>&nbsp;<span>{{user.lastName || 'Last name'}}</span>
               <hr class="mb-0 mt-1 text-black">
               <div class="fs-14">
-                <span>{{user.specialty || 'Specialty'}}</span><ng-container *ngIf="!!user.role">&nbsp;&#183;&nbsp;<span>{{user.role || 'Role'}}</span></ng-container>
+                <span>{{user.specialist || 'Specialty'}}</span><ng-container *ngIf="!!user.role">&nbsp;&#183;&nbsp;<span>{{user.role || 'Role'}}</span></ng-container>
               </div>
             </div>
           </div>
@@ -47,10 +47,10 @@
             <img class="rounded-circle" [src]="user.pictureUrl || 'assets/images/default_avatar.svg'" (error)="handleImageError($event)" alt="">
           </a>
           <ul class="dropdown-menu dropdown-menu-end mt-0 w-auto" aria-labelledby="userDropdown">
-            <li class="dropdown-item-text">
+            <li class="dropdown-item-text text-nowrap">
               <span>{{user.firstName || 'First name'}}</span>&nbsp;<span>{{user.lastName || 'Last name'}}</span>
               <div class="fs-14">
-                <span id="expertise">{{user.specialty || 'Specialty'}}</span><ng-container *ngIf="!!user.role">&nbsp;&#183;&nbsp;<span id="userRole">{{user.role || 'Role'}}</span></ng-container>
+                <span id="expertise">{{user.specialist || 'Specialty'}}</span>&nbsp;&#183;&nbsp;<span id="userRole">{{user.role || 'Role'}}</span>
               </div>
             </li>
             <li><hr class="dropdown-divider opacity-100 mx-2"></li>
