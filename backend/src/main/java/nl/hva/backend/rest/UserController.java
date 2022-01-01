@@ -2,9 +2,11 @@ package nl.hva.backend.rest;
 
 import nl.hva.backend.models.forms.AccountForm;
 import nl.hva.backend.models.forms.Login;
+import nl.hva.backend.rest.exception.BadGatewayException;
 import nl.hva.backend.rest.exception.BadRequestException;
 import nl.hva.backend.rest.exception.ConflictException;
 import nl.hva.backend.rest.exception.ResourceNotFound;
+import nl.hva.backend.services.EmailService;
 import nl.hva.backend.services.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -36,6 +38,9 @@ public class UserController {
     @Autowired
     private FileService fileService;
 
+    @Autowired
+    private EmailService emailService;
+
     @GetMapping("users")
     public List<User> getUsersList() {
         return this.userRepository.findAll();
@@ -60,7 +65,8 @@ public class UserController {
     }
 
     @PostMapping("users")
-    public ResponseEntity<User> createUser(@RequestBody User u) {
+    public ResponseEntity<User> createUser(@RequestBody User u)
+            throws ConflictException, BadGatewayException {
         User user = this.userRepository.findByEmailAddress(u.getEmailAddress());
 
         if (user != null) {
@@ -68,10 +74,22 @@ public class UserController {
         }
 
         User saveUser = this.userRepository.save(u);
+
+        String emailText = String.format(
+                "Dear %s %s,%n%nYou've been invited to join team %d at Climate Cleanup!" +
+                        "%n%nYour username: %s%nYour password: %s%n%n" +
+                        "Please change your password.%n%nSincerely,%n%nClimate Cleanup",
+                saveUser.getFirstName(), saveUser.getLastName(), saveUser.getTeamId(),
+                saveUser.getEmailAddress(), saveUser.getPassword()
+                );
+
+        emailService.sendSimpleMessage(saveUser.getEmailAddress(), "Welcome!", emailText);
+
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("{id}")
                 .buildAndExpand(saveUser.getId())
                 .toUri();
+
         return ResponseEntity.created(location).body(saveUser);
     }
 

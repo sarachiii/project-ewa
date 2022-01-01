@@ -114,6 +114,19 @@ class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(exceptionResponse, HttpStatus.UNSUPPORTED_MEDIA_TYPE);
     }
 
+    @ExceptionHandler(BadGatewayException.class)
+    public final ResponseEntity<ExceptionResponse> handleBadGateway(Exception ex, WebRequest wr){
+        String path = ((ServletWebRequest)wr).getRequest().getRequestURI();
+
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                HttpStatus.BAD_GATEWAY.value(),
+                HttpStatus.BAD_GATEWAY.getReasonPhrase(),
+                ex.getMessage(),
+                path);
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_GATEWAY);
+    }
+
     //@ExceptionHandler(MethodArgumentNotValidException.class)
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
