@@ -9,7 +9,7 @@ import {
 } from '@angular/router';
 import {Observable, of} from 'rxjs';
 import {UserService} from "../user.service";
-import {map} from "rxjs/operators";
+import {map, skipWhile} from "rxjs/operators";
 import {Role} from "../../models/user";
 
 @Injectable({
@@ -25,6 +25,7 @@ export class AdminGuard implements CanActivate {
     Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     // Pipe with map to return an Observable<boolean | UrlTree>
     return this.userService.loggedUser$.pipe(
+      skipWhile(value => Object.keys(value).length === 0),
       map(user => {
         let adminRole = user.role == Role.SUPER_ADMIN || user.role == Role.ADMIN;
         if (!adminRole) alert("You do not have the rights to access that page!");
