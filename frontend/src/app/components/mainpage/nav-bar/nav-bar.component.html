@@ -1,8 +1,11 @@
 <nav class="navbar navbar-expand-lg p-lg-0">
   <div class="container-lg px-0 px-lg-12">
     <div class="d-flex justify-content-between w-100 px-12">
-      <a class="navbar-brand" href="#" routerLink="home"><img class="white-filter pe-2" src="assets/logo.svg" alt="Climate Cleanup"><span class="align-middle">Climate Cleanup</span></a>
-      <button #mobileMenu *ngIf="isLoggedIn()" class="navbar-toggler navbar-dark" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+      <a class="navbar-brand" href="#" routerLink="home"><img class="white-filter pe-2" src="assets/logo.svg"
+                                                              alt="Climate Cleanup"><span class="align-middle">Climate Cleanup</span></a>
+      <button #mobileMenu *ngIf="isLoggedIn()" class="navbar-toggler navbar-dark" type="button"
+              data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler"
+              aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
     </div>
@@ -11,30 +14,36 @@
         <li class="nav-item d-lg-none px-2 py-3 d-flex justify-content-between text-white mx-12">
           <div class="d-flex">
             <div class="nav-user d-inline-block align-self-center">
-              <img class="rounded-circle" [src]="user.pictureUrl || 'assets/images/default_avatar.svg'" (error)="handleImageError($event)" alt="">
+              <img class="rounded-circle" [src]="user.pictureUrl || 'assets/images/default_avatar.svg'"
+                   (error)="handleImageError($event)" alt="">
             </div>
             <div class="d-inline-block px-3">
               <span>{{user.firstName || 'First name'}}</span>&nbsp;<span>{{user.lastName || 'Last name'}}</span>
               <hr class="mb-0 mt-1 text-black">
               <div class="fs-14">
-                <span>{{user.specialty || 'Specialty'}}</span><ng-container *ngIf="!!user.role">&nbsp;&#183;&nbsp;<span>{{user.role || 'Role'}}</span></ng-container>
+                <span>{{user.specialty || 'Specialty'}}</span>
+                <ng-container *ngIf="!!user.role">&nbsp;&#183;&nbsp;<span>{{user.role || 'Role'}}</span></ng-container>
               </div>
             </div>
           </div>
         </li>
-        <li class="d-lg-none"><hr class="my-0 mx-12"></li>
+        <li class="d-lg-none">
+          <hr class="my-0 mx-12">
+        </li>
         <li class="nav-item">
-          <a class="nav-link" href="#" routerLink="home" routerLinkActive="active" (click)="closeMobileMenu()">Dashboard</a>
+          <a class="nav-link" href="#" routerLink="home" routerLinkActive="active"
+             (click)="closeMobileMenu()">Dashboard</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#" routerLink="sensors" routerLinkActive="active" (click)="closeMobileMenu()">Sensors</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link position-relative" href="#" routerLink="notes" routerLinkActive="active" (click)="closeMobileMenu()">Notes
-            <span *ngIf="visitedPage == false" class="position-absolute start translate-middle-x badge border border-light rounded-circle bg-danger p-1"><span class="visually-hidden">unread messages</span></span></a>
+          <a class="nav-link position-relative" href="#" routerLink="notes" routerLinkActive="active"
+             (click)="closeMobileMenu()">Notes</a>
         </li>
         <li class="nav-item d-lg-none">
-          <a class="nav-link" href="#" routerLink="teams" routerLinkActive="active" (click)="closeMobileMenu()">Teams</a>
+          <a class="nav-link" href="#" routerLink="teams" routerLinkActive="active"
+             (click)="closeMobileMenu()">Teams</a>
         </li>
         <li class="nav-item d-lg-none">
           <a class="nav-link" href="#" routerLink="settings" routerLinkActive="active" (click)="closeMobileMenu()">Settings</a>
@@ -43,20 +52,29 @@
           <a class="nav-link" href="#" routerLink="login" (click)="logOut()">Log Out</a>
         </li>
         <li class="nav-item dropdown d-none d-lg-block">
-          <a #profileMenu class="nav-link nav-user dropdown-toggle p-2" id="userDropdown" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-            <img class="rounded-circle" [src]="user.pictureUrl || 'assets/images/default_avatar.svg'" (error)="handleImageError($event)" alt="">
+          <a #profileMenu class="nav-link nav-user dropdown-toggle p-2" id="userDropdown" role="button"
+             data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            <img class="rounded-circle" [src]="user.pictureUrl || 'assets/images/default_avatar.svg'"
+                 (error)="handleImageError($event)" alt="">
           </a>
           <ul class="dropdown-menu dropdown-menu-end mt-0 w-auto" aria-labelledby="userDropdown">
             <li class="dropdown-item-text">
               <span>{{user.firstName || 'First name'}}</span>&nbsp;<span>{{user.lastName || 'Last name'}}</span>
               <div class="fs-14">
-                <span id="expertise">{{user.specialty || 'Specialty'}}</span><ng-container *ngIf="!!user.role">&nbsp;&#183;&nbsp;<span id="userRole">{{user.role || 'Role'}}</span></ng-container>
+                <span id="expertise">{{user.specialty || 'Specialty'}}</span>
+                <ng-container *ngIf="!!user.role">&nbsp;&#183;&nbsp;<span id="userRole">{{user.role || 'Role'}}</span>
+                </ng-container>
               </div>
             </li>
-            <li><hr class="dropdown-divider opacity-100 mx-2"></li>
-            <li><a class="dropdown-item fw-bold" routerLink="teams" routerLinkActive="active" (click)="screenWidth >= 992 && closeMenu(profileMenu)">Teams</a></li>
-            <li><a class="dropdown-item fw-bold" routerLink="settings" routerLinkActive="active" (click)="screenWidth >= 992 && closeMenu(profileMenu)">Settings</a></li>
-            <li><a class="dropdown-item fw-bold" routerLink="login" routerLinkActive="active" (click)="logOut()">Log Out</a></li>
+            <li>
+              <hr class="dropdown-divider opacity-100 mx-2">
+            </li>
+            <li><a class="dropdown-item fw-bold" routerLink="teams" routerLinkActive="active"
+                   (click)="screenWidth >= 992 && closeMenu(profileMenu)">Teams</a></li>
+            <li><a class="dropdown-item fw-bold" routerLink="settings" routerLinkActive="active"
+                   (click)="screenWidth >= 992 && closeMenu(profileMenu)">Settings</a></li>
+            <li><a class="dropdown-item fw-bold" routerLink="login" routerLinkActive="active" (click)="logOut()">Log
+              Out</a></li>
           </ul>
         </li>
       </ul>
