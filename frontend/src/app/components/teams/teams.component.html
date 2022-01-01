@@ -2,22 +2,20 @@
   <div class="card shadow p-3">
     <div class="container">
       <div class="row">
-        <ng-container *ngIf="user.role == Role.MEMBER else admin">
-          <h1 class="fw-bold">My team</h1>
-        </ng-container>
-        <ng-template #admin>
-          <h1 class="fw-bold">Teams</h1>
-        </ng-template>
+        <h1 class="fw-bold">Teams</h1>
         <hr class="my-2 opacity-100">
       </div>
       <div class="row">
         <div class="col-lg-4 d-lg-flex pe-lg-0">
           <div class="d-flex d-lg-block w-100">
-            <a *ngIf="user.role == Role.SUPER_ADMIN || user.role == Role.ADMIN" class="btn btn-outline-primary fw-bold align-items-stretch d-flex w-100 me-2 me-lg-0 my-3 py-2 justify-content-xs-center" routerLink="view" routerLinkActive="active">
-              <img class="me-2 me-xs-0 green-filter" src="assets/teams/teams_icon_green.svg" alt="View teams"><span class="d-none d-xs-inline">View teams</span>
+            <a class="btn btn-outline-primary fw-bold align-items-stretch d-flex w-100 me-2 me-lg-0 my-3 py-2 justify-content-center-max" routerLink="my-team" routerLinkActive="active">
+              <img class="me-2 me-0-max green-filter" src="assets/teams/team_icon_green.svg" alt="View teams"><span class="d-none d-inline-min">My team</span>
             </a>
-            <a *ngIf="user.role == Role.SUPER_ADMIN || user.role == Role.ADMIN" class="btn btn-outline-primary fw-bold align-items-stretch d-flex w-100 my-3 py-2 justify-content-xs-center" routerLink="add-user" routerLinkActive="active">
-              <img class="me-2 me-xs-0 green-filter" src="assets/teams/add_user_icon_green.svg" alt="Add new user"><span class="d-none d-xs-inline">Add member</span>
+            <a *ngIf="user.role == Role.SUPER_ADMIN || user.role == Role.ADMIN" class="btn btn-outline-primary fw-bold align-items-stretch d-flex w-100 me-2 me-lg-0 my-3 py-2 justify-content-center-max" routerLink="view" routerLinkActive="active">
+              <img class="me-2 me-0-max green-filter" src="assets/teams/teams_icon_green.svg" alt="View teams"><span class="d-none d-inline-min">View teams</span>
+            </a>
+            <a *ngIf="user.role == Role.SUPER_ADMIN || user.role == Role.ADMIN" class="btn btn-outline-primary fw-bold align-items-stretch d-flex w-100 my-3 py-2 justify-content-center-max" routerLink="add-user" routerLinkActive="active">
+              <img class="me-2 me-0-max green-filter" src="assets/teams/add_user_icon_green.svg" alt="Add new user"><span class="d-none d-inline-min">Add member</span>
             </a>
           </div>
           <div class="vr mx-3 my-2 opacity-100 d-none d-lg-flex"></div>
