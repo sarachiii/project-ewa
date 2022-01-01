@@ -3,8 +3,8 @@ package nl.hva.backend.rest;
 import nl.hva.backend.models.forms.AccountForm;
 import nl.hva.backend.models.forms.Login;
 import nl.hva.backend.rest.exception.BadRequestException;
+import nl.hva.backend.rest.exception.ConflictException;
 import nl.hva.backend.rest.exception.ResourceNotFound;
-import nl.hva.backend.rest.exception.AlreadyExist;
 import nl.hva.backend.services.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -61,23 +61,18 @@ public class UserController {
 
     @PostMapping("users")
     public ResponseEntity<User> createUser(@RequestBody User u) {
-        boolean check = false;
-        for (User user : this.userRepository.findAll()) {
-            if (user.getEmailAddress().equals(u.getEmailAddress())) {
-                check = true;
-                break;
-            }
+        User user = this.userRepository.findByEmailAddress(u.getEmailAddress());
+
+        if (user != null) {
+            throw new ConflictException("The user already exists in the database");
         }
-        if (!check) {
-            User saveUser = this.userRepository.save(u);
-            URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                    .path("{id}")
-                    .buildAndExpand(saveUser.getId())
-                    .toUri();
-            return ResponseEntity.created(location).body(saveUser);
-        } else {
-            throw new AlreadyExist("the user is already in the database");
-        }
+
+        User saveUser = this.userRepository.save(u);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("{id}")
+                .buildAndExpand(saveUser.getId())
+                .toUri();
+        return ResponseEntity.created(location).body(saveUser);
     }
 
     @DeleteMapping("users/{id}")
@@ -108,7 +103,7 @@ public class UserController {
 
     @PutMapping(value = "users/{id}/account", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Boolean> updateUser(@PathVariable Long id,
-                                              @RequestPart AccountForm accountForm,
+                                              @RequestPart @Valid AccountForm accountForm,
                                               @RequestParam(required = false) MultipartFile file) throws IOException {
         User user = this.userRepository.findUserById(id);
 
