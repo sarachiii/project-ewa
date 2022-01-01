@@ -13,10 +13,8 @@ import { PreferencesComponent } from "./components/settings/preferences/preferen
 import { AuthGuardService } from "./services/auth-guard.service";
 import {TeamsComponent} from "./components/teams/teams.component";
 import {ViewTeamsComponent} from "./components/teams/view-teams/view-teams.component";
-import {MembersComponent} from "./components/teams/view-teams/members/members.component";
 import {AddUserComponent} from "./components/teams/add-user/add-user.component";
-import {AdminGuardGuard} from "./services/admin-guard.guard";
-import {RoleGuard} from "./services/role.guard";
+import {AdminGuard} from "./services/guards/admin.guard";
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -37,8 +35,8 @@ const routes: Routes = [
   { path: 'teams', component: TeamsComponent, canActivate: [AuthGuardService], canActivateChild: [AuthGuardService],
     children: [
       // { path: '', redirectTo: 'view', pathMatch: 'full' },
-      { path: 'view', component: ViewTeamsComponent, canActivate: [AdminGuardGuard]},
-      { path: 'add-user', component: AddUserComponent, canActivate: [AdminGuardGuard]}
+      { path: 'view', component: ViewTeamsComponent, canActivate: [AdminGuard]},
+      { path: 'add-user', component: AddUserComponent, canActivate: [AdminGuard]}
     ]
   },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuardService], canActivateChild: [AuthGuardService],
