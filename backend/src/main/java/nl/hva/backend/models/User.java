@@ -1,9 +1,11 @@
 package nl.hva.backend.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class User {
@@ -11,9 +13,6 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "team_id")
-    private Long teamId;
 
     @Column(name = "email")
     private String emailAddress;
@@ -24,32 +23,39 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
 
-    @JsonIgnore
     private String password;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    private String specialty;
+    @Enumerated(EnumType.STRING)
+    private Specialty specialty;
 
     @Column(name = "image_path")
     private String profilePicture;
+
+    @Column(name = "team_id")
+    private Long teamId;
 
     @OneToOne(targetEntity = Preferences.class, mappedBy = "user", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private Preferences preferences;
 
+    @OneToMany(targetEntity = Note.class, mappedBy = "user")
+    @JsonBackReference(value="user")
+    private List<Note> notes = new ArrayList<>();
+    
     @ManyToOne(targetEntity = Team.class)
     @JsonBackReference
     @JoinColumn(name = "team_id", insertable = false, updatable = false)
     private Team team;
 
     public enum Specialty {
-        A("Agronomy"),
-        B("Botany"),
-        G("Geology"),
-        H("Hydrology"),
-        CS("Climate-Science");
+        Agronomy("Agronomy"),
+        Botany("Botany"),
+        Geology("Geology"),
+        Hydrology("Hydrology"),
+        Climate_Science("Climate-Science");
 
         private final String string;
 
@@ -57,6 +63,7 @@ public class User {
             this.string = string;
         }
 
+        @JsonValue
         @Override
         public String toString() {
             return this.string;
@@ -64,21 +71,34 @@ public class User {
     }
 
     public enum Role {
-        SUPER_ADMIN,
-        ADMIN,
-        MEMBER
+        SUPER_ADMIN("Super Admin"),
+        ADMIN("Admin"),
+        MEMBER("Member");
+
+        private final String string;
+
+        Role(String string) {
+            this.string = string;
+        }
+
+        @JsonValue
+        @Override
+        public String toString() {
+            return this.string;
+        }
     }
 
     public User() {
     }
 
-    public User (String emailAddress, String password) {
+    public User(String emailAddress, String password) {
         this();
         this.emailAddress = emailAddress;
         this.password = password;
     }
-    public User (String emailAddress, String firstName, String lastName, String password,
-                 String specialty, String profilePicture, Long teamId) {
+
+    public User(String emailAddress, String firstName, String lastName, String password,
+                Specialty specialty, String profilePicture, Long teamId) {
         this();
         this.emailAddress = emailAddress;
         this.firstName = firstName;
@@ -121,6 +141,7 @@ public class User {
         this.lastName = lastName;
     }
 
+//    @JsonIgnore
     public String getPassword() {
         return this.password;
     }
@@ -137,11 +158,11 @@ public class User {
         this.role = role;
     }
 
-    public String getSpecialty() {
-        return Specialty.valueOf(this.specialty).toString();
+    public Specialty getSpecialty() {
+        return this.specialty;
     }
 
-    public void setSpecialty(String specialty) {
+    public void setSpecialty(Specialty specialty) {
         this.specialty = specialty;
     }
 

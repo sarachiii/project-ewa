@@ -9,7 +9,7 @@ import java.util.List;
         query = "SELECT t FROM Team t")
 public class Team {
     @Id
-    @GeneratedValue()
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "gh_id")
     private Long ghId;

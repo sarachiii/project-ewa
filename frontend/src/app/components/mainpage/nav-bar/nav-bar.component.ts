@@ -4,12 +4,12 @@ import {UserService} from "../../../services/user.service";
 import {User} from "../../../models/user";
 import {Subscription} from "rxjs";
 import {NotesService} from "../../../services/notes.service";
+
 /**
  * This is the navbar component.
  *
  * @author Hashim Mohammad and Sarah Chrzanowska-Buth
  */
-
 
 @Component({
   selector: 'app-nav-bar',
@@ -49,13 +49,9 @@ export class NavBarComponent implements OnInit, OnDestroy {
     this.notesService.currentVisitedPage.subscribe(val => this.visitedPage = val);
     this.userSubscription = this.userService.loggedUser$.subscribe(value => {
       this.user = value;
-      console.log(this.user);
     })
     if (this.isLoggedIn()) {
-      // this.userService.getUserById(this.webStorageService.getUserId()).toPromise().then(value => {
-      //   this.user = value;
-      // }).catch(reason => { console.log(reason) })
-      // Set logged in user in the UserService;
+      // Set logged-in user in the UserService;
       this.userService.updateLoggedUser(this.webStorageService.getUserId())
     }
   }
@@ -84,6 +80,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
 
   @HostListener('document:click', ['$event'])
   handleClickOutside(event: Event): void {
+    // If the component doesn't contain the target, click event occurred outside the component
     if (!this.elementRef.nativeElement.contains(event.target)) this.closeMobileMenu();
   }
 

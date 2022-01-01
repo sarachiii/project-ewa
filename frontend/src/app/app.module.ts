@@ -28,6 +28,8 @@ import { TeamsComponent } from './components/teams/teams.component';
 import { ViewTeamsComponent } from './components/teams/view-teams/view-teams.component';
 import { MembersComponent } from './components/teams/view-teams/members/members.component';
 import { AddUserComponent } from './components/teams/add-user/add-user.component';
+import { HistoryDataComponent } from './components/mainpage/home/history-data/history-data.component';
+import { ReversePipe } from './shared/pipes/reverse.pipe';
 
 @NgModule({
   declarations: [
@@ -48,7 +50,9 @@ import { AddUserComponent } from './components/teams/add-user/add-user.component
     TeamsComponent,
     ViewTeamsComponent,
     MembersComponent,
-    AddUserComponent
+    AddUserComponent,
+    HistoryDataComponent,
+    ReversePipe
   ],
   imports: [
     BrowserModule,

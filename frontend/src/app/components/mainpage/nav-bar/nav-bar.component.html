@@ -11,7 +11,7 @@
         <li class="nav-item d-lg-none px-2 py-3 d-flex justify-content-between text-white mx-12">
           <div class="d-flex">
             <div class="nav-user d-inline-block align-self-center">
-              <img class="rounded-circle" [src]="user.profilePicture || 'assets/images/default_avatar.svg'" (error)="handleImageError($event)" alt="">
+              <img class="rounded-circle" [src]="user.pictureUrl || 'assets/images/default_avatar.svg'" (error)="handleImageError($event)" alt="">
             </div>
             <div class="d-inline-block px-3">
               <span>{{user.firstName || 'First name'}}</span>&nbsp;<span>{{user.lastName || 'Last name'}}</span>
@@ -44,7 +44,7 @@
         </li>
         <li class="nav-item dropdown d-none d-lg-block">
           <a #profileMenu class="nav-link nav-user dropdown-toggle p-2" id="userDropdown" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-            <img class="rounded-circle" [src]="user.profilePicture || 'assets/images/default_avatar.svg'" (error)="handleImageError($event)" alt="">
+            <img class="rounded-circle" [src]="user.pictureUrl || 'assets/images/default_avatar.svg'" (error)="handleImageError($event)" alt="">
           </a>
           <ul class="dropdown-menu dropdown-menu-end mt-0 w-auto" aria-labelledby="userDropdown">
             <li class="dropdown-item-text">
@@ -56,7 +56,7 @@
             <li><hr class="dropdown-divider opacity-100 mx-2"></li>
             <li><a class="dropdown-item fw-bold" routerLink="teams" routerLinkActive="active" (click)="screenWidth >= 992 && closeMenu(profileMenu)">Teams</a></li>
             <li><a class="dropdown-item fw-bold" routerLink="settings" routerLinkActive="active" (click)="screenWidth >= 992 && closeMenu(profileMenu)">Settings</a></li>
-            <li><a class="dropdown-item fw-bold" routerLink="login" routerLinkActive="active" (click)="screenWidth >= 992 && closeMenu(profileMenu)">Log Out</a></li>
+            <li><a class="dropdown-item fw-bold" routerLink="login" routerLinkActive="active" (click)="logOut()">Log Out</a></li>
           </ul>
         </li>
       </ul>

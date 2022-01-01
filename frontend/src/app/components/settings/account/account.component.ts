@@ -1,47 +1,49 @@
-import {Component, OnInit} from '@angular/core';
-import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { User } from "../../../models/user";
-import { SettingsService } from "../../../services/settings.service";
-import { passwordPatternValidator, passwordValidator} from "../../../shared/validators/password.validator";
-import { requireOneDisableAll } from "../../../shared/validators/custom.validator";
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {FormControl, FormGroup, ValidationErrors, Validators} from "@angular/forms";
+import {User} from "../../../models/user";
+import {SettingsService} from "../../../services/settings.service";
+import {passwordPatternValidator, passwordValidator} from "../../../shared/validators/password.validator";
 import {WebStorageService} from "../../../services/storage/web-storage.service";
 import {UserService} from "../../../services/user.service";
 import {Subscription} from "rxjs";
-import {first, skipWhile} from "rxjs/operators";
+import {skipWhile} from "rxjs/operators";
+import {HttpErrorResponse, HttpStatusCode} from "@angular/common/http";
 
 @Component({
   selector: 'app-account',
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.css']
 })
-export class AccountComponent implements OnInit {
+export class AccountComponent implements OnInit, OnDestroy {
   user: User;
-  copyUser: User = <User>{};
-  // TODO: change name to profileForm
+  copyUser: User = new User();
   accountForm: FormGroup;
   newPasswordForm: FormGroup;
   deleteProfilePicture: boolean;
+  preview: string;
+  private userSubscription: Subscription | null;
 
   constructor(protected settingsService: SettingsService,
               protected webStorageService: WebStorageService,
               protected userService: UserService) {
-
-    // TODO: NotificationService
-
-    // TODO: Should accountForm be initialised before this method is called?
     this.accountFormInit();
     this.newPasswordFormInit();
-
+    this.userSubscription = null;
   }
 
   ngOnInit(): void {
     // Reset has all the initial values
-    this.userService.loggedUser$.pipe(skipWhile(value => Object.keys(value).length === 0), first()).subscribe(value => {
-      this.user = value;
-      this.copyUser = Object.assign<User, User>(this.copyUser, this.user);
-      this.onReset();
-    });
+    this.userSubscription = this.userService.loggedUser$
+      .pipe(skipWhile(value => Object.keys(value).length === 0)).subscribe(value => {
+        this.user = value;
+        this.copyUser = Object.assign<User, User>(this.copyUser, this.user);
+        this.onReset();
+      });
 
+  }
+
+  ngOnDestroy(): void {
+    this.userSubscription && this.userSubscription.unsubscribe();
   }
 
   get firstName() {
@@ -52,16 +54,8 @@ export class AccountComponent implements OnInit {
     return this.accountForm.get('lastName');
   }
 
-  get pictureForm() {
-    return this.accountForm.get('pictureForm');
-  }
-
   get file() {
-    return this.pictureForm.get('file');
-  }
-
-  get url() {
-    return this.pictureForm.get('url');
+    return this.accountForm.get('file');
   }
 
   get emailAddress() {
@@ -84,10 +78,7 @@ export class AccountComponent implements OnInit {
     this.accountForm = new FormGroup({
       firstName: new FormControl('', Validators.required),
       lastName: new FormControl('', Validators.required),
-      pictureForm: new FormGroup({
-        file: new FormControl(''),
-        url: new FormControl('')
-      }, requireOneDisableAll),
+      file: new FormControl(''),
       emailAddress: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('')
     });
@@ -100,74 +91,61 @@ export class AccountComponent implements OnInit {
     }, passwordValidator());
   }
 
-  onClear(clearUrl?: boolean) {
-    if (clearUrl) {
-      this.url.reset('')
-    }
+  onClear(file: HTMLInputElement) {
     this.file.reset('');
-    // console.log(this.pictureForm)
+    this.preview = '';
+    file.value = '';
   }
 
   onReset() {
-    this.userService.loggedUser$.pipe(first()).subscribe(value => {
-      this.user = value;
-      this.copyUser = Object.assign<User, User>(this.copyUser, this.user);
-      this.accountForm.reset();
-      this.newPasswordForm.reset();
-      this.pictureForm.reset();
-      this.deleteProfilePicture = false;
-      this.accountFormInit();
-      this.newPasswordFormInit();
-      this.accountForm.patchValue(this.copyUser);
-      this.password.reset('');
-      // console.log(this.copyUser)
-      this.password.setValidators([Validators.required, passwordValidator(this.copyUser.password)]);
-    }, error => console.error)
+    this.copyUser = Object.assign<User, User>(this.copyUser, this.user);
+    this.accountForm.reset();
+    this.newPasswordForm.reset();
+    this.deleteProfilePicture = false;
+    this.accountFormInit();
+    this.newPasswordFormInit();
+    this.accountForm.patchValue(this.copyUser);
+    this.file.reset('');
+    this.password.reset('');
+    this.preview = '';
   }
 
   onSubmit() {
-    // Re-evaluate the password
-    this.password.setValidators([Validators.required, passwordValidator(this.copyUser.password)])
-    this.password.updateValueAndValidity();
-
     // Update user if form is (still) valid
     if (this.accountForm.valid) {
-      // TODO: Remove updateUser or change code to match
-      // Combine values into an updated user
-      let updatedUser = <User>{...this.copyUser, ...this.accountForm.value};
+      const formData = new FormData();
 
-      // A new valid password has been supplied replace old password
-      if (this.newPasswordForm.valid) {
-        updatedUser.password = this.newPassword.value;
-      }
+      const accountFormBlob = new Blob([JSON.stringify({
+        ...this.accountForm.value,
+        newPasswordForm: this.newPasswordForm.value,
+        deleteProfilePicture: this.deleteProfilePicture
+      })], {type: 'application/json'});
 
-      // If file chosen upload it else choose url as image
-      if (this.file.value && this.file.enabled) {
-        // console.log(this.file)
-        // updatedUser.profilePicture = this.file.value;
-        // TODO: upload file somewhere and use link as path OR start a file server?
-      } else if (this.url.value && this.url.enabled) {
-        // TODO: requiredtypes, fetch image check mimetype, validator
-        updatedUser.profilePicture = this.url.value;
-      }
+      formData.set('file', this.file.value);
+      formData.set('accountForm', accountFormBlob);
 
-      // Update the user
-      //this.settingsService.save(Object.assign<User, User>(this.copyUser, updatedUser));
-      this.settingsService.updateProfile(this.webStorageService.getAsNumber('userId'),
-        {
-          ...this.accountForm.value,
-          newPasswordForm: this.newPasswordForm.value,
-          deleteProfilePicture: this.deleteProfilePicture
-        }).subscribe(e=>{
-        console.log(e)
+      this.settingsService.updateProfile(this.user.id, formData)
+        .subscribe(e => {
+          this.password.setErrors(null);
+          this.userService.updateLoggedUser(this.user.id);
+        }, error => {
+          try {
+            let httpErrorResponse = (<HttpErrorResponse>error);
+            if (httpErrorResponse.status == HttpStatusCode.BadRequest) {
+              let message = httpErrorResponse.error["message"];
 
-        this.userService.updateLoggedUser(this.webStorageService.getUserId());
-        // this.userService.loggedUser$.pipe(first()).subscribe(value => {this.copyUser = value})
-      }, error => {
-        console.log(error)})
-
-
-      // TODO: stuff with frontend service and backend UserController
+              // Evaluate the password
+              if (message && message == 'Password is wrong') {
+                let errors: ValidationErrors = {
+                  mismatch: true
+                };
+                this.password.setErrors(errors);
+              }
+            }
+          } catch (e) {
+            console.error(e);
+          }
+        });
     }
 
     // Mark the fields as dirty to show visual validity
@@ -179,7 +157,8 @@ export class AccountComponent implements OnInit {
 
   onDelete() {
     // Remove the profile picture
-    this.pictureForm.reset({file: '', url: ''});
+    this.file.reset('');
+    this.preview = '';
     this.copyUser.profilePicture = '';
     this.deleteProfilePicture = true;
     this.accountForm.markAsDirty();
@@ -187,5 +166,20 @@ export class AccountComponent implements OnInit {
 
   handleImageError(event: Event) {
     (<HTMLImageElement>event.target).src = "assets/images/default_avatar.svg";
+  }
+
+  onChangeFile(event: Event) {
+    const file = (<HTMLInputElement>event.target).files[0];
+    if (file) {
+      this.file.patchValue(file);
+      this.file.updateValueAndValidity();
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.preview = reader.result as string;
+      }
+      reader.readAsDataURL(file);
+    } else {
+      this.preview = '';
+    }
   }
 }

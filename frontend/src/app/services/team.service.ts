@@ -8,11 +8,11 @@ import {User} from "../models/user";
 
 @Injectable()
 export class TeamService {
-  private resourceUrl: URL;
-  private teams: Team[]
+  resourceUrl: string;
+  private teams: Team[];
 
-  constructor(private httpClient: HttpClient) {
-    this.resourceUrl = new URL(environment.apiUrl);
+  constructor(private http: HttpClient) {
+    this.resourceUrl = environment.apiUrl + "/teams";
     this.teams = [];
     this.getAllTeamIds().pipe(first()).subscribe(value => {
       this.teams.push(...value.map(team => Object.assign(new Team(team.id, team.ghId))));
@@ -28,16 +28,21 @@ export class TeamService {
 
   // Request team ids from backend
   getAllTeamIds(): Observable<Team[]> {
-    return this.httpClient.get<Team[]>(new URL('/teams', this.resourceUrl).toString());
+    return this.http.get<Team[]>(this.resourceUrl);
   }
 
   // Request team members by id from backend
   getTeamById(id: number): Observable<User[]> {
-    return this.httpClient.get<User[]>(new URL(`/teams/${id}`, this.resourceUrl).toString());
+    return this.http.get<User[]>(`${this.resourceUrl}/${id}`);
   }
 
-  //save(team: Member[])
-  //deleteById(id: number)
-  //removeMember(teamId, memberId)
-  //addMember(teamId, memberId)
+  // Create a new team
+  addTeam(team: Team): Observable<Team> {
+    return this.http.post<Team>(this.resourceUrl + "/add", team);
+  }
+
+  // Add team to the list
+  addTeamToList(team: Team): void {
+    this.teams.push(team);
+  }
 }

@@ -1,6 +1,6 @@
 <div class="container px-0 my-2 fade-in">
   <h2 class="fw-bold">Account</h2>
-  <form [formGroup]="accountForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="accountForm" (ngSubmit)="onSubmit()" autocomplete="off">
     <!--Name-->
     <div class="row">
       <div class="col-md-6 my-2">
@@ -26,9 +26,9 @@
     <div class="row">
       <div class="col-md my-2">
         <label for="profilePicture" class="form-label fw-bold">Profile picture</label>
-        <div id="profilePicture" formGroupName="pictureForm">
+        <div id="profilePicture">
           <div class="image d-inline-block rounded-circle me-2 pe-auto">
-            <img class="rounded-circle object-fit-cover w-100 h-100" [src]="url.value || copyUser.profilePicture || 'assets/images/default_avatar.svg'"
+            <img class="rounded-circle object-fit-cover w-100 h-100" [src]="preview || copyUser.pictureUrl || 'assets/images/default_avatar.svg'"
                  (error)="handleImageError($event)" alt="Profile picture" data-bs-toggle="modal" data-bs-target="#profilePictureModal">
           </div>
           <button type="button" class="btn btn-primary fw-bold ms-2" data-bs-toggle="modal"
@@ -47,23 +47,19 @@
                 <div class="modal-body">
                   <div class="mb-3">
                     <div class="image rounded-circle d-block mx-auto">
-                      <img class="rounded-circle object-fit-cover w-100 h-100" [src]="file.value || url.value || copyUser.profilePicture || 'assets/images/default_avatar.svg'" (error)="handleImageError($event)" alt="Profile picture">
+                      <img class="rounded-circle object-fit-cover w-100 h-100" [src]="preview || copyUser.pictureUrl || 'assets/images/default_avatar.svg'" (error)="handleImageError($event)" alt="Profile picture">
                     </div>
                   </div>
-                  <!--<div class="mb-3">
+                  <div class="mb-3">
                     <label for="profilePictureFile" class="col-form-label fw-bold">Select a local file</label>
                     <div class="input-group">
-                      <input type="file" class="form-control" id="profilePictureFile" formControlName="file">
-                      <button type="button" class="btn btn-primary" (click)="onClear()" [disabled]="file.disabled">Clear</button>
+                      <input #fileElement type="file" class="form-control" id="profilePictureFile" (change)="onChangeFile($event)">
+                      <button type="button" class="btn btn-primary" (click)="onClear(fileElement)" [disabled]="!file.value">Clear</button>
                     </div>
-                  </div>-->
-                  <div class="mb-3">
-                    <label for="profilePictureUrl" class="col-form-label fw-bold">Enter URL</label>
-                    <input type="url" class="form-control" id="profilePictureUrl" formControlName="url">
                   </div>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-outline-danger fw-bold" data-bs-dismiss="modal" (click)="onClear(true)">Cancel</button>
+                  <button type="button" class="btn btn-outline-danger fw-bold" data-bs-dismiss="modal" (click)="onClear(fileElement)">Cancel</button>
                   <button type="button" class="btn btn-primary fw-bold" data-bs-dismiss="modal">OK</button>
                 </div>
               </div>
@@ -93,7 +89,7 @@
         <input type="password"
                [ngClass]="{'is-valid': password.valid && password.dirty, 'is-invalid': password.invalid && password.dirty}"
                class="form-control py-2" id="password" placeholder="Enter your password"
-               formControlName="password" required>
+               formControlName="password" required autocomplete="new-password">
         <div *ngIf="password.invalid && password.dirty" class="invalid-feedback">
           <ng-container *ngIf="password.errors.required">Password is required!</ng-container>
           <ng-container *ngIf="password.errors.mismatch && password.value">Password is wrong!</ng-container>

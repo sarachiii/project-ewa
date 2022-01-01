@@ -1,8 +1,5 @@
 <div class="mt-2 mt-lg-3 fw-bold fs-5 d-flex align-items-center justify-content-between">
   Members
-  <button *ngIf="user.role==Role.SUPER_ADMIN" type="button" class="btn btn-primary" (click)="editTeam=true">
-    Edit team
-  </button>
 </div>
 <div *ngIf="team.length else noMembers" class="accordion my-3" id="members">
   <div *ngFor="let member of team" class="accordion-item">
@@ -16,13 +13,41 @@
     <div [id]="'member'+member.id+'Collapse'" class="accordion-collapse collapse"
          [attr.aria-labelledby]="'member'+member.id" data-bs-parent="#members">
       <div class="accordion-body">
-        <strong>Specialty:</strong><br>
-        {{ member.specialty || 'Their specialty' }}<br>
+        <strong>Specialty:</strong>
+        <button *ngIf="(user.role==Role.SUPER_ADMIN || (user.role==Role.ADMIN && member.teamId==user.teamId)) && member.id != user.id"
+                type="button" class="deleteButton float-end" data-bs-toggle="modal" [attr.data-bs-target]="'#deleteMemberModal'+member.id">
+          <img src="assets/images/delete_red.svg" alt="deleteMember">
+        </button>
+        <br>
+        {{ member.specialty || 'Their specialty' }}
+        <br>
         <strong>Email:</strong><br>
         {{ member.emailAddress || 'email@example.com' }}
       </div>
     </div>
+    <div class="modal fade" [id]="'deleteMemberModal'+member.id" data-bs-keyboard="false" tabindex="-1"
+         [attr.aria-labelledby]="'deleteMemberModalLabel'+member.id" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" [id]="'deleteMemberModalLabel'+member.id">Delete member</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to delete the member?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><strong>No</strong></button>
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="deleteMember(member.id)">
+              <strong>Yes</strong></button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+</div>
+<div *ngIf="deleteSuccessful == true" class="alert alert-success" role="alert">
+  User was successfully deleted!
 </div>
 <ng-template #noMembers>
   <div class="my-3">
