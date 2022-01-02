@@ -11,14 +11,17 @@
           <div class="list-group mt-3 w-100 d-flex">
             <a *ngFor="let team of teams" type="button" class="list-group-item list-group-item-action"
                (click)="onSelect(team.id)" [ngClass]="{'active': selectedTeamId == team.id}">Team {{team.id}}
-              <button *ngIf="user.role==Role.SUPER_ADMIN" type="button" class="deleteButton float-end" data-bs-toggle="modal" data-bs-target="#deleteTeamModal">
+              <button *ngIf="user.role==Role.SUPER_ADMIN" type="button" class="deleteButton float-end"
+                      data-bs-toggle="modal" data-bs-target="#deleteTeamModal">
                 <img src="assets/images/delete_red.svg" alt="deleteTeam">
               </button>
             </a>
           </div>
         </div>
         <div class="dropdown d-lg-none">
-          <button class="btn btn-primary dropdown-toggle d-flex align-items-center py-2 mt-2 mb-3 w-100 fw-bold text-start" type="button" id="teamsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+          <button
+            class="btn btn-primary dropdown-toggle d-flex align-items-center py-2 mt-2 mb-3 w-100 fw-bold text-start"
+            type="button" id="teamsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
             {{selectedTeamId > -1 ? "Team " + selectedTeamId : "Choose a team"}}
           </button>
           <ul class="dropdown-menu w-100" aria-labelledby="teamsDropdown">
@@ -35,7 +38,8 @@
         </div>
         <div class="vr mx-3 my-2 opacity-100 d-none d-lg-flex"></div>
         <hr *ngIf="selectedTeamId > -1" class="d-flex d-lg-none mt-1 mb-2 opacity-100">
-        <div *ngIf="user.role==Role.SUPER_ADMIN" class="modal fade" id="addTeamModal" data-bs-keyboard="false" tabindex="-1"
+        <div *ngIf="user.role==Role.SUPER_ADMIN" class="modal fade" id="addTeamModal" data-bs-keyboard="false"
+             tabindex="-1"
              aria-labelledby="addTeamModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -48,7 +52,8 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><strong>No</strong></button>
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="addNewTeam()"><strong>Yes</strong></button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="addNewTeam()">
+                  <strong>Yes</strong></button>
               </div>
             </div>
           </div>
@@ -65,8 +70,9 @@
                 Are you sure you want to delete the team with all the members?
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><strong>No</strong></button>
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="deleteTeam()"><strong>Yes</strong></button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><strong>Cancel</strong></button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="deleteTeam()"><strong>Delete</strong>
+                </button>
               </div>
             </div>
           </div>
