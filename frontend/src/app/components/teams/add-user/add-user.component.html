@@ -1,4 +1,4 @@
-<form [formGroup]="newUserForm" (ngSubmit)="onSubmit()" autocomplete="off" class="container px-1">
+<form [formGroup]="newUserForm" (ngSubmit)="onSubmit()" autocomplete="off" class="container fade-in px-1">
   <div class="row mt-3">
 
     <div *ngIf="showErrorMessage" class="alert alert-danger alert-dismissible fade show " role="alert">
@@ -28,6 +28,7 @@
                formControlName="password" autocomplete="new-password" type="password"
                id="password"
                name="password" placeholder="Enter a password here">
+        <small class="fst-italic text-muted ms-1">Optional</small>
         <div class="invalid-feedback">
           Password needs to meet the following criteria:
           <ul>

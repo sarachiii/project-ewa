@@ -12,16 +12,3 @@
 .btn:hover .green-filter {
   transition: 0.15s filter ease-in-out, 0.15s -webkit-filter ease-in-out;
 }
-@media(min-width: 768px) {
-  .d-inline-min {
-    display: inline !important;
-  }
-}
-@media(max-width: 768px) {
-  .me-0-max {
-    margin-right: 0 !important;
-  }
-  .justify-content-center-max {
-    justify-content: center !important;
-  }
-}

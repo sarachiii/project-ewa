@@ -1,6 +1,7 @@
 package nl.hva.backend.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import javax.persistence.*;
@@ -23,6 +24,7 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Enumerated(EnumType.STRING)
@@ -141,7 +143,6 @@ public class User {
         this.lastName = lastName;
     }
 
-    //    @JsonIgnore
     public String getPassword() {
         return this.password;
     }

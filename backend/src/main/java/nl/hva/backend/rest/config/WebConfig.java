@@ -20,10 +20,16 @@ import java.sql.Blob;
 @EnableScheduling
 public class WebConfig implements WebMvcConfigurer {
 
+    // API URLs
     @Value("${api.url}")
     private String apiUrl;
     @Value("${ccu.api.url}")
     private String ccuApiUrl;
+
+    // Spring Mail
+    @Value("${spring.mail.host}")
+    private String mailHost;
+
     // Azure Storage
     @Value("${azure.storage.account-name}")
     private String accountName;
@@ -68,7 +74,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins("http://localhost:4200", "http://localhost:8084", ccuApiUrl);
     }
 
-    public String getCcuApiUrl() {
-        return ccuApiUrl;
+    public String getMailHost() {
+        return mailHost;
     }
 }

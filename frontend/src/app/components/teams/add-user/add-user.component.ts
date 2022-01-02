@@ -26,7 +26,7 @@ export class AddUserComponent implements OnInit {
       firstName: new FormControl("", Validators.required),
       lastName: new FormControl("", Validators.required),
       emailAddress: new FormControl("", [Validators.required, Validators.email]),
-      password: new FormControl("", [Validators.required, passwordPatternValidator]),
+      password: new FormControl("", passwordPatternValidator),
       role: new FormControl(Role.MEMBER, Validators.required),
       specialty: new FormControl("Agronomy", Validators.required),
       teamId: new FormControl("", Validators.required)
@@ -38,9 +38,6 @@ export class AddUserComponent implements OnInit {
   }
 
   get password() {
-    console.log(
-      this.newUserForm.get('password').errors
-    )
     return this.newUserForm.get('password')
   }
 
@@ -55,7 +52,6 @@ export class AddUserComponent implements OnInit {
     if (this.newUserForm.valid) {
       let newUser: User = Object.assign(new User(), this.newUserForm.value);
       this.userService.saveUser(newUser).toPromise().then(user => {
-        console.log(user)
         this.showErrorMessage = false;
       }).catch((reason: HttpResponse<any>) => {
         if (reason.status == HttpStatusCode.Conflict) {
@@ -64,7 +60,5 @@ export class AddUserComponent implements OnInit {
         }
       });
     }
-    console.log(this.newUserForm.valid);
-    console.log(this.newUserForm.value);
   }
 }

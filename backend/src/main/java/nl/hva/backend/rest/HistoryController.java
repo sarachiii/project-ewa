@@ -160,7 +160,6 @@ public class HistoryController {
                 .uri(uriBuilder -> uriBuilder
                         .path("/sensors/data/api")
                         .queryParam("id", String.valueOf(2))
-                        .queryParam("view", "raw")
                         .build())
                 .retrieve().toEntity(JsonNode.class).block();
 
