@@ -50,10 +50,6 @@ export class User {
     this.profilePicture = profilePicture || "";
   }
 
-  get pictureUrl(): string {
-    return this.profilePicture ? `${environment.apiUrl}/${this.profilePicture}` : this.profilePicture;
-  }
-
   get fullName(): string {
     return this.firstName + " " + this.lastName;
   }

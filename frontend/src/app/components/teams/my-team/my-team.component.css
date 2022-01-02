@@ -2,7 +2,7 @@
   border-radius: 10px;
   border-color: var(--cc-darkgreen);
 }
-.image {
+.profile-picture {
   width: 5rem;
   height: 5rem;
   border: 1px solid var(--cc-green);

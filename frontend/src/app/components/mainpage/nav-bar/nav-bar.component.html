@@ -14,7 +14,7 @@
         <li class="nav-item d-lg-none px-2 py-3 d-flex justify-content-between text-white mx-12">
           <div class="d-flex">
             <div class="nav-user d-inline-block align-self-center">
-              <img class="rounded-circle" [src]="user.pictureUrl || 'assets/images/default_avatar.svg'"
+              <img class="rounded-circle" [src]="user.profilePicture || 'assets/images/default_avatar.svg'"
                    (error)="handleImageError($event)" alt="">
             </div>
             <div class="d-inline-block px-3">
@@ -54,7 +54,7 @@
         <li class="nav-item dropdown d-none d-lg-block">
           <a #profileMenu class="nav-link nav-user dropdown-toggle p-2" id="userDropdown" role="button"
              data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-            <img class="rounded-circle" [src]="user.pictureUrl || 'assets/images/default_avatar.svg'"
+            <img class="rounded-circle" [src]="user.profilePicture || 'assets/images/default_avatar.svg'"
                  (error)="handleImageError($event)" alt="">
           </a>
           <ul class="dropdown-menu dropdown-menu-end mt-0 w-auto" aria-labelledby="userDropdown">

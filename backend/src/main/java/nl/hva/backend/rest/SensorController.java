@@ -4,30 +4,21 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import nl.hva.backend.models.Sensor;
 import nl.hva.backend.models.SensorData;
-import nl.hva.backend.models.User;
 import nl.hva.backend.repositories.SensorRepository;
-import nl.hva.backend.repositories.UserRepository;
-import nl.hva.backend.rest.config.WebConfig;
 import nl.hva.backend.rest.exception.BadRequestException;
 import nl.hva.backend.rest.exception.ResourceNotFound;
+import nl.hva.backend.services.SensorService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.ZonedDateTime;
 import java.util.*;
 
-
 /**
- * This method is the controller of all the sensors
+ * This class is the controller of all the sensors
  *
  * @author Hashim Mohammad
  */
@@ -40,11 +31,7 @@ public class SensorController {
     private SensorRepository sensorRepository;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    @Qualifier("ccuApiClient")
-    private WebClient client;
+    private SensorService sensorService;
 
     @GetMapping()
     public List<Sensor> getAllSensors() {
@@ -91,7 +78,7 @@ public class SensorController {
         MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
         queryParams.add("gh_id", String.valueOf(ghId));
 
-        ResponseEntity<JsonNode> response = queryCcuApi(HttpMethod.GET, queryParams);
+        ResponseEntity<JsonNode> response = this.sensorService.queryCcuApi(HttpMethod.GET, queryParams);
 
         if (response.getStatusCode().equals(HttpStatus.BAD_REQUEST)) return response;
 
@@ -139,7 +126,7 @@ public class SensorController {
         }
 
         // Send sensor data to the CCU API
-        ResponseEntity<JsonNode> response = queryCcuApi(HttpMethod.POST, queryParams);
+        ResponseEntity<JsonNode> response = this.sensorService.queryCcuApi(HttpMethod.POST, queryParams);
 
         // If the CCU API response has error code 400 return the errors
         if (response.getStatusCode().equals(HttpStatus.BAD_REQUEST)) return response;
@@ -187,58 +174,5 @@ public class SensorController {
         return ResponseEntity.ok().body(savedSensor);
     }
 
-    /* HELPER METHODS */
-
-    /**
-     * Queries an API using query parameters
-     *
-     * @param wc the webclient
-     * @param m the request method
-     * @param qp the query parameters
-     * @return ObjectNode wrapped in a ResponseEntity
-     */
-    public ResponseEntity<ObjectNode> queryClient(WebClient wc, HttpMethod m, MultiValueMap<String, String> qp) {
-        return wc.method(m)
-                .uri(uriBuilder -> uriBuilder
-                        .queryParams(qp)
-                        .build())
-                .retrieve()
-                .toEntity(ObjectNode.class)
-                .block();
-    }
-
-    /**
-     * Queries the CCU API (simulator)
-     *
-     * @param m the request method
-     * @param qp the query parameters
-     * @return JsonNode wrapped in a ResponseEntity
-     * @throws ResourceNotFound when connection problems with CCU API occur
-     */
-    public ResponseEntity<JsonNode> queryCcuApi(HttpMethod m, MultiValueMap<String, String> qp)
-            throws ResourceNotFound {
-
-        // Query the greenhouse from the API for sensor data
-        ResponseEntity<ObjectNode> response = queryClient(client,  m, qp);
-
-        // If no response send error msg
-        if (response == null) throw new ResourceNotFound("Could not connect to CCU API");
-
-        ObjectNode responseNode = response.getBody();
-
-        // If response hasn't a body send error msg
-        if (responseNode == null) throw new ResourceNotFound("Empty response from CCU API");
-
-        JsonNode errorNode = responseNode.get("errorList");
-
-        // If errorList is not an array or sensorInfoList doesn't exist
-        if (!errorNode.isArray() || !responseNode.has("sensorInfoList"))
-            throw new BadRequestException("CCU API response is no longer supported");
-
-        // If there are errors return errors
-        if (errorNode.size() >= 1) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorNode);
-
-        return ResponseEntity.ok(responseNode.get("sensorInfoList").get(0));
-    }
 
 }

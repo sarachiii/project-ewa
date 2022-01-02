@@ -1,21 +1,14 @@
 package nl.hva.backend.services;
 
-import com.azure.core.http.rest.Response;
-import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
-import com.azure.storage.blob.models.BlobRequestConditions;
-import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.URL;
 import java.util.Objects;
 
 /**
@@ -37,17 +30,17 @@ public class FileService {
 
         blobClient.uploadWithResponse(new BlobParallelUploadOptions(file.getInputStream())).block();
 
-        return filename;
+        return blobClient.getBlobUrl();
     }
 
     public byte[] download(String filename) {
         if (filename == null) return null;
 
-        BlobClient blobClient = blobClientBuilder.blobName(filename).buildClient();
+        BlobAsyncClient blobClient = blobClientBuilder.blobName(filename).buildAsyncClient();
 
-        if (!blobClient.exists()) return null;
+        if (Boolean.FALSE.equals(blobClient.exists().block())) return null;
 
-        return blobClient.downloadContent().toBytes();
+        return Objects.requireNonNull(blobClient.downloadContent().block()).toBytes();
     }
 
     public boolean delete(String filename) {

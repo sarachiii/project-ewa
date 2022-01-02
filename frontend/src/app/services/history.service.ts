@@ -6,9 +6,7 @@ import {History} from "../models/history";
 import {map} from "rxjs/operators";
 import {PagedHistory} from "../models/interfaces/paged-history";
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class HistoryService{
   resourceUrl: URL;
 
