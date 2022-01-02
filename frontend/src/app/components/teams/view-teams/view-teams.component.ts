@@ -67,7 +67,17 @@ export class ViewTeamsComponent implements OnInit, OnDestroy {
     });
   }
 
-  deleteTeam() {
-    console.log("test");
+  deleteTeam(id: number | string): void {
+    this.teamService.deleteTeam(id).toPromise().then(value => {
+      if (value) {
+        this.teamService.removeTeamFromList(parseFloat(id.toString()));
+        this.router.navigate([], {
+          relativeTo: this.activatedRoute,
+          queryParams: {
+            team: this.user?.teamId || 1
+          }
+        }).catch(console.error);
+      }
+    });
   }
 }

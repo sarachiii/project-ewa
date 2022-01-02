@@ -33,4 +33,11 @@ public class TeamsRepository {
 
         return query.getSingleResult();
     }
+
+    //Deletes a team
+    public void deleteById(long id) {
+        this.entityManager.createNamedQuery("Team_delete_by_id")
+                .setParameter("id", id)
+                .executeUpdate();
+    }
 }

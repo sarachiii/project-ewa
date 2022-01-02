@@ -11,9 +11,10 @@
           <div class="list-group mt-3 w-100 d-flex">
             <a *ngFor="let team of teams" type="button" class="list-group-item list-group-item-action"
                (click)="onSelect(team.id)" [ngClass]="{'active': selectedTeamId == team.id}">Team {{team.id}}
-              <button *ngIf="user.role==Role.SUPER_ADMIN" type="button" class="deleteButton float-end"
-                      data-bs-toggle="modal" data-bs-target="#deleteTeamModal">
-                <img src="assets/images/delete_red.svg" alt="deleteTeam">
+              <button *ngIf="user.role==Role.SUPER_ADMIN && user.teamId != team.id" type="button" class="deleteButton px-0 float-end"
+                      data-bs-toggle="modal" data-bs-target="#deleteTeamModal"
+                      (click)="deleteModal.setAttribute('data-team-id', team.id.toString())">
+                <img src="assets/images/clear_red.svg" alt="deleteTeam">
               </button>
             </a>
           </div>
@@ -26,13 +27,19 @@
           </button>
           <ul class="dropdown-menu w-100" aria-labelledby="teamsDropdown">
             <li *ngIf="user.role==Role.SUPER_ADMIN">
-              <a class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#addTeamModal">
+              <a class="dropdown-item d-flex" type="button" data-bs-toggle="modal" data-bs-target="#addTeamModal">
                 Add new team...
               </a>
             </li>
             <li *ngFor="let team of teams">
-              <a class="dropdown-item" type="button" (click)="onSelect(team.id)"
-                 [ngClass]="{'active': selectedTeamId == team.id}">Team {{team.id}}</a>
+              <a class="dropdown-item d-flex justify-content-between align-items-center" type="button" (click)="onSelect(team.id)"
+                 [ngClass]="{'active': selectedTeamId == team.id}">Team {{team.id}}
+                <button *ngIf="user.role==Role.SUPER_ADMIN && user.teamId != team.id" type="button" class="deleteButton px-0 float-end"
+                        data-bs-toggle="modal" data-bs-target="#deleteTeamModal"
+                        (click)="deleteModal.setAttribute('data-team-id', team.id.toString())">
+                  <img src="assets/images/clear_red.svg" alt="deleteTeam">
+                </button>
+              </a>
             </li>
           </ul>
         </div>
@@ -58,7 +65,7 @@
             </div>
           </div>
         </div>
-        <div class="modal fade" id="deleteTeamModal" data-bs-keyboard="false" tabindex="-1"
+        <div #deleteModal class="modal fade" id="deleteTeamModal" data-bs-keyboard="false" tabindex="-1"
              aria-labelledby="deleteTeamModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -70,9 +77,9 @@
                 Are you sure you want to delete the team with all the members?
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><strong>Cancel</strong></button>
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="deleteTeam()"><strong>Delete</strong>
-                </button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><strong>No</strong></button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                        (click)="deleteTeam(deleteModal.getAttribute('data-team-id'))"><strong>Yes</strong></button>
               </div>
             </div>
           </div>

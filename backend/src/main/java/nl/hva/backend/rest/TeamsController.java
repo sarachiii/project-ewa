@@ -35,9 +35,8 @@ public class TeamsController {
         return this.userRepository.findUsersByTeamId(id);
     }
 
-    @PostMapping("add")
+    @PostMapping()
     public ResponseEntity<Team> createTeam(@RequestBody Team t) {
-        System.out.println("00000000000" + t.getGhId());
         Team savedTeam = this.teamsRepository.save(t);
         return ResponseEntity.ok().body(savedTeam);
     }
@@ -46,5 +45,11 @@ public class TeamsController {
     @GetMapping("greenhouse/{id}")
     public Team getGreenHouseByTeamId(@PathVariable long id) {
         return this.teamsRepository.findGreenHouseByTeamId(id);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Boolean> deleteTeam(@PathVariable long id) {
+        this.teamsRepository.deleteById(id);
+        return ResponseEntity.ok(true);
     }
 }
