@@ -36,7 +36,6 @@ export class NotesService {
 
   allNotes(): void {
     this.restGetNotes().subscribe((notes: Note[]) => {
-      console.log(notes)
       this._notes$.next(notes.map(note => Note.copyConstructor(note)));
     });
   }

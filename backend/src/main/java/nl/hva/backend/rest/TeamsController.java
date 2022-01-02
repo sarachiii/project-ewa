@@ -41,4 +41,10 @@ public class TeamsController {
         Team savedTeam = this.teamsRepository.save(t);
         return ResponseEntity.ok().body(savedTeam);
     }
+
+    //Get greenhouse from teams based on teamId
+    @GetMapping("greenhouse/{id}")
+    public Team getGreenHouseByTeamId(@PathVariable long id) {
+        return this.teamsRepository.findGreenHouseByTeamId(id);
+    }
 }

@@ -5,7 +5,7 @@ import {Note} from "../../models/note";
 import {WebStorageService} from "../../services/storage/web-storage.service";
 import {UserService} from "../../services/user.service";
 import {User} from "../../models/user";
-import {interval, Subscription, TimeInterval} from "rxjs";
+import {Subscription} from "rxjs";
 import {PostNote} from "../../models/postNote";
 
 @Component({

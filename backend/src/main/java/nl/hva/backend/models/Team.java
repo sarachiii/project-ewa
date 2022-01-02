@@ -7,6 +7,8 @@ import java.util.List;
 @Entity
 @NamedQuery(name = "Team_find_all",
         query = "SELECT t FROM Team t")
+@NamedQuery(name = "Team_find_by_id",
+        query = "SELECT t FROM Team t WHERE t.id = :id")
 public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

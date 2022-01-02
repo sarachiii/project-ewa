@@ -16,8 +16,6 @@ import {FormControl, FormGroup} from "@angular/forms";
 })
 export class EditNotesComponent implements OnInit, OnDestroy {
   private _selectedNoteFromNotes: Note;
-  /*title: string;
-  text: string;*/
   note: Note;
   user: User | null;
   noteForm: FormGroup;

@@ -10,23 +10,27 @@ import {UserService} from "../../../services/user.service";
 import {User} from "../../../models/user";
 import {History} from "../../../models/history";
 import {SensorData} from "../../../models/sensor-data";
+import {TeamService} from "../../../services/team.service";
+import {skipWhile} from "rxjs/operators";
+import {Team} from "../../../models/team";
 
 @Component({
   selector: 'app-sensor',
   templateUrl: './sensor.component.html',
   styleUrls: ['./sensor.component.css'],
-  providers: [SensorsService]
+  providers: [SensorsService, TeamService]
 })
 export class SensorComponent implements OnInit, OnDestroy {
   showSubmit = true;
   factor = Factor;
   sensorsData: any;
   alert: boolean = false
-  sensors: Sensor[] = [];
+  sensors: Sensor[];
   co2level: number;
   sensorForm: FormGroup;
   records: History[];
   user: User | null;
+  team: Team;
   private userSubscription: Subscription;
   private subscription: Subscription;
 
@@ -35,10 +39,12 @@ export class SensorComponent implements OnInit, OnDestroy {
               private sensorsService: SensorsService,
               private fb: FormBuilder,
               private webStorageService: WebStorageService,
-              private userService: UserService) {
-    this.records = [];
+              private userService: UserService,
+              private teamService: TeamService) {
 
-    this.sensorForm = new FormGroup({});
+    this.records = [];
+    this.sensors = [];
+    this.team = new Team(0, 0);
 
     this.sensorForm = new FormGroup({
       airTempC: new FormControl(''),
@@ -88,9 +94,10 @@ export class SensorComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log(this.sensorForm.value)
-    this.userSubscription = this.userService.loggedUser$.subscribe(value => {
+    this.userSubscription = this.userService.loggedUser$.pipe(skipWhile(value => Object.keys(value).length === 0)).subscribe(value => {
       this.user = value;
+      this.teamService.getGreenhouseByTeamId(this.user.teamId).pipe(skipWhile(value => Object.keys(value).length === 0)).subscribe(team =>
+        this.team = team)
       if (this.user.specialty === "Agronomy") {
         this.sensorForm.get('soilTempC').enable();
       } else if (this.user.specialty === "Botany") {
@@ -102,7 +109,7 @@ export class SensorComponent implements OnInit, OnDestroy {
       } else if (this.user.specialty === "Agronomy") {
         this.sensorForm.get('airHumidity').enable();
       }
-    })
+    });
   }
 
   ngOnDestroy(): void {
@@ -111,7 +118,6 @@ export class SensorComponent implements OnInit, OnDestroy {
   }
 
   onSuccess(message) {
-    console.log(this.sensorForm.value)
     this.showSubmit = false
     this.service.success("Success", message, {
       timeOut: 4000,
@@ -119,7 +125,7 @@ export class SensorComponent implements OnInit, OnDestroy {
       showProgressBar: true
     });
     let postData = {
-      "gh_id": 2,
+      "gh_id": this.team.ghId,
       "user_id": this.user.id,
       ...this.sensors.reduce((sensorsData, sensor) => {
         sensorsData[sensor.name] = sensor.desiredValue;
@@ -129,7 +135,6 @@ export class SensorComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.showSubmit = true
     }, 5000);
-    console.log(postData);
 
     this.sensorsService.postSensorData(postData)
       .subscribe(responseData => {

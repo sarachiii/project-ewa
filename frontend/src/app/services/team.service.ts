@@ -45,4 +45,8 @@ export class TeamService {
   addTeamToList(team: Team): void {
     this.teams.push(team);
   }
+
+  getGreenhouseByTeamId(id: number):Observable<Team> {
+    return this.http.get<Team>(`${this.resourceUrl}/greenhouse/${id}`);
+  }
 }
