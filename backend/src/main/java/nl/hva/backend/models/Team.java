@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@NamedQuery(name = "Team_find_all",
-        query = "SELECT t FROM Team t")
+@NamedQueries({
+        @NamedQuery(name = "Team_find_all", query = "SELECT t FROM Team t"),
+        @NamedQuery(name = "Team_delete_by_id", query = "DELETE FROM Team t WHERE t.id = :id")
+})
 public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,7 +16,7 @@ public class Team {
     @Column(name = "gh_id")
     private Long ghId;
 
-    @OneToMany(mappedBy = "team", targetEntity = User.class)
+    @OneToMany(mappedBy = "team", targetEntity = User.class, cascade = CascadeType.REMOVE)
     private List<User> users = new ArrayList<>();
 
     public Team(Long ghId) {

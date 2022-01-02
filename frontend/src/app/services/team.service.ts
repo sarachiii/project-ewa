@@ -38,11 +38,22 @@ export class TeamService {
 
   // Create a new team
   addTeam(team: Team): Observable<Team> {
-    return this.http.post<Team>(this.resourceUrl + "/add", team);
+    return this.http.post<Team>(this.resourceUrl, team);
+  }
+
+  // Delete a team
+  deleteTeam(id: number | string): Observable<boolean> {
+    return this.http.delete<boolean>(`${this.resourceUrl}/${id}`);
   }
 
   // Add team to the list
   addTeamToList(team: Team): void {
     this.teams.push(team);
+  }
+
+  // Remove team from the list
+  removeTeamFromList(id: number): void {
+    let index = this.teams.findIndex(member => member.id == id);
+    this.teams.splice(index, 1);
   }
 }
