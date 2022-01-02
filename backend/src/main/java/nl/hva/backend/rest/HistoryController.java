@@ -9,11 +9,15 @@ import nl.hva.backend.repositories.HistoryRepository;
 import nl.hva.backend.rest.exception.BadRequestException;
 import nl.hva.backend.rest.exception.PreConditionFailed;
 import nl.hva.backend.rest.exception.ResourceNotFound;
+import nl.hva.backend.services.SensorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -29,6 +33,9 @@ public class HistoryController {
 
     @Autowired
     private HistoryRepository historyRepository;
+
+    @Autowired
+    private SensorService sensorService;
 
     @Autowired
     @Qualifier("apiClient")
@@ -156,13 +163,14 @@ public class HistoryController {
      */
     @Scheduled(fixedRate = 60000)
     public void scheduleSaveSensorData() {
-        ResponseEntity<JsonNode> response = webClient.get()
-                .uri(uriBuilder -> uriBuilder
-                        .path("/sensors/data/api")
-                        .queryParam("id", String.valueOf(2))
-                        .build())
-                .retrieve().toEntity(JsonNode.class).block();
+        // Populate query parameters
+        MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
+        queryParams.add("gh_id", String.valueOf(2));
 
+        // Send request to the API
+        ResponseEntity<JsonNode> response = this.sensorService.queryCcuApi(HttpMethod.GET, queryParams);
+
+        // If everything went well, safe response to the database
         if (response != null && response.getStatusCode().equals(HttpStatus.OK) && response.getBody() != null) {
             JsonNode responseNode = response.getBody();
             History history = new History(

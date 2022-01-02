@@ -29,7 +29,7 @@ export class MyTeamComponent implements OnInit, OnDestroy {
         this.user = user;
         this.teamService.getTeamById(user.teamId).toPromise().then(team => {
           this.team = team.map(u => Object.assign(new User(), u));
-        })
+        });
       });
   }
 

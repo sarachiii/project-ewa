@@ -1,16 +1,17 @@
-import {Component, OnDestroy, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {HistoryService} from "../../../services/history.service";
 import {SensorsService} from "../../../services/sensors.service";
 import {Sensor} from "../../../models/sensor";
 import {UserService} from "../../../services/user.service";
 import {Subscription, timer} from "rxjs";
 import {History} from "../../../models/history";
+import {skipWhile} from "rxjs/operators";
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  providers: [SensorsService]
+  providers: [SensorsService, HistoryService]
 })
 export class HomeComponent implements OnInit, OnDestroy {
   page: number;
@@ -26,7 +27,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     ["Climate-Science", "air_humidity"]
   ]);
   private timerSubscription: Subscription;
-  private historyPromise: Promise<History[]>
 
   constructor(private historyService: HistoryService,
               private sensorsService: SensorsService,
@@ -39,15 +39,16 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.userService.loggedUser$.subscribe(user => {
-      this.sensorsService.getSensors().then(sensors => {
-        // Sort sensors to show controlled element of specialty first
-        this.sensors = sensors;
-        this.controlledSensor = this.sensors.find(sensor => sensor.name == this.specialtyPrefs.get(user.specialty));
+    this.userService.loggedUser$.pipe(skipWhile(value => Object.keys(value).length === 0))
+      .subscribe(user => {
+        this.sensorsService.getSensors().then(sensors => {
+          // Sort sensors to show controlled element of specialty first
+          this.sensors = sensors;
+          this.controlledSensor = this.sensors.find(sensor => sensor.name == this.specialtyPrefs.get(user.specialty));
 
-        this.setTimer();
-      }).catch(console.error);
-    })
+          this.setTimer();
+        }).catch(console.error);
+      })
   }
 
   ngOnDestroy(): void {

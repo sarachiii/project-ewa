@@ -21,12 +21,6 @@ app-root {
 .white-filter {
   filter: brightness(100) !important;
 }
-.h-inherit{
-  height: inherit;
-}
-.w-inherit{
-  height: inherit;
-}
 .h-min-content {
   height: min-content !important;
 }

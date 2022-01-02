@@ -7,8 +7,7 @@ import nl.hva.backend.services.EmailService;
 import nl.hva.backend.services.FileService;
 import nl.hva.backend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import nl.hva.backend.models.User;
@@ -20,7 +19,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URI;
-import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 @RestController
@@ -68,7 +66,7 @@ public class UserController {
 
     @PostMapping("users")
     public ResponseEntity<User> createUser(@RequestBody User user)
-            throws ConflictException, BadGatewayException {
+            throws ConflictException, BadGatewayException, InternalServerErrorException {
         User u = this.userRepository.findByEmailAddress(user.getEmailAddress());
 
         if (u != null) {
@@ -83,11 +81,7 @@ public class UserController {
         HashMap<String, String> mail = userService.generateMail(user);
 
         // TODO: Hash password
-        try {
-            user.setPassword(this.userService.encode(user.getPassword()));
-        } catch (NoSuchAlgorithmException e) {
-            throw new InternalServerErrorException("Password hashing algorithm is invalid");
-        }
+        user.setPassword(this.userService.encode(user.getPassword()));
 
         User savedUser = this.userRepository.save(user);
         this.userRepository.flush();
@@ -134,10 +128,8 @@ public class UserController {
                                               @RequestParam(required = false) MultipartFile file) throws IOException {
         User user = this.userRepository.findUserById(id);
         // TODO: Hash password
-        /*try {
-            accountForm.setPassword(this.userService.encode(accountForm.getPassword()));
-        } catch (NoSuchAlgorithmException e) {
-            throw new InternalServerErrorException("Password hashing algorithm is invalid");
+        /*if (!this.userService.matches(accountForm.getPassword(), user.getPassword())) {
+            throw new BadRequestException("Password is wrong");
         }*/
 
         if (!user.getPassword().equals(accountForm.getPassword())) {
@@ -153,11 +145,7 @@ public class UserController {
         if (!accountForm.getNewPasswordForm().getPassword().isBlank()) {
             user.setPassword(accountForm.getNewPasswordForm().getPassword());
             // TODO: Hash password
-            /*try {
-                user.setPassword(this.userService.encode(accountForm.getNewPasswordForm().getPassword()));
-            } catch (NoSuchAlgorithmException e) {
-                throw new InternalServerErrorException("Password hashing algorithm is invalid");
-            }*/
+            //user.setPassword(this.userService.encode(accountForm.getNewPasswordForm().getPassword()));
         }
 
         // Delete profile picture
@@ -177,31 +165,14 @@ public class UserController {
 
             if (user.getProfilePicture() != null) fileService.delete(user.getProfilePicture());
 
-            String filePrefix = String.format("users/%d/avatar/%s", id, UUID.randomUUID());
-            String filename = fileService.upload(file, filePrefix);
-            user.setProfilePicture(filename);
+            String filePrefix = String.format("users/%d/avatar/%s", id, DEFAULT_IMAGE_NAME);
+            String fileUrl = fileService.upload(file, filePrefix);
+            user.setProfilePicture(fileUrl);
         }
 
         this.userRepository.save(user);
 
         return ResponseEntity.ok(true);
-    }
-
-    @GetMapping(
-            value = "users/{id}/avatar/{filename:.+}",
-            produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE}
-    )
-    public byte[] downloadAvatar(@PathVariable long id, @PathVariable String filename) {
-        User user = getUserById(id);
-        String requestedPicture = String.format("users/%d/avatar/%s", id, filename);
-        if (user.getProfilePicture() == null || !user.getProfilePicture().equals(requestedPicture))
-            throw new ResourceNotFound("Could not find requested resource");
-
-        byte[] data = fileService.download(user.getProfilePicture());
-
-        if (data == null) throw new ResourceNotFound("Could not find requested resource");
-
-        return data;
     }
 
     @PostMapping("login")
@@ -212,11 +183,7 @@ public class UserController {
             throw new ResourceNotFound("username does not exist");
         }
         // TODO: Hash password
-        /*try {
-            login.setPassword(this.userService.encode(login.getPassword()));
-        } catch (NoSuchAlgorithmException e) {
-            throw new InternalServerErrorException("Password hashing algorithm is invalid");
-        }*/
+        // return this.userService.matches(login.getPassword(), user.getPassword()) ? user.getId() : null;
 
         return login.getPassword().equals(user.getPassword()) ? user.getId() : null;
     }
