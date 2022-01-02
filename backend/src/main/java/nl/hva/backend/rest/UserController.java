@@ -2,10 +2,7 @@ package nl.hva.backend.rest;
 
 import nl.hva.backend.models.forms.AccountForm;
 import nl.hva.backend.models.forms.Login;
-import nl.hva.backend.rest.exception.BadGatewayException;
-import nl.hva.backend.rest.exception.BadRequestException;
-import nl.hva.backend.rest.exception.ConflictException;
-import nl.hva.backend.rest.exception.ResourceNotFound;
+import nl.hva.backend.rest.exception.*;
 import nl.hva.backend.services.EmailService;
 import nl.hva.backend.services.FileService;
 import nl.hva.backend.services.UserService;
@@ -23,6 +20,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URI;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 @RestController
@@ -77,12 +75,24 @@ public class UserController {
             throw new ConflictException("The user already exists in the database");
         }
 
-        User savedUser = this.userRepository.save(user);
-        this.userRepository.flush();
+        // Generate random password
+        if (user.getPassword() ==  null || user.getPassword().isBlank()) {
+            user.setPassword(userService.generateRandomPassword());
+        }
 
         HashMap<String, String> mail = userService.generateMail(user);
 
-        emailService.sendSimpleMessage(mail.get("recipient"), mail.get("subject"), mail.get("body"));
+        // TODO: Hash password
+        try {
+            user.setPassword(this.userService.encode(user.getPassword()));
+        } catch (NoSuchAlgorithmException e) {
+            throw new InternalServerErrorException("Password hashing algorithm is invalid");
+        }
+
+        User savedUser = this.userRepository.save(user);
+        this.userRepository.flush();
+
+        emailService.sendMimeMessage(mail.get("recipient"), mail.get("subject"), mail.get("body"));
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("{id}")
@@ -123,6 +133,12 @@ public class UserController {
                                               @RequestPart @Valid AccountForm accountForm,
                                               @RequestParam(required = false) MultipartFile file) throws IOException {
         User user = this.userRepository.findUserById(id);
+        // TODO: Hash password
+        /*try {
+            accountForm.setPassword(this.userService.encode(accountForm.getPassword()));
+        } catch (NoSuchAlgorithmException e) {
+            throw new InternalServerErrorException("Password hashing algorithm is invalid");
+        }*/
 
         if (!user.getPassword().equals(accountForm.getPassword())) {
             throw new BadRequestException("Password is wrong");
@@ -136,6 +152,12 @@ public class UserController {
         // Change password if new password is supplied
         if (!accountForm.getNewPasswordForm().getPassword().isBlank()) {
             user.setPassword(accountForm.getNewPasswordForm().getPassword());
+            // TODO: Hash password
+            /*try {
+                user.setPassword(this.userService.encode(accountForm.getNewPasswordForm().getPassword()));
+            } catch (NoSuchAlgorithmException e) {
+                throw new InternalServerErrorException("Password hashing algorithm is invalid");
+            }*/
         }
 
         // Delete profile picture
@@ -189,6 +211,12 @@ public class UserController {
         if (user == null) {
             throw new ResourceNotFound("username does not exist");
         }
+        // TODO: Hash password
+        /*try {
+            login.setPassword(this.userService.encode(login.getPassword()));
+        } catch (NoSuchAlgorithmException e) {
+            throw new InternalServerErrorException("Password hashing algorithm is invalid");
+        }*/
 
         return login.getPassword().equals(user.getPassword()) ? user.getId() : null;
     }
