@@ -1,17 +1,35 @@
 import { Preferences } from "./preferences";
 import {EField} from "./field";
+import {environment} from "../../environments/environment";
 
 export enum Role {
-  ADMIN = "admin",
-  TEAM_LEADER = "team_leader",
-  TEAM_MEMBER = "team_member",
-  UNKNOWN = ""
+  SUPER_ADMIN = "Super Admin",
+  ADMIN = "Admin",
+  MEMBER = "Member"
+}
+
+export namespace Role {
+  export function values(): Role[] {
+    return Object.values(Role).filter(value => typeof value == "string") as Role[];
+  }
+
+  export function names(): string[] {
+    return Object.keys(Role).filter(key => typeof Role[key] == "string");
+  }
+
+  export function valueOf(name: string): Role {
+    return Role[name];
+  }
+
+  export function name(role: Role): string {
+    return names().find(name => Role[name] == role);
+  }
 }
 
 export class User {
   id: number;
   teamId: number;
-  role: Role; // TODO: Add custom validator for role in teams
+  role: Role;
   specialty: string;
   firstName: string;
   lastName: string;
@@ -23,12 +41,33 @@ export class User {
               emailAddress?: string, password?: string, profilePicture?: string) {
     this.id = userId || 0;
     this.teamId = teamId || 0;
-    this.role = role || Role.UNKNOWN;
+    this.role = role || Role.MEMBER;
     this.specialty = specialty || EField.UNKNOWN;
     this.firstName = firstName || "";
     this.lastName = lastName || "";
     this.emailAddress = emailAddress || "";
     this.password = password || "";
     this.profilePicture = profilePicture || "";
+  }
+
+  get fullName(): string {
+    return this.firstName + " " + this.lastName;
+  }
+
+  get specialist(): string {
+    switch (this.specialty) {
+      case EField.AGRONOMY:
+        return "Agronomist";
+      case EField.BOTANY:
+        return "Botanist";
+      case EField.GEOLOGY:
+        return "Geologist";
+      case EField.HYDROLOGY:
+        return "Hydrologist";
+      case EField.CLIMATE_SCIENCE:
+        return "Climatologist";
+      default:
+        return "";
+    }
   }
 }

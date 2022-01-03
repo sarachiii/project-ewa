@@ -1,0 +1,103 @@
+<div class="container fade-in px-0">
+  <div class="row">
+    <ng-container *ngIf="teams.length else noTeams">
+      <div class="col-lg-6 d-lg-flex pe-lg-0 fade-in">
+        <div class="my-3 w-100 d-none d-lg-block">
+          <div class="d-flex align-items-center justify-content-between">
+            <strong class="fs-5">Teams</strong>
+            <a *ngIf="user.role==Role.SUPER_ADMIN" type="button" class="btn btn-primary"
+               data-bs-toggle="modal" data-bs-target="#addTeamModal">Add team</a>
+          </div>
+          <div class="list-group mt-3 w-100 d-flex">
+            <a *ngFor="let team of teams" type="button" class="list-group-item list-group-item-action"
+               (click)="onSelect(team.id)" [ngClass]="{'active': selectedTeamId == team.id}">Team {{team.id}}
+              <button *ngIf="user.role==Role.SUPER_ADMIN && user.teamId != team.id" type="button" class="deleteButton px-0 float-end"
+                      data-bs-toggle="modal" data-bs-target="#deleteTeamModal"
+                      (click)="deleteModal.setAttribute('data-team-id', team.id.toString())">
+                <img src="assets/images/clear_red.svg" alt="deleteTeam">
+              </button>
+            </a>
+          </div>
+        </div>
+        <div class="dropdown d-lg-none">
+          <button
+            class="btn btn-primary dropdown-toggle d-flex align-items-center py-2 mt-2 mb-3 w-100 fw-bold text-start"
+            type="button" id="teamsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            {{selectedTeamId > -1 ? "Team " + selectedTeamId : "Choose a team"}}
+          </button>
+          <ul class="dropdown-menu w-100" aria-labelledby="teamsDropdown">
+            <li *ngIf="user.role==Role.SUPER_ADMIN">
+              <a class="dropdown-item d-flex" type="button" data-bs-toggle="modal" data-bs-target="#addTeamModal">
+                Add new team...
+              </a>
+            </li>
+            <li *ngFor="let team of teams">
+              <a class="dropdown-item d-flex justify-content-between align-items-center" type="button" (click)="onSelect(team.id)"
+                 [ngClass]="{'active': selectedTeamId == team.id}">Team {{team.id}}
+                <button *ngIf="user.role==Role.SUPER_ADMIN && user.teamId != team.id" type="button" class="deleteButton px-0 float-end"
+                        data-bs-toggle="modal" data-bs-target="#deleteTeamModal"
+                        (click)="deleteModal.setAttribute('data-team-id', team.id.toString())">
+                  <img src="assets/images/clear_red.svg" alt="deleteTeam">
+                </button>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="vr mx-3 my-2 opacity-100 d-none d-lg-flex"></div>
+        <hr *ngIf="selectedTeamId > -1" class="d-flex d-lg-none mt-1 mb-2 opacity-100">
+        <div *ngIf="user.role==Role.SUPER_ADMIN" class="modal fade" id="addTeamModal" data-bs-keyboard="false"
+             tabindex="-1"
+             aria-labelledby="addTeamModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="addTeamModalLabel">Add new team</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                Are you sure you want to add a new team?
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><strong>No</strong></button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="addNewTeam()">
+                  <strong>Yes</strong></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div #deleteModal class="modal fade" id="deleteTeamModal" data-bs-keyboard="false" tabindex="-1"
+             aria-labelledby="deleteTeamModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="deleteTeamModalLabel">Delete team</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                Are you sure you want to delete the team with all the members?
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><strong>No</strong></button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                        (click)="deleteTeam(deleteModal.getAttribute('data-team-id'))"><strong>Yes</strong></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 ps-lg-0">
+        <ng-template #noTeam>
+          <div class="d-none d-lg-block my-3">Choose a team</div>
+        </ng-template>
+        <ng-container *ngIf="selectedTeamId > -1 else noTeam">
+          <app-team [selectedTeamId]="selectedTeamId" [user]="user"></app-team>
+        </ng-container>
+      </div>
+    </ng-container>
+    <ng-template #noTeams>
+      <div class="col-lg py-2 py-lg-3">
+        <strong>There are no teams! :(</strong>
+      </div>
+    </ng-template>
+  </div>
+</div>

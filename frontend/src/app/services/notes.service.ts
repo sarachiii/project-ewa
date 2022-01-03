@@ -1,49 +1,42 @@
-import {Injectable, Output} from '@angular/core';
-import {BehaviorSubject, Subject} from "rxjs";
+import {Injectable} from '@angular/core';
+import {BehaviorSubject} from "rxjs";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {environment} from "../../environments/environment";
+import {Note} from "../models/note";
+import {Observable, throwError} from "rxjs";
+import {catchError} from "rxjs/operators";
+import {PostNote} from "../models/postNote";
 
 /**
  * This is the notes service.
  *
  * @author Sarah Chrzanowska-Buth & Nazlıcan Eren
  */
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-import {environment} from "../../environments/environment";
-import {Note} from "../models/note";
-import {Observable, throwError} from "rxjs";
-import {catchError} from "rxjs/operators";
-import {DatePipe} from "@angular/common";
-import {User} from "../models/user";
 
 @Injectable({
   providedIn: 'root'
 })
 export class NotesService {
-  private visitedPage: Subject<boolean> = new BehaviorSubject<boolean>(false);
-  currentVisitedPage = this.visitedPage.asObservable();
-  public notes: Note[] = [];
-  resourceUrl: string = "";
-  private _note$: BehaviorSubject<Note>;
+  resourceUrl: string;
+  private _notes$: BehaviorSubject<Note[]>;
 
   constructor(private http: HttpClient) {
     this.resourceUrl = environment.apiUrl + "/notes";
-    this._note$ = new BehaviorSubject<Note>(<Note>{});
-    // this.allNotes();
+    this._notes$ = new BehaviorSubject<Note[]>([]);
+    this.allNotes();
   }
 
-  get note$(): Observable<Note> {
-    return this._note$.asObservable();
+  get notes$(): Observable<Note[]> {
+    return this._notes$.asObservable();
   }
 
   restGetNotes(): Observable<Note[]> {
     return this.http.get<Note[]>(this.resourceUrl + "/all").pipe(catchError(this.handleError));
   }
 
-  allNotes(): void{
+  allNotes(): void {
     this.restGetNotes().subscribe((notes: Note[]) => {
-      let notesArray = notes.map(note => Note.copyConstructor(note));
-      for (let i = 0; i < notes.length; i++) {
-        this.notes.push(notesArray[i]);
-      }
+      this._notes$.next(notes.map(note => Note.copyConstructor(note)));
     });
   }
 
@@ -56,10 +49,20 @@ export class NotesService {
     return throwError('Something bad happened; please try again later.');
   }
 
-  addNote(note: Note) {
-    this.restPostNote(note).toPromise().then(() => {
-      this.notes.push(Note.copyConstructor(note));
-      console.log(this.notes)
+  addNote(note: Note, postNote: PostNote) {
+    this.restPostNote(postNote).toPromise().then((savedNote) => {
+      let notes = this._notes$.getValue();
+      //search if the note already exists by index
+      let noteIndex = notes.findIndex(n => n.noteId == savedNote.noteId);
+      //if note does exist, update the note in the list
+      if (noteIndex > -1) {
+        notes[noteIndex] = note;
+      } else {
+        //if note doesn't exist, add the new note to the list
+        savedNote.user = note.user;
+        notes.push(Note.copyConstructor(savedNote));
+      }
+      this._notes$.next(notes);
     });
   }
 
@@ -67,7 +70,12 @@ export class NotesService {
     return this.http.post<Note>(this.resourceUrl + "/add", note);
   }
 
-  updateVisitedPage(visited: boolean) { //  This method sets the boolean for if the notes page was visited by the user or not
-    this.visitedPage.next(visited);
+  deleteNote(noteId): void {
+    this.http.delete<Note>(`${this.resourceUrl}/delete/${noteId}`).subscribe(() => {
+      let notes = this._notes$.getValue();
+      let noteIndex = notes.findIndex(n => n.noteId == noteId);
+      if (noteIndex > -1) notes.splice(noteIndex, 1);
+      this._notes$.next(notes);
+    }, error => console.log(error));
   }
 }

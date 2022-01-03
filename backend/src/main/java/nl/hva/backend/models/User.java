@@ -1,42 +1,63 @@
 package nl.hva.backend.models;
 
-
-import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name = "user")
 public class User {
-    
+
     @Id
-    @GeneratedValue
-    @Column(name = "user_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "email")
+
+    @Column(name = "email", unique = true)
     private String emailAddress;
-    @Column(name = "firstname")
+
+    @Column(name = "first_name")
     private String firstName;
-    @Column(name = "lastname")
+
+    @Column(name = "last_name")
     private String lastName;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
-    @Column(name = "work_field")
-    private String specialty;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    @Enumerated(EnumType.STRING)
+    private Specialty specialty;
+
     @Column(name = "image_path")
     private String profilePicture;
+
     @Column(name = "team_id")
     private Long teamId;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(targetEntity = Preferences.class, mappedBy = "user", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private Preferences preferences;
 
+    @OneToMany(targetEntity = Note.class, mappedBy = "user")
+    @JsonBackReference(value = "user")
+    private List<Note> notes = new ArrayList<>();
+
+    @ManyToOne(targetEntity = Team.class)
+    @JsonBackReference
+    @JoinColumn(name = "team_id", insertable = false, updatable = false)
+    private Team team;
+
     public enum Specialty {
-        A("Agronomy"),
-        B("Botany"),
-        G("Geology"),
-        H("Hydrology"),
-        CS("Climate-Science");
+        Agronomy("Agronomy"),
+        Botany("Botany"),
+        Geology("Geology"),
+        Hydrology("Hydrology"),
+        Climate_Science("Climate-Science");
 
         private final String string;
 
@@ -44,6 +65,25 @@ public class User {
             this.string = string;
         }
 
+        @JsonValue
+        @Override
+        public String toString() {
+            return this.string;
+        }
+    }
+
+    public enum Role {
+        SUPER_ADMIN("Super Admin"),
+        ADMIN("Admin"),
+        MEMBER("Member");
+
+        private final String string;
+
+        Role(String string) {
+            this.string = string;
+        }
+
+        @JsonValue
         @Override
         public String toString() {
             return this.string;
@@ -53,13 +93,14 @@ public class User {
     public User() {
     }
 
-    public User (String emailAddress, String password) {
+    public User(String emailAddress, String password) {
         this();
         this.emailAddress = emailAddress;
         this.password = password;
     }
-    public User (String emailAddress, String firstName, String lastName, String password,
-                String specialty, String profilePicture, Long teamId) {
+
+    public User(String emailAddress, String firstName, String lastName, String password,
+                Specialty specialty, String profilePicture, Long teamId) {
         this();
         this.emailAddress = emailAddress;
         this.firstName = firstName;
@@ -70,11 +111,6 @@ public class User {
         this.teamId = teamId;
     }
 
-    // public User() {
-    // this('')
-    // }
-
-    
     public Long getId() {
         return this.id;
     }
@@ -115,11 +151,19 @@ public class User {
         this.password = password;
     }
 
-    public String getSpecialty() {
-        return Specialty.valueOf(this.specialty).toString();
+    public Role getRole() {
+        return role;
     }
 
-    public void setSpecialty(String specialty) {
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public Specialty getSpecialty() {
+        return this.specialty;
+    }
+
+    public void setSpecialty(Specialty specialty) {
         this.specialty = specialty;
     }
 

@@ -1,45 +1,87 @@
-<p *ngIf="sortedNotes.length < 1">There are no notes yet! :(</p>
-<div class="container position-relative h-100">
- <ngx-masonry *ngIf="sortedNotes.length >= 1" [options]="masonryOptions" [ordered]="true" class="mx-auto pt-lg-3 row justify-content-center">
-    <div ngxMasonryItem *ngFor="let note of sortedNotes" class="masonry-item p-2 col col-md-6 col-lg-4 col-xl-3">
+<div *ngIf="notes$ | async as notes" class="container position-relative h-100">
+  <div class="text-center p-4 fade-in" *ngIf="notes.length < 1">
+    <span class="display-6">There are no notes yet! :(</span>
+  </div>
+  <ngx-masonry *ngIf="notes.length >= 1" [options]="masonryOptions" [ordered]="true"
+               class="mx-auto pt-2 pt-lg-3 row justify-content-center">
+    <div ngxMasonryItem *ngFor="let note of notes" class="masonry-item p-2 col col-md-6 col-lg-4 col-xl-3">
       <div class="card shadow">
-<!--        <div class="card-header position-relative" [ngClass]="{'highlight-header': loggedInUser.userId == note.user.userId}">-->
-        <div class="card-header position-relative">
-          {{note.title}}
-<!--          <span *ngIf="note.isRead == false" class="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger p-2">-->
+        <div class="card-header position-relative d-flex align-items-center justify-content-between">
+          <span class="text-truncate">{{note.title}}</span>
           <span class="position-absolute">
             <span class="visually-hidden">unread messages</span>
           </span>
-          <a id="edit-screen"><img *ngIf="note.userId == this.user.id" src="assets/edit.svg" class="float-end"></a>
+          <div id="edit-screen" class="d-flex ms-1">
+            <button type="button" id="editNoteButton" class="d-inline-flex align-items-center px-0 me-1"
+                    *ngIf="note.user.id == this.user.id" (click)="onEditNote(false, note)">
+              <img src="assets/images/edit.svg" alt="edit" height="22" width="22">
+            </button>
+            <button type="button" class="deleteButton d-inline-flex align-items-center px-0"
+                    *ngIf="note.user.id == this.user.id"
+                    data-bs-toggle="modal" [attr.data-bs-target]="'#deleteNoteModal'+ note.noteId">
+              <img src="assets/images/delete_red.svg" alt="deleteNote">
+            </button>
+          </div>
         </div>
         <div class="card-body">
           <p class="card-text">{{note.noteText}}</p>
-          <div class="row text-muted">
-            <div class="col-5">
-              {{note.username}}
-            </div>
-            <div class="text-end col-7">
-              {{note.convertedDate()}}
-            </div>
+          <div class="text-muted d-flex justify-content-between">
+            <span>{{note.user.firstName}}</span>
+            <span class="text-end">{{note.convertedDate()}}</span>
           </div>
         </div>
       </div>
     </div>
   </ngx-masonry>
 
-  <div class="position-absolute bottom-0 end-0 p-5" [ngClass]="{'d-none': selectedWorkfieldFromNavbar != 'botany'}" *ngIf="createNote === false; else addNote;">
-    <button type="button" class="btn btn-success size d-lg-none shadow fixed-bottom mb-3 mr-3" (click)="onCreateNote(false)">
-      <img class="button-img" src="https://icon-library.com/images/compose-icon/compose-icon-1.jpg" alt="add note">
-    </button>
-    <button type="button" class="btn btn-success d-none d-lg-block shadow fixed-bottom mb-3 mr-3" (click)="onCreateNote(false)">
-      Create Note
+  <div class="fixed-bottom" [ngClass]="{'d-none': selectedWorkfieldFromNavbar != this.user?.specialty.toLowerCase()}"
+       [ngTemplateOutlet]="createNote === true ? addNote : editNote === true ? viewNote : null">
+    <button type="button" class="btn btn-primary shadow p-0 me-3 mb-3 float-end"
+            (click)="onCreateNote(false)">
+      <!--   Create note button desktop  -->
+      <span class="d-none d-lg-block fw-bold px-3 py-1">Create Note</span>
+      <!--   Create note button mobile   -->
+      <img class="d-lg-none" src="assets/images/create_white.svg" height="35" width="35" alt="add note">
     </button>
   </div>
+
+  <!--  Add note pop-up  -->
   <ng-template #addNote>
-    <ng-container>
-      <app-share-notes (unselectedEvent)="onCreateNote($event)">
-      </app-share-notes>
-    </ng-container>
+    <app-share-notes (unselectedEvent)="onCreateNote($event)">
+    </app-share-notes>
   </ng-template>
+
+  <!--  Edit/view note pop-up  -->
+  <ng-template #viewNote>
+    <app-edit-notes [(selectedNoteFromNotes)]="selectedNote" (unselectedEvent)="onEditNote($event, null)">
+    </app-edit-notes>
+  </ng-template>
+
+  <!--  Delete note pop-up  -->
+  <div *ngFor="let note of notes" class="modal fade" [id]="'deleteNoteModal'+note.noteId" data-bs-keyboard="false"
+       tabindex="-1"
+       [attr.aria-labelledby]="'deleteNoteModalLabel'+note.noteId" aria-hidden="true" data-backdrop="false"
+       role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" [id]="'deleteNoteModalLabel'+note.noteId">Delete note</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to delete this note?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><strong>CANCEL</strong></button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="onDeleteNote(note.noteId)">
+            <strong>DELETE</strong></button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
+
+
+
 

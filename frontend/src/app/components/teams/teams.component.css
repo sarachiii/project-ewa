@@ -1,0 +1,14 @@
+.card {
+  border-radius: 10px;
+  border-color: var(--cc-darkgreen);
+}
+.btn {
+  border-radius: 10px;
+}
+.btn:hover .green-filter, .btn.active .green-filter {
+  filter: brightness(100) !important;
+}
+
+.btn:hover .green-filter {
+  transition: 0.15s filter ease-in-out, 0.15s -webkit-filter ease-in-out;
+}

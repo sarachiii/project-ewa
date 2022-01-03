@@ -8,20 +8,16 @@ import {environment} from "../../environments/environment";
 
 @Injectable()
 export class SettingsService {
-  // prefsList: Preferences[];
   protected resourceUrl: URL;
   preferences: Preferences;
 
   // TODO: Add StorageService to save the preferences in the localStorage or sessionStorage
   // TODO: Perhaps separate SettingsService and PreferencesService to manage preferences site wide
   constructor(protected httpClient: HttpClient) {
-    // this.prefsList = [];
-    // this.prefsList.push(new Preferences(this.loggedInUser().id));
     this.resourceUrl = new URL(environment.apiUrl);
-    // console.log(this.prefsList)
   }
 
-  updateProfile(id: number, accountForm: { [ key: string]: string }): Observable<boolean> {
+  updateProfile(id: number, accountForm: FormData): Observable<boolean> {
     console.log(accountForm)
     return this.httpClient.put<boolean>(`${this.resourceUrl}/users/${id}/account`, accountForm);
   }
@@ -31,17 +27,6 @@ export class SettingsService {
   }
 
   savePrefs(prefs: Preferences): Promise<Preferences> {
-    return this.httpClient.put<Preferences>(`${this.resourceUrl}/users/preferences`, prefs)
-      .pipe(shareReplay(1)).toPromise();
+    return this.httpClient.put<Preferences>(`${this.resourceUrl}/users/preferences`, prefs).toPromise();
   }
-
-  // getPrefs(): Preferences {
-  //   return this.prefsList.find(prefs => prefs.userId == this.loggedInUser().id);
-  // }
-
-  // savePrefs(preferences: Preferences): Promise<boolean> | boolean {
-  //   let index = this.prefsList.findIndex(prefs => prefs.userId == this.loggedInUser().id);
-  //   Object.assign<Preferences, Preferences>(this.prefsList[index], preferences);
-  //   return true;
-  // }
 }

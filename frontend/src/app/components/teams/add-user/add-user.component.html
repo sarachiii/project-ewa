@@ -1,0 +1,82 @@
+<form [formGroup]="newUserForm" (ngSubmit)="onSubmit()" autocomplete="off" class="container fade-in px-1">
+  <div class="row mt-3">
+
+    <div class="container">
+      <div *ngIf="showErrorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Error!</strong> User with {{email}} already exists.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      <div *ngIf="showSuccessMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Success!</strong> User has been registered.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    </div>
+
+    <div class="col-sm-6">
+      <label class="form-label fw-bold" for="firstName">First name:</label>
+      <input class="form-control py-2 mb-3" formControlName="firstName" type="text" id="firstName"
+             name="firstName" placeholder="Enter a first name here">
+      <label class="form-label fw-bold" for="lastName">Last name:</label>
+      <input class="form-control py-2 mb-3" formControlName="lastName" type="text" id="lastName"
+             name="lastName" placeholder="Enter a last name here">
+      <div class="mb-3">
+        <label class="form-label fw-bold" for="email">Email:</label>
+        <input class="form-control py-2" [ngClass]="{'is-invalid':emailAddress.errors?.email}"
+               formControlName="emailAddress" type="email" id="email"
+               name="email" placeholder="email@example.com">
+        <div class="invalid-feedback">
+          <span>Please enter a valid email</span>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-bold" for="password">Temporary password:</label>
+        <input class="form-control py-2" [ngClass]="{'is-invalid':password.invalid && password.value}"
+               formControlName="password" autocomplete="new-password" type="password"
+               id="password"
+               name="password" placeholder="Enter a password here">
+        <small class="fst-italic text-muted ms-1">Optional</small>
+        <div class="invalid-feedback">
+          Password needs to meet the following criteria:
+          <ul>
+            <li *ngIf="password.errors?.length">Must be at least 8 characters long</li>
+            <li *ngIf="password.errors?.number">Must contain a number</li>
+            <li *ngIf="password.errors?.upperCase">Must contain an uppercase character</li>
+            <li *ngIf="password.errors?.lowerCase">Must contain a lowercase character</li>
+            <li *ngIf="password.errors?.illegalChars">May only contain these special characters: (!@#$%&_=+?~-)
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <label for="role" class="form-label fw-bold">Role</label>
+      <select formControlName="role" id="role" class="form-select py-2 mb-3">
+        <option *ngFor="let role of Role.values().reverse()" [value]="role">{{role}}</option>
+      </select>
+      <label for="specialtyPicker" class="form-label fw-bold">Specialty</label>
+      <select formControlName="specialty" id="specialtyPicker" class="form-select py-2 mb-3">
+        <option disabled hidden>Choose a specialty</option>
+        <option value="Agronomy">Agronomy</option>
+        <option value="Botany">Botany</option>
+        <option value="Geology">Geology</option>
+        <option value="Hydrology">Hydrology</option>
+        <option value="Climate-Science">Climate Science</option>
+      </select>
+      <label for="team" class="form-label fw-bold">Team</label>
+      <select formControlName="teamId" id="team" class="form-select py-2 mb-3">
+        <option disabled hidden>Choose a team</option>
+        <ng-container *ngFor="let team of teams">
+          <option [value]="team.id">Team {{team.id}}</option>
+        </ng-container>
+      </select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-6 offset-6 p-0">
+      <button class="btn btn-primary fw-bold float-end shadow" type="submit">
+        Submit
+      </button>
+    </div>
+  </div>
+</form>
+

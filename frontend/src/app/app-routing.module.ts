@@ -11,6 +11,11 @@ import { SettingsComponent } from "./components/settings/settings.component";
 import { AccountComponent } from "./components/settings/account/account.component";
 import { PreferencesComponent } from "./components/settings/preferences/preferences.component";
 import { AuthGuardService } from "./services/auth-guard.service";
+import {TeamsComponent} from "./components/teams/teams.component";
+import {ViewTeamsComponent} from "./components/teams/view-teams/view-teams.component";
+import {AddUserComponent} from "./components/teams/add-user/add-user.component";
+import {AdminGuard} from "./services/guards/admin.guard";
+import {MyTeamComponent} from "./components/teams/my-team/my-team.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -28,6 +33,14 @@ const routes: Routes = [
       },
     ],
   },
+  { path: 'teams', component: TeamsComponent, canActivate: [AuthGuardService], canActivateChild: [AuthGuardService],
+    children: [
+      { path: '', redirectTo: 'my-team', pathMatch: 'full' },
+      { path: 'my-team', component: MyTeamComponent },
+      { path: 'view', component: ViewTeamsComponent, canActivate: [AdminGuard]},
+      { path: 'add-user', component: AddUserComponent, canActivate: [AdminGuard]}
+    ]
+  },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuardService], canActivateChild: [AuthGuardService],
     children: [
       { path: '', redirectTo: 'account', pathMatch: 'full' },
@@ -35,7 +48,7 @@ const routes: Routes = [
       { path: 'preferences', component: PreferencesComponent }
     ]
   },
-  { path: '**', component: ErrorComponent, canActivate: [AuthGuardService] }
+  { path: '**', component: ErrorComponent, canActivate: [AuthGuardService] },
 ];
 
 @NgModule({

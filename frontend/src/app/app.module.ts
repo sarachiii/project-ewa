@@ -23,6 +23,14 @@ import { AccountComponent } from './components/settings/account/account.componen
 import { PreferencesComponent } from './components/settings/preferences/preferences.component';
 import { DatePipe } from "@angular/common";
 import { SimpleNotificationsModule } from "angular2-notifications";
+import { EditNotesComponent } from './components/edit-notes/edit-notes.component';
+import { TeamsComponent } from './components/teams/teams.component';
+import { MyTeamComponent } from './components/teams/my-team/my-team.component';
+import { ViewTeamsComponent } from './components/teams/view-teams/view-teams.component';
+import { MembersComponent } from './components/teams/view-teams/members/members.component';
+import { AddUserComponent } from './components/teams/add-user/add-user.component';
+import { HistoryDataComponent } from './components/mainpage/home/history-data/history-data.component';
+import { ReversePipe } from './shared/pipes/reverse.pipe';
 
 @NgModule({
   declarations: [
@@ -38,7 +46,15 @@ import { SimpleNotificationsModule } from "angular2-notifications";
     RegisterComponent,
     SettingsComponent,
     AccountComponent,
-    PreferencesComponent
+    PreferencesComponent,
+    EditNotesComponent,
+    TeamsComponent,
+    MyTeamComponent,
+    ViewTeamsComponent,
+    MembersComponent,
+    AddUserComponent,
+    HistoryDataComponent,
+    ReversePipe
   ],
   imports: [
     BrowserModule,
@@ -49,7 +65,7 @@ import { SimpleNotificationsModule } from "angular2-notifications";
     ChartsModule,
     NgxMasonryModule,
     BrowserAnimationsModule,
-    SimpleNotificationsModule.forRoot(),
+    SimpleNotificationsModule.forRoot()
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent]

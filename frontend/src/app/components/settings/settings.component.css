@@ -2,10 +2,6 @@
   border-radius: 10px;
   border-color: var(--cc-darkgreen);
 }
-
-.card hr, .card .vr {
-  background-color: var(--cc-darkgreen);
-}
 .btn {
   border-radius: 10px;
 }
