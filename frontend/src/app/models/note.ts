@@ -24,7 +24,7 @@ export class Note {
   }
 
   static copyConstructor(note: Note): Note {
-    var user = new User(note.user.id, note.user.teamId, note.user.role, note.user.specialty,
+    let user = new User(note.user.id, note.user.teamId, note.user.role, note.user.specialty,
       note.user.firstName, note.user.lastName, note.user.emailAddress, note.user.password, note.user.profilePicture);
 
     return Object.assign(new Note(note.noteId, user, note.timestamp, note.title, note.noteText));
