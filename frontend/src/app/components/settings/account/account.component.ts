@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, ValidationErrors, Validators} from "@angular/forms";
 import {User} from "../../../models/user";
 import {SettingsService} from "../../../services/settings.service";
@@ -22,6 +22,7 @@ export class AccountComponent implements OnInit, OnDestroy {
   deleteProfilePicture: boolean;
   preview: string;
   private userSubscription: Subscription | null;
+  @ViewChild('fileElement') fileElement: ElementRef<HTMLInputElement>;
 
   constructor(protected settingsService: SettingsService,
               protected webStorageService: WebStorageService,
@@ -91,10 +92,10 @@ export class AccountComponent implements OnInit, OnDestroy {
     }, passwordValidator());
   }
 
-  onClear(file: HTMLInputElement) {
+  onClear() {
     this.file.reset('');
     this.preview = '';
-    file.value = '';
+    this.fileElement.nativeElement.value = '';
   }
 
   onReset() {
@@ -105,9 +106,8 @@ export class AccountComponent implements OnInit, OnDestroy {
     this.accountFormInit();
     this.newPasswordFormInit();
     this.accountForm.patchValue(this.copyUser);
-    this.file.reset('');
     this.password.reset('');
-    this.preview = '';
+    this.onClear();
   }
 
   onSubmit() {
@@ -125,7 +125,7 @@ export class AccountComponent implements OnInit, OnDestroy {
       formData.set('accountForm', accountFormBlob);
 
       this.settingsService.updateProfile(this.user.id, formData)
-        .subscribe(e => {
+        .subscribe(() => {
           this.password.setErrors(null);
           this.userService.updateLoggedUser(this.user.id);
         }, error => {

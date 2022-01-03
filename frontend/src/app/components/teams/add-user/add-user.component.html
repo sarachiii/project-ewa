@@ -1,9 +1,15 @@
 <form [formGroup]="newUserForm" (ngSubmit)="onSubmit()" autocomplete="off" class="container fade-in px-1">
   <div class="row mt-3">
 
-    <div *ngIf="showErrorMessage" class="alert alert-danger alert-dismissible fade show " role="alert">
-      <strong>Error!</strong> User with {{email}} already exists.
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <div class="container">
+      <div *ngIf="showErrorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Error!</strong> User with {{email}} already exists.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      <div *ngIf="showSuccessMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Success!</strong> User has been registered.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
     </div>
 
     <div class="col-sm-6">

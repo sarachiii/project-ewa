@@ -54,12 +54,12 @@
                     <label for="profilePictureFile" class="col-form-label fw-bold">Select a local file</label>
                     <div class="input-group">
                       <input #fileElement type="file" class="form-control" id="profilePictureFile" (change)="onChangeFile($event)">
-                      <button type="button" class="btn btn-primary" (click)="onClear(fileElement)" [disabled]="!file.value">Clear</button>
+                      <button type="button" class="btn btn-primary" (click)="onClear()" [disabled]="!file.value">Clear</button>
                     </div>
                   </div>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-outline-danger fw-bold" data-bs-dismiss="modal" (click)="onClear(fileElement)">Cancel</button>
+                  <button type="button" class="btn btn-outline-danger fw-bold" data-bs-dismiss="modal" (click)="onClear()">Cancel</button>
                   <button type="button" class="btn btn-primary fw-bold" data-bs-dismiss="modal">OK</button>
                 </div>
               </div>

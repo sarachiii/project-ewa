@@ -18,6 +18,7 @@ export class AddUserComponent implements OnInit {
   teams: Team[];
   Role = Role;
   showErrorMessage: boolean = false;
+  showSuccessMessage: boolean = false;
   email: string = "";
 
   constructor(private teamService: TeamService,
@@ -49,10 +50,12 @@ export class AddUserComponent implements OnInit {
   }
 
   onSubmit() {
+    this.showErrorMessage = false;
+    this.showSuccessMessage = false;
     if (this.newUserForm.valid) {
       let newUser: User = Object.assign(new User(), this.newUserForm.value);
       this.userService.saveUser(newUser).toPromise().then(user => {
-        this.showErrorMessage = false;
+        this.showSuccessMessage = true;
       }).catch((reason: HttpResponse<any>) => {
         if (reason.status == HttpStatusCode.Conflict) {
           this.showErrorMessage = true;
