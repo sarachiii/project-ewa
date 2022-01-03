@@ -43,7 +43,7 @@ public class User {
     @PrimaryKeyJoinColumn
     private Preferences preferences;
 
-    @OneToMany(targetEntity = Note.class, mappedBy = "user")
+    @OneToMany(targetEntity = Note.class, mappedBy = "user", cascade = CascadeType.ALL)
     @JsonBackReference(value = "user")
     private List<Note> notes = new ArrayList<>();
 

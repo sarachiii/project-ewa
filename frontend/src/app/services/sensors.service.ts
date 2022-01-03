@@ -9,10 +9,10 @@ import {SensorData} from "../models/sensor-data";
 @Injectable()
 export class SensorsService {
   private readonly resourceUrl: URL;
-  private sensors: Sensor[];
+  private readonly sensors: Sensor[];
 
   constructor(protected http: HttpClient) {
-    this.resourceUrl = new URL(environment.BACKEND_URL);
+    this.resourceUrl = new URL(environment.apiUrl);
     this.sensors = [];
 
     this.getSensors().then((value) => {
@@ -20,7 +20,7 @@ export class SensorsService {
       this.getDesiredValues(2, 9).toPromise().then((sensorData) => {
         for (let sd of sensorData) {
           let sensor: Sensor = this.sensors.find(sensor => sensor.id == sd.sensorId);
-          sensor.desiredValue = sensor.sensorName != Factor.LIGHTING_RGB ? sd["value"] : "#" + sd["value"].toString(16);
+          sensor.desiredValue = sensor.sensorName != Factor.LIGHTING_RGB ? sd.value : sd.getHexColor();
         }
       })
     }).catch(console.error);
