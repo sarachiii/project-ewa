@@ -71,4 +71,37 @@
             </plugin>
         </plugins>
     </build>
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <activatedProperties>dev</activatedProperties>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+                <property>
+                    <name>env.SPRING_PROFILES_ACTIVE</name>
+                    <value>dev</value>
+                </property>
+            </activation>
+        </profile>
+        <profile>
+            <id>staging</id>
+            <properties>
+                <activatedProperties>staging</activatedProperties>
+            </properties>
+            <activation>
+                <property>
+                    <name>env.SPRING_PROFILES_ACTIVE</name>
+                    <value>staging</value>
+                </property>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.postgresql</groupId>
+                    <artifactId>postgresql</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
 </project>
