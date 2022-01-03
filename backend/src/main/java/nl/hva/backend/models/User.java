@@ -12,7 +12,8 @@ import java.util.List;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
+    @SequenceGenerator(name = "seq", sequenceName = "user_id_seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "email", unique = true)
@@ -47,7 +48,7 @@ public class User {
     @JsonBackReference(value = "user")
     private List<Note> notes = new ArrayList<>();
 
-    @ManyToOne(targetEntity = Team.class)
+    @ManyToOne(targetEntity = Team.class, cascade = CascadeType.ALL)
     @JsonBackReference
     @JoinColumn(name = "team_id", insertable = false, updatable = false)
     private Team team;
@@ -181,5 +182,9 @@ public class User {
 
     public void setTeamId(Long teamId) {
         this.teamId = teamId;
+    }
+
+    public void setPreferences(Preferences preferences) {
+        this.preferences = preferences;
     }
 }

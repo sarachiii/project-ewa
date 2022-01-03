@@ -77,6 +77,14 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins(allowedOrigins);
     }
 
+    public String getBlobEndpoint() {
+        return this.blobEndpoint;
+    }
+
+    public String getContainerName() {
+        return this.containerName;
+    }
+
     public String getMailHost() {
         return mailHost;
     }

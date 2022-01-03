@@ -14,7 +14,8 @@ import java.time.ZonedDateTime;
 public class Note {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
+    @SequenceGenerator(name = "seq", sequenceName = "note_id_seq", allocationSize = 1)
     @Column(name = "id")
     public int noteId;
     @JsonFormat(shape = JsonFormat.Shape.STRING)
@@ -23,7 +24,7 @@ public class Note {
     @Column(name = "content")
     public String noteText;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     @JsonManagedReference
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)

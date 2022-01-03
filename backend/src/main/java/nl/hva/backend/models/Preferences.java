@@ -23,7 +23,7 @@ public class Preferences {
     @Column(name = "dark_mode")
     private Boolean darkMode;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @MapsId
     @JoinColumn(name = "user_id")
     private User user;
@@ -61,6 +61,11 @@ public class Preferences {
 
     public Preferences(Long userId) {
         this(userId, LanguageCode.en_GB);
+    }
+
+    public Preferences(User user) {
+        this(user.getId());
+        this.user = user;
     }
 
     protected Preferences() {

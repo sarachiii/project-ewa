@@ -13,7 +13,8 @@ import java.util.List;
 public class Greenhouse implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
+    @SequenceGenerator(name = "seq", sequenceName = "greenhouse_id_seq", allocationSize = 1)
     private long id;
 
     @Column(name = "CO2_level")

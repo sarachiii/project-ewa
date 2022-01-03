@@ -36,6 +36,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.sensorsData = new Map<string, (string | number)[]>();
     this.page = 0;
     this.pageCount = 0;
+    this.timerSubscription = new Subscription();
   }
 
   ngOnInit(): void {
