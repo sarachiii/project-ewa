@@ -74,13 +74,12 @@ public class UserController {
         }
 
         // Generate random password
-        if (user.getPassword() ==  null || user.getPassword().isBlank()) {
+        if (user.getPassword() == null || user.getPassword().isBlank()) {
             user.setPassword(userService.generateRandomPassword());
         }
 
         HashMap<String, String> mail = userService.generateMail(user);
 
-        // TODO: Hash password
         user.setPassword(this.userService.encode(user.getPassword()));
 
         User savedUser = this.userRepository.save(user);
@@ -127,12 +126,8 @@ public class UserController {
                                               @RequestPart @Valid AccountForm accountForm,
                                               @RequestParam(required = false) MultipartFile file) throws IOException {
         User user = this.userRepository.findUserById(id);
-        // TODO: Hash password
-        /*if (!this.userService.matches(accountForm.getPassword(), user.getPassword())) {
-            throw new BadRequestException("Password is wrong");
-        }*/
 
-        if (!user.getPassword().equals(accountForm.getPassword())) {
+        if (!this.userService.matches(accountForm.getPassword(), user.getPassword())) {
             throw new BadRequestException("Password is wrong");
         }
 
@@ -143,9 +138,8 @@ public class UserController {
 
         // Change password if new password is supplied
         if (!accountForm.getNewPasswordForm().getPassword().isBlank()) {
-            user.setPassword(accountForm.getNewPasswordForm().getPassword());
-            // TODO: Hash password
-            //user.setPassword(this.userService.encode(accountForm.getNewPasswordForm().getPassword()));
+            String hashedPassword = this.userService.encode(accountForm.getNewPasswordForm().getPassword());
+            user.setPassword(hashedPassword);
         }
 
         // Delete profile picture
@@ -182,10 +176,8 @@ public class UserController {
         if (user == null) {
             throw new ResourceNotFound("username does not exist");
         }
-        // TODO: Hash password
-        // return this.userService.matches(login.getPassword(), user.getPassword()) ? user.getId() : null;
 
-        return login.getPassword().equals(user.getPassword()) ? user.getId() : null;
+        return this.userService.matches(login.getPassword(), user.getPassword()) ? user.getId() : null;
     }
 
 }

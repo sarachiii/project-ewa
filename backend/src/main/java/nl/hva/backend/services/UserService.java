@@ -3,6 +3,7 @@ package nl.hva.backend.services;
 import net.bytebuddy.utility.RandomString;
 import nl.hva.backend.models.User;
 import nl.hva.backend.rest.exception.InternalServerErrorException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.codec.Hex;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ public class UserService {
     private static final Random RANDOM = new Random();
     private static final int UPPERBOUND_INCREMENT = 1;
     private static final String SHA_256 = "SHA-256";
+    private static final BCryptPasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
     public HashMap<String, String> generateMail(User user){
         return generateMail(user, DEFAULT_SUBJECT);
@@ -55,29 +57,13 @@ public class UserService {
     }
 
     public String encode(String password) throws InternalServerErrorException {
-        SecureRandom secureRandom = new SecureRandom();
-        byte[] salt = new byte[16];
-        secureRandom.nextBytes(salt);
-
-        // TODO: When JWT added change to SignatureAlgorithm.HS512.getJcaName() or something similar
-        MessageDigest md;
-        try {
-            md = MessageDigest.getInstance(SHA_256);
-        } catch (NoSuchAlgorithmException e) {
-            throw new InternalServerErrorException("Password hashing algorithm is invalid");
-        }
-        md.update(salt);
-        byte[] hash = md.digest(password.getBytes(StandardCharsets.UTF_8));
-
-        return new String(Hex.encode(hash));
+        // Return encoded password
+        return PASSWORD_ENCODER.encode(password);
     }
 
     public boolean matches(String password, String hashedPassword) {
-        // Encode the new password
-        password = encode(password);
-
-        // Check if the hashed passwords are the same
-        return hashedPassword.equals(password);
+        // Check if the passwords match
+        return PASSWORD_ENCODER.matches(password, hashedPassword);
     }
 
 }

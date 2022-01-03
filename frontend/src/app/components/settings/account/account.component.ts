@@ -95,7 +95,7 @@ export class AccountComponent implements OnInit, OnDestroy {
   onClear() {
     this.file.reset('');
     this.preview = '';
-    this.fileElement.nativeElement.value = '';
+    if (this.fileElement) this.fileElement.nativeElement.value = '';
   }
 
   onReset() {
