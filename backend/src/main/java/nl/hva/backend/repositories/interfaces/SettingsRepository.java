@@ -10,4 +10,5 @@ import nl.hva.backend.models.Preferences;
 public interface SettingsRepository {
     Preferences findById(Long id);
     Preferences update(Preferences preferences);
+    Preferences save(Preferences preferences);
 }

@@ -25,7 +25,7 @@ public class Preferences {
 
     @OneToOne
     @MapsId
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User user;
 
     public enum LanguageCode {
@@ -61,6 +61,11 @@ public class Preferences {
 
     public Preferences(Long userId) {
         this(userId, LanguageCode.en_GB);
+    }
+
+    public Preferences(User user) {
+        this(user.getId());
+        this.user = user;
     }
 
     protected Preferences() {

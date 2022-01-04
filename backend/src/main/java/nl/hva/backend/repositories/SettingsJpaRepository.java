@@ -29,4 +29,9 @@ public class SettingsJpaRepository implements SettingsRepository {
     public Preferences update(Preferences preferences) {
         return entityManager.merge(preferences);
     }
+
+    @Override
+    public Preferences save(Preferences preferences) {
+        return entityManager.merge(preferences);
+    }
 }

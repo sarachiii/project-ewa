@@ -1,7 +1,9 @@
 package nl.hva.backend.rest;
 
+import nl.hva.backend.models.Preferences;
 import nl.hva.backend.models.forms.AccountForm;
 import nl.hva.backend.models.forms.Login;
+import nl.hva.backend.repositories.interfaces.SettingsRepository;
 import nl.hva.backend.rest.exception.*;
 import nl.hva.backend.services.EmailService;
 import nl.hva.backend.services.FileService;
@@ -24,13 +26,15 @@ import java.util.*;
 @RestController
 public class UserController {
 
-    private static final String DEFAULT_IMAGE_NAME = "image";
     private static final List<String> IMAGE_MEDIA_TYPES = new ArrayList<>(
             Arrays.asList(MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE)
     );
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private SettingsRepository settingsRepository;
 
     @Autowired
     private UserService userService;
@@ -82,8 +86,9 @@ public class UserController {
 
         user.setPassword(this.userService.encode(user.getPassword()));
 
+        user.setPreferences(new Preferences(user));
+
         User savedUser = this.userRepository.save(user);
-        this.userRepository.flush();
 
         emailService.sendMimeMessage(mail.get("recipient"), mail.get("subject"), mail.get("body"));
 
@@ -99,6 +104,7 @@ public class UserController {
     public ResponseEntity<Boolean> deleteUser(@PathVariable Long id) {
         if (this.userRepository.existsById(id)) {
             this.userRepository.deleteById(id);
+            this.fileService.delete(String.format("users/%d/avatar/%s", id, FileService.DEFAULT_IMAGE_NAME));
             return ResponseEntity.ok(true);
         } else {
             throw new ResourceNotFound("no user with this id exist to be deleted");
@@ -142,6 +148,11 @@ public class UserController {
             user.setPassword(hashedPassword);
         }
 
+        // If the user somehow has empty string or whitespace as profile picture
+        if (user.getProfilePicture().isBlank()) {
+            user.setProfilePicture(null);
+        }
+
         // Delete profile picture
         if (user.getProfilePicture() != null && accountForm.getDeleteProfilePicture()) {
             fileService.delete(user.getProfilePicture());
@@ -159,7 +170,7 @@ public class UserController {
 
             if (user.getProfilePicture() != null) fileService.delete(user.getProfilePicture());
 
-            String filePrefix = String.format("users/%d/avatar/%s", id, DEFAULT_IMAGE_NAME);
+            String filePrefix = String.format("users/%d/avatar", id);
             String fileUrl = fileService.upload(file, filePrefix);
             user.setProfilePicture(fileUrl);
         }

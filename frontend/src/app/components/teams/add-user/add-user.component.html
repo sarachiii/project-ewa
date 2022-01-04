@@ -13,24 +13,37 @@
     </div>
 
     <div class="col-sm-6">
-      <label class="form-label fw-bold" for="firstName">First name:</label>
-      <input class="form-control py-2 mb-3" formControlName="firstName" type="text" id="firstName"
-             name="firstName" placeholder="Enter a first name here">
-      <label class="form-label fw-bold" for="lastName">Last name:</label>
-      <input class="form-control py-2 mb-3" formControlName="lastName" type="text" id="lastName"
-             name="lastName" placeholder="Enter a last name here">
+      <div class="mb-3">
+        <label class="form-label fw-bold" for="firstName">First name:</label>
+        <input class="form-control py-2" [ngClass]="{'is-invalid': firstName.invalid && firstName.dirty}"
+               formControlName="firstName" type="text" id="firstName"
+               name="firstName" placeholder="Enter a first name here">
+        <div class="invalid-feedback">
+          <span>First name is required!</span>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-bold" for="lastName">Last name:</label>
+        <input class="form-control py-2" [ngClass]="{'is-invalid': lastName.invalid && lastName.dirty}"
+               formControlName="lastName" type="text" id="lastName"
+               name="lastName" placeholder="Enter a last name here">
+        <div class="invalid-feedback">
+          <span>Last name is required!</span>
+        </div>
+      </div>
       <div class="mb-3">
         <label class="form-label fw-bold" for="email">Email:</label>
-        <input class="form-control py-2" [ngClass]="{'is-invalid':emailAddress.errors?.email}"
+        <input class="form-control py-2" [ngClass]="{'is-invalid': emailAddress.invalid && emailAddress.dirty}"
                formControlName="emailAddress" type="email" id="email"
                name="email" placeholder="email@example.com">
         <div class="invalid-feedback">
-          <span>Please enter a valid email</span>
+          <span *ngIf="emailAddress.errors?.required">Email address is required!</span>
+          <span *ngIf="emailAddress.errors?.email">Please enter a valid email!</span>
         </div>
       </div>
       <div class="mb-3">
         <label class="form-label fw-bold" for="password">Temporary password:</label>
-        <input class="form-control py-2" [ngClass]="{'is-invalid':password.invalid && password.value}"
+        <input class="form-control py-2" [ngClass]="{'is-invalid': password.invalid && password.value}"
                formControlName="password" autocomplete="new-password" type="password"
                id="password"
                name="password" placeholder="Enter a password here">
@@ -49,26 +62,40 @@
       </div>
     </div>
     <div class="col-sm-6">
-      <label for="role" class="form-label fw-bold">Role</label>
-      <select formControlName="role" id="role" class="form-select py-2 mb-3">
-        <option *ngFor="let role of Role.values().reverse()" [value]="role">{{role}}</option>
-      </select>
-      <label for="specialtyPicker" class="form-label fw-bold">Specialty</label>
-      <select formControlName="specialty" id="specialtyPicker" class="form-select py-2 mb-3">
-        <option disabled hidden>Choose a specialty</option>
-        <option value="Agronomy">Agronomy</option>
-        <option value="Botany">Botany</option>
-        <option value="Geology">Geology</option>
-        <option value="Hydrology">Hydrology</option>
-        <option value="Climate-Science">Climate Science</option>
-      </select>
-      <label for="team" class="form-label fw-bold">Team</label>
-      <select formControlName="teamId" id="team" class="form-select py-2 mb-3">
-        <option disabled hidden>Choose a team</option>
-        <ng-container *ngFor="let team of teams">
-          <option [value]="team.id">Team {{team.id}}</option>
-        </ng-container>
-      </select>
+      <div class="mb-3">
+        <label for="role" class="form-label fw-bold">Role</label>
+        <select formControlName="role" id="role" class="form-control form-select py-2" [ngClass]="{'is-invalid': role.invalid && role.dirty}">
+          <option disabled hidden value="">Choose a role</option>
+          <ng-container *ngFor="let role of Role.values().reverse()">
+            <option *ngIf="(role == Role.SUPER_ADMIN || role == Role.ADMIN) && user.role == Role.SUPER_ADMIN || role == Role.MEMBER" [value]="role">{{role}}</option>
+          </ng-container>
+        </select>
+        <div class="invalid-feedback">
+          <span>Please select a role!</span>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="specialtyPicker" class="form-label fw-bold">Specialty</label>
+        <select formControlName="specialty" id="specialtyPicker" class="form-control form-select py-2" [ngClass]="{'is-invalid': specialty.invalid && specialty.dirty}">
+          <option disabled hidden value="">Choose a specialty</option>
+          <option *ngFor="let s of specialties">{{s.replace("-"," ")}}</option>
+        </select>
+        <div class="invalid-feedback">
+          <span>Please select a specialty!</span>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="team" class="form-label fw-bold">Team</label>
+        <select formControlName="teamId" id="team" class="form-control form-select py-2" [ngClass]="{'is-invalid': teamId.invalid && teamId.dirty}">
+          <option disabled hidden value="">Choose a team</option>
+          <ng-container *ngFor="let id of teamIds">
+            <option *ngIf="user.role == Role.ADMIN && user.teamId.toString() == id" [value]="id">Team {{id}}</option>
+          </ng-container>
+        </select>
+        <div class="invalid-feedback">
+          <span>Please select a team!</span>
+        </div>
+      </div>
     </div>
   </div>
   <div class="row">
