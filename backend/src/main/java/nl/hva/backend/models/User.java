@@ -12,8 +12,7 @@ import java.util.List;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
-    @SequenceGenerator(name = "seq", sequenceName = "user_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "email", unique = true)
@@ -48,7 +47,7 @@ public class User {
     @JsonBackReference(value = "user")
     private List<Note> notes = new ArrayList<>();
 
-    @ManyToOne(targetEntity = Team.class, cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = Team.class)
     @JsonBackReference
     @JoinColumn(name = "team_id", insertable = false, updatable = false)
     private Team team;

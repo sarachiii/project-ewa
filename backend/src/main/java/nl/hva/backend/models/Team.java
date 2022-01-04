@@ -12,13 +12,12 @@ import java.util.List;
 })
 public class Team {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
-    @SequenceGenerator(name = "seq", sequenceName = "team_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "gh_id")
     private Long ghId;
 
-    @OneToMany(mappedBy = "team", targetEntity = User.class, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "team", targetEntity = User.class, cascade = CascadeType.REMOVE)
     private List<User> users = new ArrayList<>();
 
     public Team(Long ghId) {

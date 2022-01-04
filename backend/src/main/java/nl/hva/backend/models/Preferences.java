@@ -23,9 +23,9 @@ public class Preferences {
     @Column(name = "dark_mode")
     private Boolean darkMode;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @MapsId
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User user;
 
     public enum LanguageCode {
