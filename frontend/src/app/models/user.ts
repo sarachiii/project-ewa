@@ -1,5 +1,5 @@
 import { Preferences } from "./preferences";
-import {EField} from "./field";
+import {Specialty} from "./specialty";
 import {environment} from "../../environments/environment";
 
 export enum Role {
@@ -42,7 +42,7 @@ export class User {
     this.id = userId || 0;
     this.teamId = teamId || 0;
     this.role = role || Role.MEMBER;
-    this.specialty = specialty || EField.UNKNOWN;
+    this.specialty = specialty || "";
     this.firstName = firstName || "";
     this.lastName = lastName || "";
     this.emailAddress = emailAddress || "";
@@ -56,15 +56,15 @@ export class User {
 
   get specialist(): string {
     switch (this.specialty) {
-      case EField.AGRONOMY:
+      case Specialty.AGRONOMY:
         return "Agronomist";
-      case EField.BOTANY:
+      case Specialty.BOTANY:
         return "Botanist";
-      case EField.GEOLOGY:
+      case Specialty.GEOLOGY:
         return "Geologist";
-      case EField.HYDROLOGY:
+      case Specialty.HYDROLOGY:
         return "Hydrologist";
-      case EField.CLIMATE_SCIENCE:
+      case Specialty.CLIMATE_SCIENCE:
         return "Climatologist";
       default:
         return "";
