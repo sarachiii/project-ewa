@@ -81,12 +81,12 @@ public class HistoryController {
         }
 
         // Get the total count of entities in database
-        long count = gh != null ? historyRepository.countAll() : historyRepository.countByGreenHouseId(id);
+        long count = gh == null ? historyRepository.countAll() : historyRepository.countByGreenHouseId(id);
 
         int pageCount = (int) (count / lim);
         if (p > pageCount) p = pageCount;
 
-        List<History> history = gh != null ? historyRepository.findAll(p, lim) : historyRepository.findByGreenHouseId(id, p, lim);
+        List<History> history = gh == null ? historyRepository.findAll(p, lim) : historyRepository.findByGreenHouseId(id, p, lim);
 
         responseNode.put("pageCount", pageCount);
         // Cast to ArrayNode because addAll is ambiguous
@@ -103,23 +103,19 @@ public class HistoryController {
     }
 
     @GetMapping("simulator")
-    public ResponseEntity<JsonNode> getHistoryFromSimulator(@RequestParam(required = false) String gh) throws IOException {
+    public ResponseEntity<JsonNode> getHistoryFromSimulator(@RequestParam(required = false) String gh) {
         ResponseEntity<JsonNode> response;
-/*        JsonNode jsonNode;
-        ObjectMapper objectMapper = new ObjectMapper();
-        ObjectReader objectReader = new ObjectReader();*/
-        /*"http://sneltec.com/hva/v2.php?gh_id=" + gh
-         * */
+
         int greenHouseId;
 
         if (gh == null) {
-            throw new BadRequestException("Enter the greenHousId (gr=)");
+            throw new BadRequestException("Missing required parameter gh value");
         }
 
         try {
             greenHouseId = Integer.parseInt(gh);
         } catch (NumberFormatException exception) {
-            throw new PreConditionFailed("Enter a number value pleeeeeeeeeeeeeeeeeas!");
+            throw new PreConditionFailed("Parameter gh value is not a number");
         }
 
         response = ccuApiClient.get()
@@ -127,34 +123,11 @@ public class HistoryController {
                         .queryParam("gh_id", String.valueOf(greenHouseId)).build())
                 .retrieve().toEntity(JsonNode.class).block();
 
-//        ResponseEntity<JsonNode> jsonpObject = response;
         if (response == null) {
-            throw new ResourceNotFound("notfound");
+            throw new ResourceNotFound("Not Found");
         }
-/*
-        System.out.println("AAAAAAA" + response.getBody());
-*/
-        /*        if (gh != -1) {
-            response = webClient.get()
-                    .uri(uriBuilder -> uriBuilder
-                            .queryParam("gh_id", String.valueOf(gh)).build())
-                    .retrieve().toEntity(JsonNode.class).block();
-            jsonNode= response.getBody();
-            objectMapper.readerFor(new TypeReference<List<String>>() {
-            });
-            List<String> list = objectReader.readValue(jsonNode);
 
-
-
-
-            return response;
-        } else {
-            throw new PreConditionFailed();
-        }
-*/
         return response;
-//        List<String> list = objectReader.readValue(jsonNode);
-
     }
 
     /**

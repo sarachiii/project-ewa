@@ -31,9 +31,9 @@ public class NotesController {
     //Add a note
     @PostMapping("add")
     public ResponseEntity<Note> saveNote(@RequestBody Note note) {
-        if (note.noteText.length() <= 0 && note.title.length() <= 0) {
+        if (note.getNoteText().length() <= 0 && note.getTitle().length() <= 0) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        } else if (note.noteText.length() <= 500 && note.title.length() <= 50) {
+        } else if (note.getNoteText().length() <= 500 && note.getTitle().length() <= 50) {
             Note savedNote = notesRepository.insertOrUpdateNote(note);
             return ResponseEntity.ok().body(savedNote);
         } else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -47,15 +47,4 @@ public class NotesController {
         response.put("message", "Note with id " + id + " was deleted.");
         return ResponseEntity.ok(response);
     }
-
-//    GET one note by id
-//    @GetMapping("{id}")
-//    public Note getNoteById(@PathVariable int id) {
-//        Note note = notesRepository.findNoteById(id);
-//
-//        if (note == null)
-//            throw new ResourceNotFoundException("id-" + id);
-//
-//        return note;
-//    }
 }

@@ -78,7 +78,7 @@
         <label for="specialtyPicker" class="form-label fw-bold">Specialty</label>
         <select formControlName="specialty" id="specialtyPicker" class="form-control form-select py-2" [ngClass]="{'is-invalid': specialty.invalid && specialty.dirty}">
           <option disabled hidden value="">Choose a specialty</option>
-          <option *ngFor="let s of specialties">{{s.replace("-"," ")}}</option>
+          <option *ngFor="let s of specialties" [value]="s">{{s.replace("-"," ")}}</option>
         </select>
         <div class="invalid-feedback">
           <span>Please select a specialty!</span>
@@ -89,7 +89,7 @@
         <select formControlName="teamId" id="team" class="form-control form-select py-2" [ngClass]="{'is-invalid': teamId.invalid && teamId.dirty}">
           <option disabled hidden value="">Choose a team</option>
           <ng-container *ngFor="let id of teamIds">
-            <option *ngIf="user.role == Role.ADMIN && user.teamId.toString() == id" [value]="id">Team {{id}}</option>
+            <option *ngIf="user.role == Role.ADMIN && user.teamId.toString() == id || user.role == Role.SUPER_ADMIN" [value]="id">Team {{id}}</option>
           </ng-container>
         </select>
         <div class="invalid-feedback">

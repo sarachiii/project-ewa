@@ -68,6 +68,6 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.sensorsData.set(sensor.name, pagedHistory.history.map(h => h[sensor.nameCamelCase]));
         }
       }).catch(console.error);
-    })
+    });
   }
 }

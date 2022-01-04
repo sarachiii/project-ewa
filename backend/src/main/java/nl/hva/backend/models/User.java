@@ -90,18 +90,8 @@ public class User {
         }
     }
 
-    public User() {
-    }
-
-    public User(String emailAddress, String password) {
-        this();
-        this.emailAddress = emailAddress;
-        this.password = password;
-    }
-
     public User(String emailAddress, String firstName, String lastName, String password,
                 Specialty specialty, String profilePicture, Long teamId) {
-        this();
         this.emailAddress = emailAddress;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -109,6 +99,14 @@ public class User {
         this.specialty = specialty;
         this.profilePicture = profilePicture;
         this.teamId = teamId;
+    }
+
+    public User(String emailAddress, String password) {
+        this(emailAddress, "", "", password, null, null, 0L);
+    }
+
+    public User() {
+        this("", "");
     }
 
     public Long getId() {
