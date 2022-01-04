@@ -1,36 +1,34 @@
 package nl.hva.backend.models.forms;
 
-import com.fasterxml.jackson.annotation.JsonView;
-
 /**
  * Doel:
  *
  * @author Mohamad Hassan
  */
 public class Login {
-    private String username;
+    private String email;
     private String password;
 
     public Login() {
 
     }
 
-    public Login(String username, String password) {
+    public Login(String email, String password) {
         this();
-        this.username = username;
+        this.email = email;
         this.password = password;
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setPassword(String password) {

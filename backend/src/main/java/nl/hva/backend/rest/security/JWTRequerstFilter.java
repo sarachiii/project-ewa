@@ -27,7 +27,7 @@ public class JWTRequerstFilter extends OncePerRequestFilter {
     private JWTokenUtils tokenUtils;
 
     private static final Set<String> SECURED_PATHS =
-            Set.of("/sensors", "/notes", "/users", "/teams");
+            Set.of("/sensors", "/notes"/*, "/users"*/, "/teams");
 
 
     @Override

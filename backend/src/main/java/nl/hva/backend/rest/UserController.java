@@ -55,9 +55,9 @@ public class UserController {
         return user;
     }
 
-    @GetMapping(value = "users", params = "username")
-    public User getUserByUsername(@RequestParam String username) {
-        User user = this.userRepository.findByEmailAddress(username);
+    @GetMapping(value = "users", params = "email")
+    public User getUserByEmail(@RequestParam String email) {
+        User user = this.userRepository.findByEmailAddress(email);
         if (user == null) {
             throw new ResourceNotFound("username does not exist");
         }
@@ -171,7 +171,7 @@ public class UserController {
 
     @PostMapping("login")
     public Long authenticateLogin(@RequestBody Login login) {
-        User user = this.userRepository.findByEmailAddress(login.getUsername());
+        User user = this.userRepository.findByEmailAddress(login.getEmail());
 
         if (user == null) {
             throw new ResourceNotFound("username does not exist");
