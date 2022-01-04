@@ -47,7 +47,7 @@ export class User {
     this.lastName = lastName || "";
     this.emailAddress = emailAddress || "";
     this.password = password || "";
-    this.profilePicture = profilePicture || "";
+    this.profilePicture = profilePicture || null;
   }
 
   get fullName(): string {
