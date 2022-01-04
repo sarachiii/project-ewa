@@ -29,7 +29,7 @@ export class MembersComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.teamService.getTeamById(this.selectedTeamId).pipe(first()).subscribe(value => {
+    this.teamService.getMembersByTeamId(this.selectedTeamId).pipe(first()).subscribe(value => {
       this.team = value.map(u => Object.assign(new User(), u));
     });
     this.editTeam = false;

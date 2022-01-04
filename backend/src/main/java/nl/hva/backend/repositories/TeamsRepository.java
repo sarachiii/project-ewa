@@ -1,6 +1,5 @@
 package nl.hva.backend.repositories;
 
-import nl.hva.backend.models.Note;
 import nl.hva.backend.models.Team;
 import org.springframework.stereotype.Repository;
 
@@ -25,6 +24,10 @@ public class TeamsRepository {
     //Saves a new team
     public Team save(Team team) {
         return entityManager.merge(team);
+    }
+
+    public Team findById(Long id){
+        return entityManager.find(Team.class,id);
     }
 
     public Team findGreenHouseByTeamId(long id) {

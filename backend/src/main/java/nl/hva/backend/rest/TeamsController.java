@@ -4,7 +4,7 @@ import nl.hva.backend.models.Team;
 import nl.hva.backend.models.User;
 import nl.hva.backend.repositories.TeamsRepository;
 import nl.hva.backend.repositories.UserRepository;
-import nl.hva.backend.rest.exception.AlreadyExist;
+import nl.hva.backend.rest.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,17 +28,35 @@ public class TeamsController {
         return this.teamsRepository.findAll();
     }
 
-    //Get all members from teams based on teamId
+    //Get a team by the teamId
     @GetMapping("{id}")
-    public List<User> getAllUsers(@PathVariable long id) {
+    @ResponseBody
+    public Team getTeamById(@PathVariable long id) {
 
+        Team team = teamsRepository.findById(id);
+
+        if (team == null)
+            throw new ResourceNotFoundException("id-" + id);
+
+        return team;
+    }
+
+    //Get all members from a team based on the teamId
+    @GetMapping("/{id}/users")
+    public List<User> getAllUsers(@PathVariable long id) {
         return this.userRepository.findUsersByTeamId(id);
     }
 
     @PostMapping()
     public ResponseEntity<Team> createTeam(@RequestBody Team t) {
         Team savedTeam = this.teamsRepository.save(t);
-        return ResponseEntity.ok().body(savedTeam);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("{id}")
+                .buildAndExpand(savedTeam.getId()).toUri();
+
+        return ResponseEntity.created(location).body(savedTeam);
     }
 
     //Get greenhouse from teams based on teamId
