@@ -188,7 +188,7 @@ public class HistoryController {
                     responseNode.get("CO2_level").asDouble()
             );
 
-            this.postData(history);
+//            this.postData(history);
         }
 
     }
