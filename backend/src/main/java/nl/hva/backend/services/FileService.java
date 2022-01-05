@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * This class <description of functionality>
@@ -19,8 +20,6 @@ import java.util.Objects;
  */
 @Service
 public class FileService {
-
-    public static final String DEFAULT_IMAGE_NAME = "image";
 
     @Autowired
     private BlobClientBuilder blobClientBuilder;
@@ -31,7 +30,7 @@ public class FileService {
     public String upload(MultipartFile file, String filePrefix) throws IOException, NullPointerException {
         if (file == null || file.getSize() == 0) return null;
 
-        String filename = String.format("%s/%s", filePrefix, DEFAULT_IMAGE_NAME);
+        String filename = String.format("%s/%s.%s", filePrefix, UUID.randomUUID(), getFileExtension(file.getOriginalFilename()));
         BlobAsyncClient blobClient = blobClientBuilder.blobName(filename).buildAsyncClient();
 
         blobClient.uploadWithResponse(new BlobParallelUploadOptions(file.getInputStream())).block();

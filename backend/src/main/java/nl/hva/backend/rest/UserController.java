@@ -34,9 +34,6 @@ public class UserController {
     private UserRepository userRepository;
 
     @Autowired
-    private SettingsRepository settingsRepository;
-
-    @Autowired
     private UserService userService;
 
     @Autowired
@@ -103,8 +100,8 @@ public class UserController {
     @DeleteMapping("users/{id}")
     public ResponseEntity<Boolean> deleteUser(@PathVariable Long id) {
         if (this.userRepository.existsById(id)) {
+            this.fileService.delete(this.userRepository.findUserById(id).getProfilePicture());
             this.userRepository.deleteById(id);
-            this.fileService.delete(String.format("users/%d/avatar/%s", id, FileService.DEFAULT_IMAGE_NAME));
             return ResponseEntity.ok(true);
         } else {
             throw new ResourceNotFound("no user with this id exist to be deleted");
@@ -149,7 +146,7 @@ public class UserController {
         }
 
         // If the user somehow has empty string or whitespace as profile picture
-        if (user.getProfilePicture().isBlank()) {
+        if (user.getProfilePicture() != null && user.getProfilePicture().isBlank()) {
             user.setProfilePicture(null);
         }
 
