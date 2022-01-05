@@ -67,11 +67,11 @@ export class NotesService {
   }
 
   restPostNote(note): Observable<Note> {
-    return this.http.post<Note>(this.resourceUrl + "/add", note);
+    return this.http.post<Note>(this.resourceUrl, note);
   }
 
   deleteNote(noteId): void {
-    this.http.delete<Note>(`${this.resourceUrl}/delete/${noteId}`).subscribe(() => {
+    this.http.delete<Note>(`${this.resourceUrl}/${noteId}`).subscribe(() => {
       let notes = this._notes$.getValue();
       let noteIndex = notes.findIndex(n => n.noteId == noteId);
       if (noteIndex > -1) notes.splice(noteIndex, 1);

@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("notes")
-public class NotesController {
+public class    NotesController {
 
     @Autowired
     private NotesRepository notesRepository;
@@ -29,7 +29,7 @@ public class NotesController {
     }
 
     //Add a note
-    @PostMapping("add")
+    @PostMapping()
     public ResponseEntity<Note> saveNote(@RequestBody Note note) {
         if (note.getNoteText().length() <= 0 && note.getTitle().length() <= 0) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -40,7 +40,7 @@ public class NotesController {
     }
 
     //Delete a note by id from the note list
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("{id}")
     public ResponseEntity<ObjectNode> deleteNoteById(@PathVariable int id) {
         if (!notesRepository.deleteNoteById(id)) throw new ResourceNotFound("id-" + id);
         ObjectNode response = mapper.createObjectNode();

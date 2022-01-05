@@ -99,5 +99,12 @@ public class SensorRepository {
         }
         return savedSensorData;
     }
+
+    //Deletes a sensor
+    public void deleteById(long id) {
+        this.entityManager.createNamedQuery("Sensor.deleteById")
+                .setParameter("id", id)
+                .executeUpdate();
+    }
 }
 

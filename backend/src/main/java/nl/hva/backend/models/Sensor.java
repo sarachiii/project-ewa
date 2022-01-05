@@ -12,7 +12,8 @@ import java.util.List;
 @Entity
 @NamedQueries({
         @NamedQuery(name = "Sensor.findAll", query = "SELECT s FROM Sensor s"),
-        @NamedQuery(name = "Sensor.findByName", query = "SELECT s FROM Sensor s WHERE s.name = :name")
+        @NamedQuery(name = "Sensor.findByName", query = "SELECT s FROM Sensor s WHERE s.name = :name"),
+        @NamedQuery(name = "Sensor.deleteById", query = "DELETE FROM Sensor s WHERE s.id = :id")
 })
 public class Sensor {
 
