@@ -19,7 +19,7 @@
         <input type="text" id="login" class="fadeIn second" name="login" placeholder="login" [(ngModel)]="username">
 
         <input type="password" id="password" class="fadeIn third" name="login" placeholder="password" [(ngModel)]="password">
-        <input type="submit" class="fadeIn fourth" value="Log In" (click)="checkLogin()">
+        <input type="submit" class="fadeIn fourth" value="Log In" (click)="checkLoginToken()">
         <br>
         <input type="checkbox" id="rememberMe" value="Log In" (change)="onRemember($event)">
         <label for="rememberMe">Remember Me</label>
