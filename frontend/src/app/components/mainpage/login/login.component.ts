@@ -4,6 +4,7 @@ import {AuthenticationService} from "../../../services/authentication.service";
 import {HttpClient} from "@angular/common/http";
 import {WebStorageService} from "../../../services/storage/web-storage.service";
 import {UserService} from "../../../services/user.service";
+import {User} from "../../../models/user";
 
 @Component({
   selector: 'app-login',
@@ -16,9 +17,11 @@ export class LoginComponent implements OnInit {
   loginErrorMessage= "";
   invalidLogin= false;
 
+  user = new User();
+
   constructor(
     protected router : Router,
-    protected authentocationService :AuthenticationService,
+    public authentocationService :AuthenticationService,
     protected webStorageService: WebStorageService,
     protected userService: UserService,
     protected http :HttpClient) { }
@@ -26,8 +29,9 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
+
   async checkLogin(){
-    const check = await this.authentocationService.authenticate(this.username,this.password).then(data=>{
+    const check = this.authentocationService.authenticate(this.username,this.password).then(data=>{
 
       console.log(data)
       if (data) {
@@ -44,17 +48,24 @@ export class LoginComponent implements OnInit {
       }
     });
 
+  }
+  checkLoginToken(){
 
-    // console.log(c)
-    // this.http.post<any>(environment.hostUrl+"/login",{username:this.username,password:this.password}).subscribe((data)=>{
-    //   console.log(data)
-    // })
-    // if(this.authentocationService.authenticate(this.username,this.password)){
-    //   this.router.navigate(['home']);
-    //   this.invalidLogin= false
-    // }else {
-    //   this.invalidLogin= true;
-    // }
+    this.authentocationService.authenticateToken(this.username,this.password).subscribe(data=>{
+
+      if (data) {
+        this.loginErrorMessage= "";
+        this.userService.updateLoggedUser(data['body']['id']);
+        this.webStorageService.set('userId', data['body']['id']);
+        this.router.navigate(['home']);
+        this.invalidLogin = false;
+      } else if (data === undefined) {
+        this.loginErrorMessage="No account with this username!"
+      } else {
+        this.loginErrorMessage = "The password and the username does not match!"
+        this.invalidLogin = true
+      }
+    });
 
   }
 
