@@ -14,8 +14,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 public class TestTeamsRepository {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
-
     @Autowired
     private TeamsRepository repository;
 
@@ -23,10 +21,10 @@ public class TestTeamsRepository {
     /**
      * @author Sarah
      */
-    void testFindTeams() {
+    void testFindTeamById() {
         Team t = repository.findById(1L);
-        assertEquals(1L, t.getId());
-        assertEquals(2L, t.getGhId());
+        assertEquals(1L, t.getId()); //team id should equal 1
+        assertEquals(2L, t.getGhId()); //greenhouse id (ghId) should equal 2
     }
 
     @Test
