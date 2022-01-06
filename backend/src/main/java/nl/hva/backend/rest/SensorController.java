@@ -101,8 +101,7 @@ public class SensorController {
             SensorData sd = new SensorData(
                     ZonedDateTime.parse(sensorNode.get("date_time").asText()),
                     sensorNode.get("gh_id").asLong(), sensor.getId(),
-                    value,
-                    sensorNode.get("user_id").asLong());
+                    value);
             sensorData.add(sd);
         }
 
@@ -146,9 +145,8 @@ public class SensorController {
                     sensor.getId(),
                     sensor.getName().equals(Sensor.Name.LIGHTING_RGB.toString()) ?
                             SensorData.fromHexColor(sensorNode.get(sensor.getName()).asText()) :
-                            sensorNode.get(sensor.getName()).asDouble(),
-                    sensorNode.get("user_id").asLong()
-            );
+                            sensorNode.get(sensor.getName()).asDouble()
+                    );
 
             sensorData.add(sd);
         }
@@ -169,11 +167,5 @@ public class SensorController {
     public ResponseEntity<Sensor> saveSensor(@RequestBody Sensor sensor) {
         Sensor savedSensor = sensorRepository.save(sensor);
         return ResponseEntity.ok().body(savedSensor);
-    }
-
-    @DeleteMapping("{id}")
-    public ResponseEntity<Boolean> deleteSensor(@PathVariable long id) {
-        this.sensorRepository.deleteById(id);
-        return ResponseEntity.ok(true);
     }
 }
