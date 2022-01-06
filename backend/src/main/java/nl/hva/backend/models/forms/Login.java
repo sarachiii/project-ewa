@@ -34,4 +34,9 @@ public class Login {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    @Override
+    public String toString() {
+        return String.format("this is the email : (%s), and this is the password:(%s) ",this.email,this.password);
+    }
 }

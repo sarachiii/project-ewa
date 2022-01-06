@@ -71,6 +71,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
+                .exposedHeaders("Authorization")
                 .allowedOrigins("http://localhost:4200", "http://localhost:8084", ccuApiUrl);
     }
 

@@ -2,6 +2,7 @@ package nl.hva.backend.rest.security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
+import nl.hva.backend.models.User;
 import nl.hva.backend.rest.exception.UnAuthorizedExeption;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -35,15 +36,15 @@ public class JWTokenUtils {
     @Value("${jwt.refresh-expiration-seconds}")
     private int refreshExpiration;
 
-    public String encode(String userNamer, boolean isAdmin) {
+    public String encode(String email, boolean isAdmin) {
         Key key = getKey(passphrase);
 
         return Jwts.builder()
-                .claim(JWT_EMAIL_CLAIM, userNamer)
+                .claim(JWT_EMAIL_CLAIM, email)
                 .claim(JWT_ADMIN_CLAIM, isAdmin)
                 .setIssuer(issuer)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000))
+                .setExpiration(new Date(System.currentTimeMillis() + expiration * 10000))
                 .signWith(key, SignatureAlgorithm.HS512).compact();
 
     }
@@ -53,7 +54,7 @@ public class JWTokenUtils {
             Jws<Claims> jws = Jwts.parserBuilder()
                     .setSigningKey(passphrase.getBytes())
                     .build()
-                    .parseClaimsJws(token);
+                    .parseClaimsJws(token.replace("bearer",""));
 
             Claims claims = jws.getBody();
 
@@ -65,6 +66,7 @@ public class JWTokenUtils {
 
 
     }
+
     public JWTokenInfo generateTokenInfo(Claims claims) {
 
         JWTokenInfo tokenInfo = new JWTokenInfo();

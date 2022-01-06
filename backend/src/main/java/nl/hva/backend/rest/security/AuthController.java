@@ -1,14 +1,13 @@
 package nl.hva.backend.rest.security;
 
+import com.azure.core.util.Header;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import nl.hva.backend.models.User;
 import nl.hva.backend.repositories.UserRepository;
-import nl.hva.backend.rest.exception.BadGatewayException;
 import nl.hva.backend.rest.exception.BadRequestException;
 import nl.hva.backend.rest.exception.ResourceNotFound;
 import nl.hva.backend.rest.exception.WrongPassword;
 import nl.hva.backend.services.UserService;
-import org.hibernate.jdbc.Work;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +15,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
+import javax.naming.AuthenticationException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Doel:
@@ -41,24 +41,17 @@ public class AuthController {
     @Autowired
     private JWTokenUtils tokenUtils;
 
-    @PostMapping("/login")
-    public ResponseEntity<Object> logInForAuth(@RequestBody ObjectNode LogInForm) throws WrongPassword,
-            ResourceNotFound{
-
-//        String email = LogInForm.get("email") == null  ? null : LogInForm.get("email").asText();
-//        String givenPassword = LogInForm.get("password") == null  ? null : LogInForm.get("password").asText();
+    @PostMapping(path = "login", produces = "application/json")
+    public ResponseEntity<User> logInForAuth(@RequestBody ObjectNode LogInForm,
+                                             HttpServletRequest request,
+                                             HttpServletResponse response) throws WrongPassword, ResourceNotFound{
 
         String email = LogInForm.get("email").asText();
         String password = LogInForm.get("password").asText();
+
+
         User user = userRepo.findByEmailAddress(email);
-        System.out.println(user);
-/*
-        User user = new User();
-        user.setEmailAddress(email);
-        user.set(name);
-        user.setEncodedPassword(encoder.encode(givenPassword));
-        user.setAdmin(true);
-*/
+
         if (email == null || password == null){
             throw new BadRequestException("Enter the email and the password ");
         }
@@ -70,17 +63,38 @@ public class AuthController {
             throw new WrongPassword("Wrong password, try another password");
         }
 
-        String tokenString = tokenGenerator.encode(user.getEmailAddress(), user.isAdmin());
+        String tokenString = tokenUtils.encode(user.getEmailAddress(), user.isAdmin());
 
-/*        URI location = ServletUriComponentsBuilder.
-                fromCurrentRequest().path("/{id}").
-                buildAndExpand(user.getEmailAddress()).toUri();*/
-
-//        return ResponseEntity.created(location).build();
         return ResponseEntity.accepted()
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenString)
+                .header(HttpHeaders.AUTHORIZATION,"bearer " + tokenString)
                 .body(user);
 
+    }
+
+    @PostMapping(path = "refresh-token", produces = "application/json")
+    public ResponseEntity refreshToken(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+        String encodedToken = request.getHeader(HttpHeaders.AUTHORIZATION);
+
+        if(encodedToken == null) {
+            // avoid giving clues to the caller (do not say that header is not present, for example)
+            throw new AuthenticationException("authentication problem");
+        }
+
+        // remove the bearer initial string
+        encodedToken = encodedToken.replace("Bearer ", "");
+
+        // get a representation of the token
+        JWTokenInfo tokenInfo = tokenUtils.decode(encodedToken);
+
+        // Check if the token can be refreshed (You can also check if the user or the token was blacklisted)
+        if(!tokenUtils.isRenewable(tokenInfo)) {
+            throw new AuthenticationException("Token is not renewable");
+        }
+
+        // refresh the token for the user
+        String tokenString = tokenGenerator.encode(tokenInfo.getEmail(), tokenInfo.isAdmin());
+
+        return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenString).build();
     }
 
 }

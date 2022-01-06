@@ -51,7 +51,7 @@ public class JWTokenInfo {
     @Override
     public String toString() {
         return "JWTokenInfo{" +
-                "email='" + userName + '\'' +
+                "email=" + userName +
                 ", admin=" + admin +
                 ", issuedAt=" + issuedAt +
                 ", expiration=" + expiration +

@@ -3,6 +3,7 @@ package nl.hva.backend.rest.security;
 import nl.hva.backend.rest.exception.UnAuthorizedExeption;
 import org.hibernate.service.spi.InjectService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
@@ -26,9 +27,10 @@ public class JWTRequerstFilter extends OncePerRequestFilter {
     @Autowired
     private JWTokenUtils tokenUtils;
 
-    private static final Set<String> SECURED_PATHS =
-            Set.of("/sensors", "/notes"/*, "/users"*/, "/teams");
 
+
+    private static final Set<String> SECURED_PATHS =
+            Set.of(/*"blala","kasldfj"*/"/sensors", "/notes", "/users", "/teams");
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -43,12 +45,11 @@ public class JWTRequerstFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-
+        JWTokenInfo jwToken;
         try {
-            JWTokenInfo jwToken;
+
 
             String encodedToken = request.getHeader(HttpHeaders.AUTHORIZATION);
-            System.out.println("AAAAAAAAAAAAA"+encodedToken);
             if (encodedToken == null){
                 throw new UnAuthorizedExeption("Authentication problem");
             }
@@ -57,7 +58,7 @@ public class JWTRequerstFilter extends OncePerRequestFilter {
 
             jwToken= tokenUtils.decode(encodedToken);
 
-            request.setAttribute(JWTokenInfo.KEY,jwToken);
+            request.setAttribute(JWTokenInfo.KEY, jwToken);
 
             filterChain.doFilter(request, response);
         }catch(UnAuthorizedExeption e ) {
