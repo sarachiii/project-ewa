@@ -1,6 +1,5 @@
 package nl.hva.backend;
 
-import nl.hva.backend.repositories.TeamsRepository;
 import nl.hva.backend.rest.TeamsController;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -18,12 +17,12 @@ public class TestTeamsController {
     private TeamsController controller;
 
     @Test
-    void testDeleteUserFromTeam(){
+    void testGetAllTeams(){
 
     }
 
     @Test
-    void testAddUserToTeam(){
+    void testDeleteUserFromTeam(){
 
     }
 
