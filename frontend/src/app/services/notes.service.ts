@@ -23,7 +23,9 @@ export class NotesService {
   constructor(private http: HttpClient) {
     this.resourceUrl = environment.apiUrl + "/notes";
     this._notes$ = new BehaviorSubject<Note[]>([]);
-    this.allNotes();
+    if (sessionStorage.getItem("token")) {
+      this.allNotes();
+    }
   }
 
   get notes$(): Observable<Note[]> {

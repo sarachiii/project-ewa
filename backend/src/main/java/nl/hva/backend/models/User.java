@@ -17,7 +17,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     @Column(name = "email", unique = true)
     private String emailAddress;
@@ -41,7 +41,7 @@ public class User {
     private String profilePicture;
 
     @Column(name = "team_id")
-    private Long teamId;
+    private long teamId;
 
     @OneToOne(targetEntity = Preferences.class, mappedBy = "user", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
@@ -95,7 +95,7 @@ public class User {
     }
 
     public User(String emailAddress, String firstName, String lastName, String password,
-                Specialty specialty, String profilePicture, Long teamId) {
+                Specialty specialty, String profilePicture, long teamId) {
         this.emailAddress = emailAddress;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -113,11 +113,11 @@ public class User {
         this("", "");
     }
 
-    public Long getId() {
+    public long getId() {
         return this.id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -185,11 +185,11 @@ public class User {
         this.profilePicture = profilePicture;
     }
 
-    public Long getTeamId() {
+    public long getTeamId() {
         return teamId;
     }
 
-    public void setTeamId(Long teamId) {
+    public void setTeamId(long teamId) {
         this.teamId = teamId;
     }
 

@@ -18,13 +18,13 @@ import {Observable} from "rxjs";
 @Component({
   selector: 'app-notes',
   templateUrl: './notes.component.html',
-  styleUrls: ['./notes.component.css']
+  styleUrls: ['./notes.component.css'],
+  providers: [NotesService]
 })
 export class NotesComponent implements OnInit, OnChanges {
   createNote: boolean = false;
   editNote: boolean = false;
   selectedNote: Note = <Note>{};
-  test: boolean = false;
   user: User;
   notes$: Observable<Note[]>;
 
