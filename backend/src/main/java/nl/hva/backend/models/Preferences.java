@@ -32,15 +32,15 @@ public class Preferences {
         en_GB("en_GB"),
         nl_NL("nl_NL");
 
-        private final String string;
+        private final String STRING;
 
         LanguageCode(String string) {
-            this.string = string;
+            this.STRING = string;
         }
 
         @Override
         public String toString() {
-            return this.string;
+            return this.STRING;
         }
     }
 

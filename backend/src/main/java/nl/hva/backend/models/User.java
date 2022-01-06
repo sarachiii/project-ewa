@@ -59,16 +59,16 @@ public class User {
         Hydrology("Hydrology"),
         Climate_Science("Climate-Science");
 
-        private final String string;
+        private final String STRING;
 
         Specialty(String string) {
-            this.string = string;
+            this.STRING = string;
         }
 
         @JsonValue
         @Override
         public String toString() {
-            return this.string;
+            return this.STRING;
         }
     }
 
@@ -77,16 +77,16 @@ public class User {
         ADMIN("Admin"),
         MEMBER("Member");
 
-        private final String string;
+        private final String STRING;
 
         Role(String string) {
-            this.string = string;
+            this.STRING = string;
         }
 
         @JsonValue
         @Override
         public String toString() {
-            return this.string;
+            return this.STRING;
         }
     }
 
