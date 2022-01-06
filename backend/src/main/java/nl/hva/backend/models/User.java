@@ -8,6 +8,10 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/*@NamedQueries({
+
+        @NamedQuery(name = "")
+})*/
 @Entity
 public class User {
 
@@ -152,6 +156,14 @@ public class User {
     public Role getRole() {
         return role;
     }
+
+    public boolean isAdmin(){
+        if (this.role.toString().equals("Admin")||this.role.toString().equals("Super Admin")){
+            return true;
+        }
+        return false;
+    }
+
 
     public void setRole(Role role) {
         this.role = role;

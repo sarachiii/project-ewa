@@ -5,6 +5,7 @@ import nl.hva.backend.models.forms.AccountForm;
 import nl.hva.backend.models.forms.Login;
 import nl.hva.backend.repositories.interfaces.SettingsRepository;
 import nl.hva.backend.rest.exception.*;
+import nl.hva.backend.rest.security.JWTokenUtils;
 import nl.hva.backend.services.EmailService;
 import nl.hva.backend.services.FileService;
 import nl.hva.backend.services.UserService;
@@ -42,6 +43,10 @@ public class UserController {
     @Autowired
     private FileService fileService;
 
+    @Autowired
+    JWTokenUtils jwTokenUtils;
+
+
     @GetMapping("users")
     public List<User> getUsersList() {
         return this.userRepository.findAll();
@@ -56,11 +61,19 @@ public class UserController {
         return user;
     }
 
-    @GetMapping(value = "users", params = "username")
-    public User getUserByUsername(@RequestParam String username) {
-        User user = this.userRepository.findByEmailAddress(username);
+    @GetMapping(value = "users", params = "email")
+    public User getUserByEmail(@RequestParam String email) {
+        User user = this.userRepository.findByEmailAddress(email);
         if (user == null) {
-            throw new ResourceNotFound("username does not exist");
+            throw new ResourceNotFound("No user with this email-address");
+        }
+        return user;
+    }
+    @GetMapping(value = "users", params = "firstname")
+    public User getUserByFirstName(@RequestParam String firstname) {
+        User user = this.userRepository.findByFirstName(firstname);
+        if (user == null) {
+            throw new ResourceNotFound("no user with this firstname");
         }
         return user;
     }
@@ -179,13 +192,36 @@ public class UserController {
 
     @PostMapping("login")
     public Long authenticateLogin(@RequestBody Login login) {
-        User user = this.userRepository.findByEmailAddress(login.getUsername());
-
+        System.out.println(login.toString());
+        User user = this.userRepository.findByEmailAddress(login.getEmail());
+        System.out.println(user);
         if (user == null) {
             throw new ResourceNotFound("username does not exist");
         }
 
         return this.userService.matches(login.getPassword(), user.getPassword()) ? user.getId() : null;
+    }
+
+    //get a token with email and password
+    @PostMapping("login/token")
+    public ResponseEntity<?> authenticateLoginWithToken(@RequestBody Login login) {
+        if (login.getEmail() == null||login.getPassword()==null){
+            throw new BadRequestException("Enter a email and a password");
+        }
+        User user = this.userRepository.findByEmailAddress(login.getEmail());
+        String tokenString = jwTokenUtils.encode(login.getEmail(), user.isAdmin());
+        if (user == null) {
+            throw new ResourceNotFound("username does not exist");
+        }
+
+//        return this.userService.matches(login.getPassword(), user.getPassword()) ? user.getId() : null;
+        if (this.userService.matches(login.getPassword(),user.getPassword())){
+//            JsonParser parser = new JsonParser();
+            return ResponseEntity.accepted().body(tokenString);
+        }else {
+            throw new WrongPassword("Wrong passworod");
+        }
+
     }
 
 }
