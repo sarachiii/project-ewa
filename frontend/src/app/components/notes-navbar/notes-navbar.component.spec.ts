@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NotesNavbarComponent } from './notes-navbar.component';
+import {NotesService} from "../../services/notes.service";
+import {UserService} from "../../services/user.service";
 
 describe('NotesNavbarComponent', () => {
   let component: NotesNavbarComponent;
@@ -19,7 +21,18 @@ describe('NotesNavbarComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create the notesNavbar component', () => {
+    let fixture = TestBed.createComponent(NotesNavbarComponent);
+    let component = fixture.debugElement.componentInstance;
     expect(component).toBeTruthy();
   });
+
+  it('should use the logged in user from the user service', () => {
+    let fixture = TestBed.createComponent(NotesNavbarComponent);
+    let component = fixture.debugElement.componentInstance;
+    let userService = fixture.debugElement.injector.get(UserService);
+    fixture.detectChanges();
+    expect(userService.loggedUser$).toEqual(component.user);
+  });
+  
 });
