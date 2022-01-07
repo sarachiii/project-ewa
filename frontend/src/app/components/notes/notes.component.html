@@ -34,7 +34,7 @@
     </div>
   </ngx-masonry>
 
-  <div class="fixed-bottom" [ngClass]="{'d-none': selectedWorkfieldFromNavbar != this.user?.specialty.toLowerCase()}"
+  <div class="fixed-bottom" [ngClass]="{'d-none': selectedSpecialtyFromNavbar != this.user?.specialty.toLowerCase()}"
        [ngTemplateOutlet]="createNote === true ? addNote : editNote === true ? viewNote : null">
     <button type="button" class="btn btn-primary shadow p-0 me-3 mb-3 float-end"
             (click)="onCreateNote(false)">
