@@ -17,7 +17,6 @@ import { NotesNavbarComponent } from './components/notes-navbar/notes-navbar.com
 import { ShareNotesComponent } from './components/share-notes/share-notes.component';
 import { SensorComponent } from './components/mainpage/sensor/sensor.component';
 import { LoginComponent } from './components/mainpage/login/login.component';
-import { RegisterComponent } from './components/mainpage/register/register.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { AccountComponent } from './components/settings/account/account.component';
 import { PreferencesComponent } from './components/settings/preferences/preferences.component';
@@ -44,7 +43,6 @@ import {AuthInterceptorService} from "./services/auth-interceptor.service";
     ShareNotesComponent,
     SensorComponent,
     LoginComponent,
-    RegisterComponent,
     SettingsComponent,
     AccountComponent,
     PreferencesComponent,

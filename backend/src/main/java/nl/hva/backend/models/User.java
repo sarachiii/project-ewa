@@ -8,10 +8,6 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/*@NamedQueries({
-
-        @NamedQuery(name = "")
-})*/
 @Entity
 public class User {
 

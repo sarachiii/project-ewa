@@ -5,20 +5,28 @@
     <div class="row">
       <div class="col-md-6 my-2">
         <label for="firstName" class="form-label fw-bold">First name</label>
-        <input type="text" [ngClass]="{'is-valid': firstName.valid && firstName.dirty, 'is-invalid': firstName.invalid && firstName.dirty}"
+        <input type="text"
+               [ngClass]="{'is-valid': firstName.valid && firstName.dirty, 'is-invalid': firstName.invalid && firstName.dirty}"
                class="form-control py-2" id="firstName" formControlName="firstName"
                placeholder="Enter your first name" required>
         <div *ngIf="firstName.invalid" class="invalid-feedback">
           <ng-container *ngIf="firstName.errors.required">First name is required!</ng-container>
+          <ng-container *ngIf="firstName.errors.pattern">Name may only contain alphabetical characters, a dash, a dot or
+            a space (A-z, -, ., )
+          </ng-container>
         </div>
       </div>
       <div class="col-md-6 my-2">
         <label for="lastName" class="form-label fw-bold">Last name</label>
-        <input type="text" [ngClass]="{'is-valid': lastName.valid && lastName.dirty, 'is-invalid': lastName.invalid && lastName.dirty}"
+        <input type="text"
+               [ngClass]="{'is-valid': lastName.valid && lastName.dirty, 'is-invalid': lastName.invalid && lastName.dirty}"
                class="form-control py-2" id="lastName" formControlName="lastName"
                placeholder="Enter your last name" required>
         <div *ngIf="lastName.invalid" class="invalid-feedback">
           <ng-container *ngIf="lastName.errors.required">Last name is required!</ng-container>
+          <ng-container *ngIf="lastName.errors.pattern">Name may only contain alphabetical characters, a dash, a dot or
+            a space (A-z, -, ., )
+          </ng-container>
         </div>
       </div>
     </div>
@@ -28,8 +36,10 @@
         <label for="profilePicture" class="form-label fw-bold">Profile picture</label>
         <div id="profilePicture">
           <div class="image d-inline-block rounded-circle me-2 pe-auto">
-            <img class="rounded-circle object-fit-cover w-100 h-100" [src]="preview || copyUser.profilePicture || 'assets/images/default_avatar.svg'"
-                 (error)="handleImageError($event)" alt="Profile picture" data-bs-toggle="modal" data-bs-target="#profilePictureModal">
+            <img class="rounded-circle object-fit-cover w-100 h-100"
+                 [src]="preview || copyUser.profilePicture || 'assets/images/default_avatar.svg'"
+                 (error)="handleImageError($event)" alt="Profile picture" data-bs-toggle="modal"
+                 data-bs-target="#profilePictureModal">
           </div>
           <button type="button" class="btn btn-primary fw-bold ms-2" data-bs-toggle="modal"
                   data-bs-target="#profilePictureModal">
@@ -47,19 +57,25 @@
                 <div class="modal-body">
                   <div class="mb-3">
                     <div class="image rounded-circle d-block mx-auto">
-                      <img class="rounded-circle object-fit-cover w-100 h-100" [src]="preview || copyUser.profilePicture || 'assets/images/default_avatar.svg'" (error)="handleImageError($event)" alt="Profile picture">
+                      <img class="rounded-circle object-fit-cover w-100 h-100"
+                           [src]="preview || copyUser.profilePicture || 'assets/images/default_avatar.svg'"
+                           (error)="handleImageError($event)" alt="Profile picture">
                     </div>
                   </div>
                   <div class="mb-3">
                     <label for="profilePictureFile" class="col-form-label fw-bold">Select a local file</label>
                     <div class="input-group">
-                      <input #fileElement type="file" class="form-control" id="profilePictureFile" (change)="onChangeFile($event)">
-                      <button type="button" class="btn btn-primary" (click)="onClear()" [disabled]="!file.value">Clear</button>
+                      <input #fileElement type="file" class="form-control" id="profilePictureFile"
+                             (change)="onChangeFile($event)">
+                      <button type="button" class="btn btn-primary" (click)="onClear()" [disabled]="!file.value">Clear
+                      </button>
                     </div>
                   </div>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-outline-danger fw-bold" data-bs-dismiss="modal" (click)="onClear()">Cancel</button>
+                  <button type="button" class="btn btn-outline-danger fw-bold" data-bs-dismiss="modal"
+                          (click)="onClear()">Cancel
+                  </button>
                   <button type="button" class="btn btn-primary fw-bold" data-bs-dismiss="modal">OK</button>
                 </div>
               </div>

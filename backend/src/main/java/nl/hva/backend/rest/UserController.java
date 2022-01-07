@@ -3,7 +3,6 @@ package nl.hva.backend.rest;
 import nl.hva.backend.models.Preferences;
 import nl.hva.backend.models.forms.AccountForm;
 import nl.hva.backend.models.forms.Login;
-import nl.hva.backend.repositories.interfaces.SettingsRepository;
 import nl.hva.backend.rest.exception.*;
 import nl.hva.backend.rest.security.JWTokenUtils;
 import nl.hva.backend.services.EmailService;

@@ -2,7 +2,6 @@ package nl.hva.backend.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;

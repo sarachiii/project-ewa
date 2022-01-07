@@ -19,7 +19,10 @@
                formControlName="firstName" type="text" id="firstName"
                name="firstName" placeholder="Enter a first name here">
         <div class="invalid-feedback">
-          <span>First name is required!</span>
+          <ng-container *ngIf="firstName.errors.required">First name is required!</ng-container>
+          <ng-container *ngIf="firstName.errors.pattern">Name may only contain alphabetical characters, a dash, a dot or
+            a space (A-z, -, ., )
+          </ng-container>
         </div>
       </div>
       <div class="mb-3">
@@ -28,7 +31,10 @@
                formControlName="lastName" type="text" id="lastName"
                name="lastName" placeholder="Enter a last name here">
         <div class="invalid-feedback">
-          <span>Last name is required!</span>
+          <ng-container *ngIf="lastName.errors.required">Last name is required!</ng-container>
+          <ng-container *ngIf="lastName.errors.pattern">Name may only contain alphabetical characters, a dash, a dot or
+            a space (A-z, -, ., )
+          </ng-container>
         </div>
       </div>
       <div class="mb-3">
@@ -64,10 +70,13 @@
     <div class="col-sm-6">
       <div class="mb-3">
         <label for="role" class="form-label fw-bold">Role</label>
-        <select formControlName="role" id="role" class="form-control form-select py-2" [ngClass]="{'is-invalid': role.invalid && role.dirty}">
+        <select formControlName="role" id="role" class="form-control form-select py-2"
+                [ngClass]="{'is-invalid': role.invalid && role.dirty}">
           <option disabled hidden value="">Choose a role</option>
           <ng-container *ngFor="let role of Role.values().reverse()">
-            <option *ngIf="(role == Role.SUPER_ADMIN || role == Role.ADMIN) && user.role == Role.SUPER_ADMIN || role == Role.MEMBER" [value]="role">{{role}}</option>
+            <option
+              *ngIf="(role == Role.SUPER_ADMIN || role == Role.ADMIN) && user.role == Role.SUPER_ADMIN || role == Role.MEMBER"
+              [value]="role">{{role}}</option>
           </ng-container>
         </select>
         <div class="invalid-feedback">
@@ -76,9 +85,10 @@
       </div>
       <div class="mb-3">
         <label for="specialtyPicker" class="form-label fw-bold">Specialty</label>
-        <select formControlName="specialty" id="specialtyPicker" class="form-control form-select py-2" [ngClass]="{'is-invalid': specialty.invalid && specialty.dirty}">
+        <select formControlName="specialty" id="specialtyPicker" class="form-control form-select py-2"
+                [ngClass]="{'is-invalid': specialty.invalid && specialty.dirty}">
           <option disabled hidden value="">Choose a specialty</option>
-          <option *ngFor="let s of specialties" [value]="s">{{s.replace("-"," ")}}</option>
+          <option *ngFor="let s of specialties" [value]="s">{{s.replace("-", " ")}}</option>
         </select>
         <div class="invalid-feedback">
           <span>Please select a specialty!</span>
@@ -86,10 +96,12 @@
       </div>
       <div class="mb-3">
         <label for="team" class="form-label fw-bold">Team</label>
-        <select formControlName="teamId" id="team" class="form-control form-select py-2" [ngClass]="{'is-invalid': teamId.invalid && teamId.dirty}">
+        <select formControlName="teamId" id="team" class="form-control form-select py-2"
+                [ngClass]="{'is-invalid': teamId.invalid && teamId.dirty}">
           <option disabled hidden value="">Choose a team</option>
           <ng-container *ngFor="let id of teamIds">
-            <option *ngIf="user.role == Role.ADMIN && user.teamId.toString() == id || user.role == Role.SUPER_ADMIN" [value]="id">Team {{id}}</option>
+            <option *ngIf="user.role == Role.ADMIN && user.teamId.toString() == id || user.role == Role.SUPER_ADMIN"
+                    [value]="id">Team {{id}}</option>
           </ng-container>
         </select>
         <div class="invalid-feedback">

@@ -1,9 +1,7 @@
 package nl.hva.backend.rest.security;
 
 import nl.hva.backend.rest.exception.UnAuthorizedExeption;
-import org.hibernate.service.spi.InjectService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
@@ -30,7 +28,7 @@ public class JWTRequerstFilter extends OncePerRequestFilter {
 
 
     private static final Set<String> SECURED_PATHS =
-            Set.of(/*"blala","kasldfj"*/"/sensors", "/notes", "/users", "/teams");
+            Set.of("/sensors", "/notes", "/users", "/teams");
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,

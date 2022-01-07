@@ -2,7 +2,6 @@ package nl.hva.backend.rest.security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
-import nl.hva.backend.models.User;
 import nl.hva.backend.rest.exception.UnAuthorizedExeption;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

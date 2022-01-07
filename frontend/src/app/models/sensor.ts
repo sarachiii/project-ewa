@@ -1,14 +1,3 @@
-enum InputType {
-  COLOR = "color",
-  TEXT = "text"
-}
-
-export enum ValueType {
-  INTEGER = "integer",
-  FLOAT = "float",
-  STRING = "string"
-}
-
 export enum Factor {
   AIR_TEMP_C = "Air Temperature",
   SOIL_TEMP_C = "Soil Temperature",
@@ -19,11 +8,6 @@ export enum Factor {
   WATER_PH = "Water pH",
   LIGHTING_RGB = "Lighting",
   DAILY_EXPOSURE = "Exposure"
-}
-
-export enum Unit {
-  CELSIUS = "°C",
-  PERCENTAGE = "%"
 }
 
 export class Sensor {
@@ -90,74 +74,4 @@ export class Sensor {
   set currentValue(value: number | string) {
     this._currentValue = value;
   }
-
-// set value(value: number | string) {
-//     if (this.valueType == ValueType.STRING) {
-//       this._value = value;
-//     } else {
-//       this._value = value < this.numberRange[0] ? this.numberRange[0] : value > this.numberRange[1] ? this.numberRange[1] : value;
-//     }
-//   }
-  //
-  // public static generateSensors(): Array<Sensor> {
-  //   let sensors: Array<Sensor> = [];
-  //
-  //   let names: Array<string> = Object.values(Factor);
-  //
-  //   for (const name of names) {
-  //     let imagePath = `assets/sensor/${name.toLowerCase().replace(/\s/g, '-')}-sensor-image.svg`;
-  //     let type = name == Factor.LIGHTING_RGB ? InputType.COLOR : InputType.TEXT;
-  //     let sensor = new Sensor(name, imagePath, type, Math.floor(Math.random() * 10));
-  //     switch (sensor.name) {
-  //       case Factor.AIR_TEMP_C: {
-  //         sensor.valueType = ValueType.FLOAT;
-  //         sensor.numberRange = [-10, 40];
-  //         break;
-  //       }
-  //       case Factor.AIR_HUMIDITY: {
-  //         sensor.valueType = ValueType.FLOAT;
-  //         sensor.numberRange = [0, 100];
-  //
-  //         break;
-  //       }
-  //       case Factor.SOIL_TEMP_C: {
-  //         sensor.valueType = ValueType.FLOAT;
-  //         sensor.numberRange = [-10, 40];
-  //         break;
-  //       }
-  //       case Factor.SOIL_HUMIDITY: {
-  //         sensor.valueType = ValueType.FLOAT;
-  //         sensor.numberRange = [0, 100];
-  //         break;
-  //       }
-  //       case Factor.SOIL_MIX_ID: {
-  //         sensor.valueType = ValueType.INTEGER;
-  //         sensor.numberRange = [0, 100];
-  //         break;
-  //       }
-  //       case Factor.WATER_MIX_ID: {
-  //         sensor.valueType = ValueType.FLOAT;
-  //         sensor.numberRange = [0, 100];
-  //         break;
-  //       }
-  //       case Factor.WATER_PH: {
-  //         sensor.valueType = ValueType.FLOAT;
-  //         sensor.numberRange = [0, 14];
-  //         break;
-  //       }
-  //       case Factor.LIGHTING_RGB: {
-  //         sensor.valueType = ValueType.STRING;
-  //         break;
-  //       }
-  //       case Factor.EXPOSURE: {
-  //         sensor.valueType = ValueType.INTEGER;
-  //         sensor.numberRange = [0, 2000];
-  //         break;
-  //       }
-  //     }
-  //     sensors.push(sensor);
-  //   }
-  //
-  //   return sensors;
-  // }
 }

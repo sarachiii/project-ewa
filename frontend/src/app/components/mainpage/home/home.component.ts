@@ -4,7 +4,6 @@ import {SensorsService} from "../../../services/sensors.service";
 import {Sensor} from "../../../models/sensor";
 import {UserService} from "../../../services/user.service";
 import {Subscription, timer} from "rxjs";
-import {History} from "../../../models/history";
 import {skipWhile} from "rxjs/operators";
 
 @Component({

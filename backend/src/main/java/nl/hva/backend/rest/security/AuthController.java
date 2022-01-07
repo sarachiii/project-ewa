@@ -1,6 +1,5 @@
 package nl.hva.backend.rest.security;
 
-import com.azure.core.util.Header;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import nl.hva.backend.models.User;
 import nl.hva.backend.repositories.UserRepository;

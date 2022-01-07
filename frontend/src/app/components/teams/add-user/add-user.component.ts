@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {TeamService} from "../../../services/team.service";
-import {Team} from "../../../models/team";
 import {UserService} from "../../../services/user.service";
 import {Role, User} from "../../../models/user";
 import {HttpResponse, HttpStatusCode} from "@angular/common/http";
@@ -29,8 +28,8 @@ export class AddUserComponent implements OnInit {
   constructor(private teamService: TeamService,
               private userService: UserService) {
     this.newUserForm = new FormGroup({
-      firstName: new FormControl("", Validators.required),
-      lastName: new FormControl("", Validators.required),
+      firstName: new FormControl("", [Validators.required, Validators.pattern(/^[a-zA-Z- .]+$/)]),
+      lastName: new FormControl("", [Validators.required, Validators.pattern(/^[a-zA-Z- .]+$/)]),
       emailAddress: new FormControl("", [Validators.required, Validators.email]),
       password: new FormControl("", passwordPatternValidator),
       role: new FormControl("", [Validators.required, isInList(Role.values())]),
