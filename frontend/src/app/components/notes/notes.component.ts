@@ -28,7 +28,7 @@ export class NotesComponent implements OnInit, OnChanges {
   user: User;
   notes$: Observable<Note[]>;
 
-  @Input() selectedWorkfieldFromNavbar: string;
+  @Input() selectedSpecialtyFromNavbar: string;
 
   @ViewChild(NgxMasonryComponent) masonry: NgxMasonryComponent;
   masonryOptions: NgxMasonryOptions;
@@ -51,7 +51,7 @@ export class NotesComponent implements OnInit, OnChanges {
         // The initial notes page is equal to the specialty of the user
         this.router.navigate([this.user.specialty.toLowerCase()], {relativeTo: this.activatedRoute})
           .catch(reason => console.error(reason));
-        this.selectedWorkfieldFromNavbar = this.user.specialty.toLowerCase();
+        this.selectedSpecialtyFromNavbar = this.user.specialty.toLowerCase();
       });
 
     this.notes$.subscribe(value => {
@@ -69,7 +69,7 @@ export class NotesComponent implements OnInit, OnChanges {
         .pipe(map(notes => {
           return notes
             .filter((note) =>
-              this.selectedWorkfieldFromNavbar == note.user.specialty.toLocaleLowerCase())
+              this.selectedSpecialtyFromNavbar == note.user.specialty.toLocaleLowerCase())
             .sort((a, b) => new Date(b.timestamp).valueOf() - new Date(a.timestamp).valueOf());
         }));
   }

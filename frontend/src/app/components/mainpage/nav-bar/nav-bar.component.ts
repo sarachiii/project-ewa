@@ -87,7 +87,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
   }
 
   closeMenu(toggle: HTMLElement) {
-    if (toggle.getAttribute('aria-expanded') == 'true') toggle.click();
+    if (toggle?.getAttribute('aria-expanded') == 'true') toggle.click();
   }
 
 }

@@ -47,6 +47,7 @@ public class JWTokenUtils {
                 .signWith(key, SignatureAlgorithm.HS512).compact();
 
     }
+
     public JWTokenInfo decode(String token) throws UnAuthorizedExeption {
         try {
             Key key = getKey(passphrase);

@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 
+import javax.transaction.Transactional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -19,12 +21,13 @@ public class TestUserController {
     private UserController controller;
 
     @Test
+    @Transactional
     @DirtiesContext
     /**
      * @author Sarah
      */
     void testDeleteUser() {
-        ResponseEntity<Boolean> deleteResult = controller.deleteUser(67L);
+        ResponseEntity<Boolean> deleteResult = controller.deleteUser(69L);
         assertEquals(HttpStatus.OK, deleteResult.getStatusCode());
     }
 
