@@ -3,7 +3,7 @@ import {ActivatedRoute, Params, Router} from "@angular/router";
 import {Specialty} from "../../models/specialty";
 
 /**
- * This is the notes navbar component that contains navbar items for different specielties,
+ * This is the notes navbar component that contains navbar items for different specialties,
  * so you can view the notes for your own specialty
  *
  * @author Sarah Chrzanowska-Buth
@@ -24,11 +24,11 @@ export class NotesNavbarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.selectedSpecialty = this.activatedRoute.snapshot.params['field'];
+    this.selectedSpecialty = this.activatedRoute.snapshot.params['specialty'];
     this.activatedRoute.params
       .subscribe(
         (params: Params) => {
-          this.selectedSpecialty = params['field'];
+          this.selectedSpecialty = params['specialty'];
         }
       );
 
@@ -36,7 +36,7 @@ export class NotesNavbarComponent implements OnInit {
       .firstChild?.params
       .subscribe((params: Params) => {
         this.selectedSpecialty =
-          this.specialties.find(specialty => specialty == params.field)
+          this.specialties.find(specialty => specialty == params.specialty)
       });
   }
 
