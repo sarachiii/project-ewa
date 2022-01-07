@@ -134,7 +134,7 @@ public class HistoryController {
      * Periodically saves data to the history
      * Period = 60 seconds
      */
-    @Scheduled(fixedRate = 60000)
+//    @Scheduled(fixedRate = 60000)
     public void scheduleSaveSensorData() {
         // Populate query parameters
         MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
@@ -161,7 +161,7 @@ public class HistoryController {
                     responseNode.get("CO2_level").asDouble()
             );
 
-//            this.postData(history);
+            this.postData(history);
         }
 
     }
