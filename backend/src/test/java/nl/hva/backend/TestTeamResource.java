@@ -31,8 +31,7 @@ public class TestTeamResource {
     @DirtiesContext
     void testCreateTeamShouldSucceed() {
 
-        String pass = jwTokenUtils.getPassphrase();
-        String token = jwTokenUtils.createTokenForTest(STUB_EMAIL_ID, pass);
+        String token = jwTokenUtils.encode(STUB_EMAIL_ID,false);
 
         restTemplate.getRestTemplate().getInterceptors().add((req, body, execution) -> {
             req.getHeaders().add("Authorization","Bearer " + token);

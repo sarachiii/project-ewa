@@ -48,18 +48,7 @@ public class JWTokenUtils {
                 .signWith(key, SignatureAlgorithm.HS512).compact();
 
     }
-    public String createTokenForTest(String email,String passphrase){
-        Key key = getKey(passphrase);
 
-        return Jwts.builder()
-                .claim(JWT_EMAIL_CLAIM, email)
-                .claim(JWT_ADMIN_CLAIM, false)
-                .setIssuer("Hva")
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1200 * 10000))
-                .signWith(key, SignatureAlgorithm.HS512).compact();
-
-    }
     public JWTokenInfo decode(String token) throws UnAuthorizedExeption {
         try {
             Key key = getKey(passphrase);
@@ -117,7 +106,4 @@ public class JWTokenUtils {
         return cal.getTime().compareTo(new Date()) > 0;
     }
 
-    public  String getPassphrase() {
-        return passphrase;
-    }
 }
