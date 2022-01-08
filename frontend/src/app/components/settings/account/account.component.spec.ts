@@ -2,10 +2,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AccountComponent } from './account.component';
 import { SettingsService } from "../../../services/settings.service";
-import { HttpClientModule, HttpErrorResponse, HttpStatusCode } from "@angular/common/http";
+import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { ReactiveFormsModule } from "@angular/forms";
-import { throwError } from "rxjs";
+import { HttpErrorResponse, HttpStatusCode } from "@angular/common/http";
 import { User } from "../../../models/user";
+import { throwError } from "rxjs";
 
 describe('AccountComponent', () => {
   let fixture: ComponentFixture<AccountComponent>;
@@ -17,7 +18,7 @@ describe('AccountComponent', () => {
       providers: [ SettingsService ],
       declarations: [ AccountComponent ],
       imports: [
-        HttpClientModule,
+        HttpClientTestingModule,
         ReactiveFormsModule
       ]
     })

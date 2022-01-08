@@ -1,4 +1,4 @@
-<div class="card shadow p-3 fade-in">
+<div *ngIf="sensor != null" class="card shadow p-3 fade-in">
   <div class="p-2">
     <div class="d-flex justify-content-between mb-3">
       <h1 class="h2 px-2 mb-1 text-truncate">{{sensor.sensorName}}</h1>

@@ -41,6 +41,8 @@ export class NotesComponent implements OnInit, OnChanges {
       percentPosition: true,
       horizontalOrder: true,
     };
+
+    this.notes$ = new Observable<Note[]>();
   }
 
   ngOnInit(): void {
