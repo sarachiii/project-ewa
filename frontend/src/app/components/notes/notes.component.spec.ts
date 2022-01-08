@@ -5,8 +5,13 @@ import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { RouterTestingModule } from "@angular/router/testing";
 import { routes } from "../../app-routing.module";
 import {NotesService} from "../../services/notes.service";
+import {UserService} from "../../services/user.service";
+import {of} from "rxjs";
+import {Role, User} from "../../models/user";
+import {Note} from "../../models/note";
+import {Specialty} from "../../models/specialty";
 
-describe('NotesComponent', () => {
+fdescribe('NotesComponent', () => {
   let component: NotesComponent;
   let fixture: ComponentFixture<NotesComponent>;
 
@@ -24,6 +29,18 @@ describe('NotesComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(NotesComponent);
     component = fixture.componentInstance;
+    let notesService = fixture.debugElement.injector.get(NotesService);
+    let userService = fixture.debugElement.injector.get(UserService);
+    let specialties = Object.values(Specialty);
+    let users = [];
+    let notes = [];
+
+    for (let i = 0; i < 10; i++) {
+      users.push(new User(0, 0, Role.MEMBER, specialties[Math.round(Math.random() * specialties.length)], "Mark", "Smith"));
+      new Note(0, users[i], new Date(), "Testnote", "Test text");
+    }
+
+    let spy = spyOnProperty(notesService, 'notes$', "get").and.returnValue(of(notes));
     fixture.detectChanges();
   });
 
@@ -33,10 +50,37 @@ describe('NotesComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display the specialty of the logged in user first', () => {
+  it('should display notes if user is logged in', () => {
     let fixture = TestBed.createComponent(NotesComponent);
     let component = fixture.debugElement.componentInstance;
-    let notesService = fixture.debugElement.injector.get(NotesService);
-    expect(component).toBeTruthy();
+    component.isLoggedIn = true;
+    fixture.detectChanges();
+    let compiled = fixture.debugElement.nativeElement;
+    expect(compiled.querySelector("ngx-masonry"));
   });
+
+  it('should display the text "There are no notes yet! :(" if there are no notes', () => {
+    let fixture = TestBed.createComponent(NotesComponent);
+    fixture.detectChanges();
+    let compiled = fixture.debugElement.nativeElement;
+    expect(compiled.querySelector('span').textContent).toContain("There are no notes yet! :(");
+  });
+
+  it('shouldn\'t display the text "There are no notes yet! :(" if there are notes', () => {
+    let fixture = TestBed.createComponent(NotesComponent);
+    fixture.detectChanges();
+    let compiled = fixture.debugElement.nativeElement;
+    expect(compiled.querySelector('span').textContent).not.toContain("There are no notes yet! :(");
+  });
+
+  // it('', () => {
+  //   let userService = fixture.debugElement.injector.get(UserService);
+  //   let mockUser = new User(0, 0, Role.MEMBER, "Agronomy", "Mark", "Smith");
+  //   let specialty = mockUser.specialty;
+  //
+  //   let spy = spyOnProperty(userService, 'loggedUser$', "get").and.returnValue(of(mockUser));
+  //   spy.calls.mostRecent().returnValue.subscribe(value => {
+  //     expect(value).toEqual(mockUser);
+  //   })
+  // });
 });
