@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SensorComponent } from './sensor.component';
+import { NotificationsService, SimpleNotificationsModule } from "angular2-notifications";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { HttpClientTestingModule } from "@angular/common/http/testing";
 
 describe('SensorComponent', () => {
   let component: SensorComponent;
@@ -8,7 +11,14 @@ describe('SensorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SensorComponent ]
+      providers: [NotificationsService],
+      declarations: [ SensorComponent ],
+      imports: [
+        HttpClientTestingModule,
+        SimpleNotificationsModule.forRoot(),
+        FormsModule,
+        ReactiveFormsModule
+      ]
     })
     .compileComponents();
   });

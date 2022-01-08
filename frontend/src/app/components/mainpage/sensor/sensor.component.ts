@@ -37,8 +37,6 @@ export class SensorComponent implements OnInit, OnDestroy {
   constructor(private http: HttpClient,
               private service: NotificationsService,
               private sensorsService: SensorsService,
-              private fb: FormBuilder,
-              private webStorageService: WebStorageService,
               private userService: UserService,
               private teamService: TeamService) {
 

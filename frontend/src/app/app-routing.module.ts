@@ -17,7 +17,7 @@ import {AddUserComponent} from "./components/teams/add-user/add-user.component";
 import {AdminGuard} from "./services/guards/admin.guard";
 import {MyTeamComponent} from "./components/teams/my-team/my-team.component";
 
-const routes: Routes = [
+export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent, canActivate: [AuthGuardService] },
   { path: 'login', component: LoginComponent, canActivate: [AuthGuardService] },
