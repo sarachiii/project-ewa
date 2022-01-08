@@ -54,6 +54,14 @@ export class NotesComponent implements OnInit, OnChanges {
         this.selectedSpecialtyFromNavbar = this.user.specialty.toLowerCase();
       });
 
+    this.notes$ = this.notesService.notes$
+      .pipe(map(notes => {
+        return notes
+          .filter((note) =>
+            this.selectedSpecialtyFromNavbar == note.user.specialty.toLocaleLowerCase())
+          .sort((a, b) => new Date(b.timestamp).valueOf() - new Date(a.timestamp).valueOf());
+      }));
+
     this.notes$.subscribe(value => {
       if (value.length && this.masonry) this.reloadMasonry();
     })
@@ -65,13 +73,13 @@ export class NotesComponent implements OnInit, OnChanges {
       horizontalOrder: true,
     };
 
-      this.notes$ = this.notesService.notes$
-        .pipe(map(notes => {
-          return notes
-            .filter((note) =>
-              this.selectedSpecialtyFromNavbar == note.user.specialty.toLocaleLowerCase())
-            .sort((a, b) => new Date(b.timestamp).valueOf() - new Date(a.timestamp).valueOf());
-        }));
+    this.notes$ = this.notesService.notes$
+      .pipe(map(notes => {
+        return notes
+          .filter((note) =>
+            this.selectedSpecialtyFromNavbar == note.user.specialty.toLocaleLowerCase())
+          .sort((a, b) => new Date(b.timestamp).valueOf() - new Date(a.timestamp).valueOf());
+      }));
   }
 
   reloadMasonry(): void {

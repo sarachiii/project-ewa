@@ -27,12 +27,4 @@ describe('NotesNavbarComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should use the logged in user from the user service', () => {
-    let fixture = TestBed.createComponent(NotesNavbarComponent);
-    let component = fixture.debugElement.componentInstance;
-    let userService = fixture.debugElement.injector.get(UserService);
-    fixture.detectChanges();
-    expect(userService.loggedUser$).toEqual(component.user);
-  });
-  
 });
