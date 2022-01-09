@@ -47,8 +47,8 @@ export class Sensor {
     return Sensor.sensorNames[this.name];
 }
 
-  get imagePath(): string {//air_temp_c
-    return `assets/sensor/${this.name}.svg`
+  get imagePath(): string {
+    return `assets/images/sensor/${this.name}.svg`
   }
 
   get nameHyphenated(): string {

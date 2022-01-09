@@ -4,8 +4,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
- * Doel:
- *
  * @author Mohamad Hassan
  */
 @ResponseStatus(HttpStatus.PRECONDITION_FAILED)

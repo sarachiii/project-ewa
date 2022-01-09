@@ -14,9 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This method creates an arraylist of all the sensors
- *
- * @author Jechillo Huang
+ * @author Hashim
  */
 
 @Repository

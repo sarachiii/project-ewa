@@ -70,7 +70,6 @@ public class JWTokenUtils {
     public JWTokenInfo generateTokenInfo(Claims claims) {
 
         JWTokenInfo tokenInfo = new JWTokenInfo();
-//        tokenInfo.setEmail(claims.get(Claims.SUBJECT).toString());
         tokenInfo.setEmail(claims.get(JWT_EMAIL_CLAIM).toString());
 
         String isAdminString = claims.get(JWT_ADMIN_CLAIM).toString();

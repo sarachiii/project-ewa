@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
-import { CRUDService } from "./interfaces/crud.service";
-import { User } from "../models/user";
-import { BehaviorSubject, Observable } from "rxjs";
-import { HttpClient } from "@angular/common/http";
-import { environment } from "../../environments/environment";
-import { shareReplay } from "rxjs/operators";
+import {Injectable} from '@angular/core';
+import {CRUDService} from "./interfaces/crud.service";
+import {User} from "../models/user";
+import {BehaviorSubject, Observable} from "rxjs";
+import {HttpClient} from "@angular/common/http";
+import {environment} from "../../environments/environment";
+import {shareReplay} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -51,7 +51,7 @@ export class UserService implements CRUDService<User> {
     return user || null;
   }
 
-  deleteUser(id: number): Observable<boolean>{
+  deleteUser(id: number): Observable<boolean> {
     return this.httpClient.delete<boolean>(new URL(`/users/${id}`, this.resourceUrl).toString());
   }
 
@@ -74,6 +74,8 @@ export class UserService implements CRUDService<User> {
   updateLoggedUser(id: number) {
     this.getUserById(id).pipe(shareReplay(1)).toPromise().then(value => {
       this._loggedUser$.next(Object.assign(new User(), value));
-    }).catch(reason => { console.log(reason); });
+    }).catch(reason => {
+      console.log(reason);
+    });
   }
 }

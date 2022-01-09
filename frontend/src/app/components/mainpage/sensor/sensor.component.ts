@@ -1,11 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Factor, Sensor} from "../../../models/sensor";
 import {HttpClient} from "@angular/common/http";
 import {NotificationsService} from "angular2-notifications";
 import {SensorsService} from "../../../services/sensors.service";
 import {Subscription, timer} from "rxjs";
-import {WebStorageService} from "../../../services/storage/web-storage.service";
 import {UserService} from "../../../services/user.service";
 import {User} from "../../../models/user";
 import {History} from "../../../models/history";

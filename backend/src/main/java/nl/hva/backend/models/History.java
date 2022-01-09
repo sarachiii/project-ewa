@@ -5,11 +5,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.persistence.*;
 import java.time.ZonedDateTime;
 
-/**
- * this method <description of functionality
- *
- * @author Mohamad Hassan
- */
 @Entity
 
 @NamedQueries({

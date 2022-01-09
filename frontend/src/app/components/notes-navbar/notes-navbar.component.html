@@ -2,7 +2,7 @@
   <div class="navbar navbar-expand-lg p-lg-0 flex-grow-0 flex-shrink-1">
     <div class="container-lg justify-content-center">
       <div *ngFor="let specialty of specialties;" (click)="onSelect(specialty);">
-        <a class="nav-link text-uppercase" routerLinkActive="nav-link-active"
+        <a id="navlink" class="nav-link text-uppercase" routerLinkActive="nav-link-active"
            routerLink="/notes/{{specialty}}">{{specialty}}
         </a>
       </div>

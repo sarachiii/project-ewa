@@ -154,12 +154,8 @@ public class User {
     }
 
     public boolean isAdmin(){
-        if (this.role.toString().equals("Admin")||this.role.toString().equals("Super Admin")){
-            return true;
-        }
-        return false;
+        return this.role.toString().equals("Admin") || this.role.toString().equals("Super Admin");
     }
-
 
     public void setRole(Role role) {
         this.role = role;

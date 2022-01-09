@@ -7,12 +7,12 @@ export function passwordValidator(password?: string): ValidatorFn {
       let password2 = control.value;
       passwordsMatch = password == password2;
     } else if (control instanceof FormGroup) {
-      passwordsMatch = Object.keys(control.controls).every((key, i , keys) => control.get(key).value === control.get(keys[0]).value);
+      passwordsMatch = Object.keys(control.controls).every((key, i, keys) => control.get(key).value === control.get(keys[0]).value);
     } else {
       // FormArray
       return null;
     }
-    return passwordsMatch ? null : { mismatch: true };
+    return passwordsMatch ? null : {mismatch: true};
   };
 }
 

@@ -8,8 +8,6 @@ import javax.persistence.*;
 import java.time.ZonedDateTime;
 
 /**
- * This class <description of functionality>
- *
  * @author hashim.mohammad@hva.nl
  */
 

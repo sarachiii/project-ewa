@@ -5,8 +5,6 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * This class <description of functionality>
- *
  * @author hashim.mohammad@hva.nl
  */
 @Entity
@@ -31,7 +29,6 @@ public class Greenhouse implements Serializable {
     protected Greenhouse() {
         this(0);
     }
-
 
     public long getId() {
         return id;
