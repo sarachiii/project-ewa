@@ -19,8 +19,8 @@
                formControlName="firstName" type="text" id="firstName"
                name="firstName" placeholder="Enter a first name here">
         <div class="invalid-feedback">
-          <ng-container *ngIf="firstName.errors.required">First name is required!</ng-container>
-          <ng-container *ngIf="firstName.errors.pattern">Name may only contain alphabetical characters, a dash, a dot or
+          <ng-container *ngIf="firstName.errors?.required">First name is required!</ng-container>
+          <ng-container *ngIf="firstName.errors?.pattern">Name may only contain alphabetical characters, a dash, a dot or
             a space (A-z, -, ., )
           </ng-container>
         </div>
@@ -31,8 +31,8 @@
                formControlName="lastName" type="text" id="lastName"
                name="lastName" placeholder="Enter a last name here">
         <div class="invalid-feedback">
-          <ng-container *ngIf="lastName.errors.required">Last name is required!</ng-container>
-          <ng-container *ngIf="lastName.errors.pattern">Name may only contain alphabetical characters, a dash, a dot or
+          <ng-container *ngIf="lastName.errors?.required">Last name is required!</ng-container>
+          <ng-container *ngIf="lastName.errors?.pattern">Name may only contain alphabetical characters, a dash, a dot or
             a space (A-z, -, ., )
           </ng-container>
         </div>

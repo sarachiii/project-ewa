@@ -54,7 +54,7 @@ public class JWTRequerstFilter extends OncePerRequestFilter {
                 throw new UnAuthorizedExeption("Authentication problem");
             }
 
-            encodedToken = encodedToken.replace("Bearer "," ");
+            encodedToken = encodedToken.replace("Bearer ", "");
 
             jwToken= tokenUtils.decode(encodedToken,false);
 
