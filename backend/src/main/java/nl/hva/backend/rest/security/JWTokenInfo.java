@@ -11,17 +11,17 @@ public class JWTokenInfo {
 
     public static final String KEY = "tokenInfo";
 
-    private String userName;
+    private String email;
     private boolean admin;
     private Date issuedAt;
     private Date expiration;
 
     public String getEmail() {
-        return userName;
+        return email;
     }
 
     public void setEmail(String email) {
-        this.userName = email;
+        this.email = email;
     }
 
     public boolean isAdmin() {
@@ -51,7 +51,7 @@ public class JWTokenInfo {
     @Override
     public String toString() {
         return "JWTokenInfo{" +
-                "email=" + userName +
+                "email=" + email +
                 ", admin=" + admin +
                 ", issuedAt=" + issuedAt +
                 ", expiration=" + expiration +

@@ -27,8 +27,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
 
   constructor(private elementRef: ElementRef,
               private webStorageService: WebStorageService,
-              private userService: UserService,
-              private notesService: NotesService) {
+              private userService: UserService) {
     this.user = null;
     this._screenHeight = window.innerHeight;
     this._screenWidth = window.innerWidth;

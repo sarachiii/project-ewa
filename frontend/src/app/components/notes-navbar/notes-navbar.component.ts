@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Workfield} from "../../models/workfield";
 import {ActivatedRoute, Params, Router} from "@angular/router";
+import {NotesService} from "../../services/notes.service";
 
 /**
  * This is the notes navbar component that contains navbar items for different workfields,
@@ -12,7 +13,8 @@ import {ActivatedRoute, Params, Router} from "@angular/router";
 @Component({
   selector: 'app-notes-navbar',
   templateUrl: './notes-navbar.component.html',
-  styleUrls: ['./notes-navbar.component.css']
+  styleUrls: ['./notes-navbar.component.css'],
+  providers: [NotesService]
 })
 export class NotesNavbarComponent implements OnInit {
 

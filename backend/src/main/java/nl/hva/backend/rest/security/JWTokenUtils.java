@@ -4,6 +4,7 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
 import nl.hva.backend.models.User;
 import nl.hva.backend.rest.exception.UnAuthorizedExeption;
+import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -30,11 +31,9 @@ public class JWTokenUtils {
     @Value("${jwt.pass-phrase}")
     private String passphrase;
 
-    @Value("${jwt.refresh-expiration-seconds}")
+    @Value("${jwt.duration-of-validity}")
     private int expiration;
 
-    @Value("${jwt.refresh-expiration-seconds}")
-    private int refreshExpiration;
 
     public String encode(String email, boolean isAdmin) {
         Key key = getKey(passphrase);
@@ -44,24 +43,31 @@ public class JWTokenUtils {
                 .claim(JWT_ADMIN_CLAIM, isAdmin)
                 .setIssuer(issuer)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expiration * 10000))
+                .setExpiration(new Date(System.currentTimeMillis() + (long) expiration * 10000))
                 .signWith(key, SignatureAlgorithm.HS512).compact();
 
     }
-    public JWTokenInfo decode(String token) throws UnAuthorizedExeption {
+
+    public JWTokenInfo decode(String token, boolean expirationLenient) throws UnAuthorizedExeption, AuthenticationException {
         try {
             Key key = getKey(passphrase);
             Jws<Claims> jws = Jwts.parserBuilder()
                     .setSigningKey(passphrase.getBytes())
                     .build()
-                    .parseClaimsJws(token.replace("bearer",""));
+                    .parseClaimsJws(token.replace("Bearer ",""));
 
             Claims claims = jws.getBody();
 
             return generateTokenInfo(claims);
         } catch (MalformedJwtException |
                 UnsupportedJwtException | IllegalArgumentException| SignatureException e) {
-            throw new UnAuthorizedExeption("Authentication eroor");
+            throw new UnAuthorizedExeption("Authentication error");
+        } catch (ExpiredJwtException e) {
+            if (!expirationLenient) {
+                throw new AuthenticationException(e.getMessage());
+            } else {
+                return generateTokenInfo(e.getClaims());
+            }
         }
 
 
@@ -86,23 +92,7 @@ public class JWTokenUtils {
         byte[] hamcKey = passphrase.getBytes(StandardCharsets.UTF_8);
         return new SecretKeySpec(hamcKey, SignatureAlgorithm.HS512.getJcaName());
     }
-    public boolean isRenewable(JWTokenInfo tokenInfo) {
 
-        // If token is still valid there is no reason to issue a new one
-        if(tokenInfo.getExpiration().compareTo(new Date()) > 0) {
-            return false;
-        }
 
-        // Calculating the refresh time limit
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(tokenInfo.getIssuedAt());
-        cal.add(Calendar.SECOND,refreshExpiration);
-
-        System.out.println("max refresh: " + cal.getTime());
-        System.out.println("current date: " + new Date());
-
-        // max refresh time should be greater than current time
-        return cal.getTime().compareTo(new Date()) > 0;
-    }
 
 }

@@ -3,7 +3,6 @@ package nl.hva.backend.rest;
 import nl.hva.backend.models.Preferences;
 import nl.hva.backend.models.forms.AccountForm;
 import nl.hva.backend.models.forms.Login;
-import nl.hva.backend.repositories.interfaces.SettingsRepository;
 import nl.hva.backend.rest.exception.*;
 import nl.hva.backend.rest.security.JWTokenUtils;
 import nl.hva.backend.services.EmailService;
@@ -188,40 +187,6 @@ public class UserController {
         this.userRepository.save(user);
 
         return ResponseEntity.ok(true);
-    }
-
-    @PostMapping("login")
-    public Long authenticateLogin(@RequestBody Login login) {
-        System.out.println(login.toString());
-        User user = this.userRepository.findByEmailAddress(login.getEmail());
-        System.out.println(user);
-        if (user == null) {
-            throw new ResourceNotFound("username does not exist");
-        }
-
-        return this.userService.matches(login.getPassword(), user.getPassword()) ? user.getId() : null;
-    }
-
-    //get a token with email and password
-    @PostMapping("login/token")
-    public ResponseEntity<?> authenticateLoginWithToken(@RequestBody Login login) {
-        if (login.getEmail() == null||login.getPassword()==null){
-            throw new BadRequestException("Enter a email and a password");
-        }
-        User user = this.userRepository.findByEmailAddress(login.getEmail());
-        String tokenString = jwTokenUtils.encode(login.getEmail(), user.isAdmin());
-        if (user == null) {
-            throw new ResourceNotFound("username does not exist");
-        }
-
-//        return this.userService.matches(login.getPassword(), user.getPassword()) ? user.getId() : null;
-        if (this.userService.matches(login.getPassword(),user.getPassword())){
-//            JsonParser parser = new JsonParser();
-            return ResponseEntity.accepted().body(tokenString);
-        }else {
-            throw new WrongPassword("Wrong passworod");
-        }
-
     }
 
 }

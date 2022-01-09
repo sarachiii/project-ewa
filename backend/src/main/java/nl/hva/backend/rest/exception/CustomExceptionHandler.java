@@ -182,7 +182,7 @@ class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(exceptionResponse, HttpStatus.UNAUTHORIZED);
     }
-    @ExceptionHandler(WrongPassword.class)
+    @ExceptionHandler(Forbidden.class)
     public final ResponseEntity<ExceptionResponse> handleWrongPassword(Exception ex, WebRequest wr){
         String path = ((ServletWebRequest)wr).getRequest().getRequestURI();
 
@@ -192,6 +192,6 @@ class CustomExceptionHandler extends ResponseEntityExceptionHandler {
                 ex.getMessage(),
                 path);
 
-        return new ResponseEntity<>(exceptionResponse, HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.FORBIDDEN);
     }
 }
