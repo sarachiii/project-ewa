@@ -61,11 +61,11 @@ Creating shared modules allows you to organize and streamline your code. You can
 
 The Model represents formal underlying data constructs that the View uses to present the user with the look and feel of the application.
 
-## Repositories
+### Repositories
 
 In Spring Boot, the controller class is responsible for processing incoming REST API requests, preparing a model, and returning the view to be rendered as a response. These mark controller classes as a request handler to allow Spring to recognize it as a Restful service during runtime.
 
-## Rest
+### Rest
 
 Spring RestController annotation is used to create RESTful web services using Spring MVC. Spring RestController takes care of mapping request data to the defined request handler method. Once response body is generated from the handler method, it converts it to JSON or XML response.
 
