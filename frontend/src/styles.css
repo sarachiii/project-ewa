@@ -1,1 +1,114 @@
 /* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp");
+:root{
+  --cc-green: #A4DA22;
+  --cc-darkgreen: #83ae1b;
+  --cc-yellow: #ffc;
+  --cc-green-rgb: 164, 218, 34;
+}
+html,
+body,
+app-root {
+  height: 100%;
+}
+app-root {
+  display: flex;
+  flex-flow: column;
+}
+.object-fit-cover {
+  object-fit: cover !important;
+}
+.white-filter {
+  filter: brightness(100) !important;
+}
+.h-min-content {
+  height: min-content !important;
+}
+.w-min-content {
+  width: min-content !important;
+}
+.p-6px {
+  padding: 6px !important;
+}
+.card hr, .card .vr {
+  background-color: var(--cc-darkgreen);
+}
+.btn-primary,
+.btn-primary:hover,
+.btn-outline-primary,
+.btn-outline-primary.active,
+.btn-outline-primary:hover {
+  background-color: var(--cc-green) !important;
+  border-color: var(--cc-green) !important;
+  color: white !important;
+}
+.btn-outline-primary {
+  background-color: white !important;
+  color: var(--bs-body-color) !important;
+}
+.btn-outline-primary .icon {
+  color: var(--cc-green) !important;
+}
+.btn-outline-primary.active .icon,
+.btn-outline-primary:hover .icon {
+  color: white !important;
+}
+.btn-primary:hover {
+  background-color: var(--cc-darkgreen) !important;
+  border-color: var(--cc-darkgreen) !important;
+}
+.btn-primary:focus,
+.btn-outline-primary:focus,
+.btn-close:focus,
+.form-control:focus,
+.form-select:focus,
+.form-check-input:focus {
+  box-shadow: 0 0 0 0.25rem rgb(var(--cc-green-rgb), 0.5) !important;
+}
+.form-check-input:focus {
+  border-color: var(--cc-green) !important;
+}
+.form-check-input:checked {
+  background-color: var(--cc-green) !important;
+  border-color: var(--cc-green) !important;
+}
+.form-switch .form-check-input:focus {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23A4DA22'/%3e%3c/svg%3e") !important;
+}
+.form-switch .form-check-input:checked {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e") !important;
+}
+
+.was-validated .form-control:valid, .form-control.is-valid {
+  border-color: var(--cc-green) !important;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2383ae1b' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e") !important;
+}
+.was-validated .form-control:invalid, .form-control.is-invalid {
+  border-color: #dc3545 !important;
+}
+.was-validated .form-control:invalid:focus, .form-control.is-invalid:focus {
+  box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25) !important;
+}
+.fade-in {
+  -webkit-animation: fade-in ease-in-out 0.2s;
+  -moz-animation: fade-in ease-in-out 0.2s;
+  animation: fade-in ease-in-out 0.2s;
+}
+.deleteButton{
+  background: transparent;
+  border: 0;
+}
+@-webkit-keyframes fade-in { from {opacity: 0;} to {opacity: 1;} }
+@-moz-keyframes fade-in { from {opacity: 0;} to {opacity: 1;} }
+@keyframes fade-in { from {opacity: 0;} to {opacity: 1;} }
+.fade-out {
+  -webkit-animation: fade-out ease-in 0.2s;
+  -moz-animation: fade-out ease-in 0.2s;
+  animation: fade-out ease-in 0.2s;
+}
+@-webkit-keyframes fade-out { from {opacity: 1;} to {opacity: 0;} }
+@-moz-keyframes fade-out { from {opacity: 1;} to {opacity: 0;} }
+@keyframes fade-out { from {opacity: 1;} to {opacity: 0;} }
+.slide-in {
+  -webkit-animation: slide-up ease-in 0.2s;
+}

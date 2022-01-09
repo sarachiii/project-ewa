@@ -1,0 +1,84 @@
+.co2-title {
+  width: fit-content;
+}
+
+.co2-levels {
+  width: 150px;
+}
+
+.input-group > * {
+  height: 38px;
+}
+
+.card {
+  border-radius: 10px;
+  border-color: var(--cc-darkgreen);
+}
+
+.card > hr {
+  background-color: var(--cc-darkgreen);
+}
+.btn {
+  border-radius: 0.5rem;
+}
+
+.fixed-bottom .btn {
+  border-radius: 10px;
+  height: 50px;
+  min-width: 50px;
+}
+
+.form-control {
+  padding: 0.2rem 0.75rem;
+  border-radius: 0.5rem;
+  border-color: var(--cc-green);
+}
+
+#sensors > .card {
+  width: 195px;
+}
+
+#sensors > .card > img {
+  width: 75px;
+}
+
+#sensors .btn {
+  width: 36px;
+}
+
+#sensors .form-control {
+  font-weight: bold;
+}
+
+input[type=color] {
+  border: 0;
+  padding: 0;
+  width: 110%;
+  height: 120%;
+
+}
+
+@media only screen and (max-width: 576px) {
+  #sensors {
+    padding: 12px;
+  }
+
+  #sensors > .card {
+    width: 100%;
+  }
+}
+
+button[disabled=disabled], button:disabled {
+  border: transparent;
+  background-color: #cccccc;
+  color: #666666;
+}
+
+.form-control:disabled{
+  background-color: #eeeeee;
+  border-color: #eeeeee;
+}
+
+.form-control input[type=color] {
+  cursor: pointer;
+}

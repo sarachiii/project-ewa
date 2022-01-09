@@ -1,0 +1,21 @@
+<div class="container px-0 mt-3 mb-3 fade-in">
+  <h2 class="d-md-none fw-bold h3 mb-3">My Team</h2>
+  <ng-container *ngIf="team.length else loading">
+    <div class="row g-1 fade-in">
+      <div *ngFor="let member of team" class="col-md-6">
+        <div class="card flex-row p-3 h-100">
+          <img class="profile-picture rounded-circle object-fit-cover"
+               [src]="member.profilePicture || 'assets/images/default_avatar.svg'" alt="Profile picture" #profilePicture
+               (error)="handleImageError($event)">
+          <div class="d-flex flex-column ms-3">
+            <h1 class="h5 fw-bold">{{member.fullName}}</h1>
+            <h2 class="h6">{{member.specialist}}</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #loading>
+    <div class="spinner-border border-3"></div>
+  </ng-template>
+</div>

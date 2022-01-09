@@ -1,0 +1,76 @@
+.backgroundNote {
+  border-radius: 10px;
+  background: var(--cc-yellow);
+}
+
+.btn-success {
+  background-color: var(--cc-green);
+  border-color: var(--cc-green);
+}
+
+.btn-success:hover {
+  color: #fff;
+  background-color: var(--cc-darkgreen);
+  border-color: var(--cc-darkgreen);
+}
+
+textarea {
+  color: #AB7878; /*Text color*/
+  line-height: 32px; /*distance between textlines*/
+  font-style: italic;
+  background-image: linear-gradient(#e3d3b1 .1em, var(--cc-yellow) .1em); /*background line*/
+  background-size: 100% 2em; /*multiple lines*/
+  font-size: 16px;
+  padding: 9px 20px 0 20px; /*places text on the line correct !not when scrolling*/
+}
+
+::placeholder {
+  color: #AB7878; /*Text color*/
+}
+
+.card-header {
+  background-color: #e3d3b1;
+  font-weight: bold;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  color: #AB7878;
+}
+
+.btnsize {
+  width: 25px;
+  height: 25px;
+  line-height: 0;
+  padding: 0.75rem 0.375rem;
+  font-size: 1rem;
+  border-radius: 8px;
+}
+
+.col-6 {
+  color: #AB7878;
+}
+
+.text-end {
+  font-style: italic;
+}
+
+.titleColor {
+  color: #AB7878; /*Text color*/
+  font-style: italic;
+  background-color: #e3d3b1;
+  font-weight: bold;
+  width: 90%;
+}
+
+.form-control {
+  border: none;
+  border-radius: 0;
+}
+
+#title.form-control:focus,
+#note.form-control:focus {
+  box-shadow: 0 0 0 0 !important;
+}
+
+.modal-backdrop {
+  background-color: rgba(116,118,116,0.55);
+}

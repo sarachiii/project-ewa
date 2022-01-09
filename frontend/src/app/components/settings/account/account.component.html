@@ -1,0 +1,169 @@
+<div class="container px-0 my-2 fade-in">
+  <h2 class="fw-bold">Account</h2>
+  <form [formGroup]="accountForm" (ngSubmit)="onSubmit()" autocomplete="off">
+    <!--Name-->
+    <div class="row">
+      <div class="col-md-6 my-2">
+        <label for="firstName" class="form-label fw-bold">First name</label>
+        <input type="text"
+               [ngClass]="{'is-valid': firstName.valid && firstName.dirty, 'is-invalid': firstName.invalid && firstName.dirty}"
+               class="form-control py-2" id="firstName" formControlName="firstName"
+               placeholder="Enter your first name" required>
+        <div *ngIf="firstName.invalid" class="invalid-feedback">
+          <ng-container *ngIf="firstName.errors.required">First name is required!</ng-container>
+          <ng-container *ngIf="firstName.errors.pattern">Name may only contain alphabetical characters, a dash, a dot or
+            a space (A-z, -, ., )
+          </ng-container>
+        </div>
+      </div>
+      <div class="col-md-6 my-2">
+        <label for="lastName" class="form-label fw-bold">Last name</label>
+        <input type="text"
+               [ngClass]="{'is-valid': lastName.valid && lastName.dirty, 'is-invalid': lastName.invalid && lastName.dirty}"
+               class="form-control py-2" id="lastName" formControlName="lastName"
+               placeholder="Enter your last name" required>
+        <div *ngIf="lastName.invalid" class="invalid-feedback">
+          <ng-container *ngIf="lastName.errors.required">Last name is required!</ng-container>
+          <ng-container *ngIf="lastName.errors.pattern">Name may only contain alphabetical characters, a dash, a dot or
+            a space (A-z, -, ., )
+          </ng-container>
+        </div>
+      </div>
+    </div>
+    <!--Profile picture-->
+    <div class="row">
+      <div class="col-md my-2">
+        <label for="profilePicture" class="form-label fw-bold">Profile picture</label>
+        <div id="profilePicture">
+          <div class="image d-inline-block rounded-circle me-2 pe-auto">
+            <img class="rounded-circle object-fit-cover w-100 h-100"
+                 [src]="preview || copyUser.profilePicture || 'assets/images/default_avatar.svg'"
+                 (error)="handleImageError($event)" alt="Profile picture" data-bs-toggle="modal"
+                 data-bs-target="#profilePictureModal">
+          </div>
+          <button type="button" class="btn btn-primary fw-bold ms-2" data-bs-toggle="modal"
+                  data-bs-target="#profilePictureModal">
+            Change
+          </button>
+          <button type="button" class="btn btn-outline-danger fw-bold ms-2" (click)="onDelete()">Delete</button>
+          <div class="modal fade" id="profilePictureModal" tabindex="-1" aria-labelledby="ppModalLabel"
+               aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="ppModalLabel">Profile picture</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div class="mb-3">
+                    <div class="image rounded-circle d-block mx-auto">
+                      <img class="rounded-circle object-fit-cover w-100 h-100"
+                           [src]="preview || copyUser.profilePicture || 'assets/images/default_avatar.svg'"
+                           (error)="handleImageError($event)" alt="Profile picture">
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="profilePictureFile" class="col-form-label fw-bold">Select a local file</label>
+                    <div class="input-group">
+                      <input #fileElement type="file" class="form-control" id="profilePictureFile"
+                             (change)="onChangeFile($event)">
+                      <button type="button" class="btn btn-primary" (click)="onClear()" [disabled]="!file.value">Clear
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-outline-danger fw-bold" data-bs-dismiss="modal"
+                          (click)="onClear()">Cancel
+                  </button>
+                  <button type="button" class="btn btn-primary fw-bold" data-bs-dismiss="modal">OK</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--Email address-->
+    <div class="row">
+      <div class="col-md-6 my-2">
+        <label for="emailAddress" class="form-label fw-bold">Email address</label>
+        <input type="email"
+               [ngClass]="{'is-valid': emailAddress.valid && emailAddress.dirty, 'is-invalid': emailAddress.invalid && emailAddress.dirty}"
+               class="form-control py-2" id="emailAddress" placeholder="name@example.com"
+               formControlName="emailAddress" required>
+        <div *ngIf="emailAddress.invalid" class="invalid-feedback">
+          <ng-container *ngIf="emailAddress.errors.required">Email is required!</ng-container>
+          <ng-container *ngIf="emailAddress.errors.email">Email is invalid!<br>Format: name@example.com</ng-container>
+        </div>
+      </div>
+    </div>
+    <!--Password-->
+    <div class="row">
+      <div class="col-md-6 my-2">
+        <label for="password" class="form-label fw-bold">Password</label>
+        <input type="password"
+               [ngClass]="{'is-valid': password.valid && password.dirty, 'is-invalid': password.invalid && password.dirty}"
+               class="form-control py-2" id="password" placeholder="Enter your password"
+               formControlName="password" required autocomplete="new-password">
+        <div *ngIf="password.invalid && password.dirty" class="invalid-feedback">
+          <ng-container *ngIf="password.errors.required">Password is required!</ng-container>
+          <ng-container *ngIf="password.errors.mismatch && password.value">Password is wrong!</ng-container>
+        </div>
+      </div>
+    </div>
+    <!--New password form-->
+    <div [formGroup]="newPasswordForm">
+      <!--New password-->
+      <div class="row">
+        <div class="col-md-6 my-2">
+          <label for="newPassword" class="form-label fw-bold">New password</label>
+          <input type="password"
+                 [ngClass]="{'is-valid': newPasswordForm.valid && newPassword.valid, 'is-invalid': newPasswordForm.invalid && (newPassword.value || confirmPassword.value)}"
+                 class="form-control py-2" id="newPassword" placeholder="Enter new password"
+                 formControlName="password">
+          <div *ngIf="newPasswordForm.invalid || newPassword.invalid" class="invalid-feedback">
+            <ng-container *ngIf="newPasswordForm.invalid && !newPassword.value">New password is required!</ng-container>
+            <ng-container *ngIf="newPasswordForm.invalid && newPassword.valid">Confirm your new password!</ng-container>
+            <ng-container *ngIf="newPassword.invalid && newPassword.value">
+              Password needs to meet the following criteria:
+              <ul>
+                <li *ngIf="newPassword.errors?.length">Must be at least 8 characters long</li>
+                <li *ngIf="newPassword.errors?.number">Must contain a number</li>
+                <li *ngIf="newPassword.errors?.upperCase">Must contain an uppercase character</li>
+                <li *ngIf="newPassword.errors?.lowerCase">Must contain a lowercase character</li>
+                <li *ngIf="newPassword.errors?.illegalChars">May only contain these special characters: (!@#$%&_=+?~-)
+                </li>
+              </ul>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <!--Confirm new password-->
+      <div class="row">
+        <div class="col-md-6 my-2">
+          <label for="confirmPassword" class="form-label fw-bold">Confirm new password</label>
+          <input
+            [ngClass]="{'is-valid': newPasswordForm.valid && confirmPassword.valid, 'is-invalid': newPasswordForm.invalid && (newPassword.value || confirmPassword.value)}"
+            type="password" class="form-control py-2" id="confirmPassword" placeholder="Repeat new password"
+            formControlName="confirmPassword">
+          <div *ngIf="newPasswordForm.invalid" class="invalid-feedback">
+            <ng-container *ngIf="newPasswordForm.errors?.mismatch else badPassword">Passwords do not match!
+            </ng-container>
+            <ng-template #badPassword>Password does not meet the criteria!</ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--Form Buttons-->
+    <div class="row">
+      <div class="col-md-6 offset-md-6 my-2">
+        <button type="submit" class="btn btn-primary fw-bold float-end ms-2"
+                [disabled]="accountForm.pristine && newPasswordForm.invalid">SAVE
+        </button>
+        <button type="button" class="btn btn-outline-danger fw-bold float-end" (click)="onReset()">CANCEL</button>
+      </div>
+    </div>
+  </form>
+</div>
+

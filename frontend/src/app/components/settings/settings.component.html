@@ -1,0 +1,27 @@
+<div class="container py-3 py-md-5 fade-in">
+  <div class="card shadow p-3">
+    <div class="container">
+      <div class="row">
+        <h1 class="fw-bold">Settings</h1>
+        <hr class="my-2 opacity-100">
+      </div>
+      <div class="row">
+        <div class="col-md-4 d-md-flex pe-md-0">
+          <div class="d-flex d-md-block w-100">
+            <a class="btn btn-outline-primary fw-bold align-items-stretch d-flex w-100 me-2 me-md-0 my-3 py-2" routerLink="account" routerLinkActive="active">
+              <img class="me-2 green-filter" src="assets/images/settings/account_icon_green.svg" alt="Account Settings">Account
+            </a>
+            <a class="btn btn-outline-primary fw-bold align-items-stretch d-flex w-100 my-3 py-2" routerLink="preferences" routerLinkActive="active">
+              <img class="me-2 green-filter" src="assets/images/settings/appearance_icon_green.svg" alt="Appearance Settings">Preferences
+            </a>
+          </div>
+          <div class="vr mx-3 my-2 opacity-100 d-none d-md-flex"></div>
+          <hr class="d-flex d-md-none mt-1 mb-2 opacity-100">
+        </div>
+        <div class="col-md-8 ps-md-0 position-relative">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

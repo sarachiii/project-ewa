@@ -1,0 +1,13 @@
+.navbar{
+  background-color: var(--cc-green);
+  font-weight: bold;
+}
+.nav-link{
+  display: inline-block;
+  color: white;
+  padding: 16px 8px;
+}
+.nav-link:hover, .nav-link:focus, .nav-link-active{
+  color: var(--bs-dark);
+  background-color: white;
+}

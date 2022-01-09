@@ -1,0 +1,15 @@
+<div *ngIf="sensors as sensors" class="container-fluid container-lg pt-4">
+  <div class="d-flex">
+    <ng-container *ngIf="sensors.length && controlledSensor && sensorsData.get(controlledSensor.name)?.length">
+      <div class="flex-grow-1 min-w-0">
+        <app-history-data class="fade-in"
+                          [(page)]="page" (pageChange)="setTimer($event)" [pageCount]="pageCount"
+                          [sensor]="controlledSensor"
+                          [sensorData]="sensorsData.get(controlledSensor.name)"
+                          [co2Levels]="sensorsData.get('co2_level')"
+                          [timestamps]="sensorsData.get('timestamp')">
+        </app-history-data>
+      </div>
+    </ng-container>
+  </div>
+</div>

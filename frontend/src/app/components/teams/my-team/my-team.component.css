@@ -1,0 +1,8 @@
+.card {
+  border-radius: 10px;
+  border-color: var(--cc-darkgreen);
+}
+.profile-picture {
+  width: 5rem;
+  height: 5rem;
+}
