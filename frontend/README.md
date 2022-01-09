@@ -13,6 +13,7 @@ Front-end
 
 - Bootstrap: we did use bootstrap for the design of the application.
 - ChartJs: for the charts we dit use the ChartJs js library
+- This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.4.
 
 
 ## Setup
@@ -71,4 +72,4 @@ Spring RestController annotation is used to create RESTful web services using Sp
 
 
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.4.
+
