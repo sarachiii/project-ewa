@@ -3,7 +3,6 @@ package nl.hva.backend.models;
 import javax.persistence.*;
 
 /**
- * This class <description of functionality>
  *
  * @author hashim.mohammad@hva.nl
  */

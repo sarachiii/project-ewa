@@ -2,8 +2,6 @@ package nl.hva.backend.rest.exception;
 
 
 /**
- * Doel:
- *
  * @author Mohamad Hassan
  */
 

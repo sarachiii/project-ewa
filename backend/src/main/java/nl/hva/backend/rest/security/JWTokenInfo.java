@@ -3,8 +3,6 @@ package nl.hva.backend.rest.security;
 import java.util.Date;
 
 /**
- * Doel:
- *
  * @author Mohamad Hassan
  */
 public class JWTokenInfo {

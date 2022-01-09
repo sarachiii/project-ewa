@@ -10,7 +10,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+/**
+ * @author Sarah Chrzanowska-Buth
+ */
 @SpringBootTest
 public class TestTeamsRepository {
 

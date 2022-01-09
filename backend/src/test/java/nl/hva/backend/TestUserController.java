@@ -13,7 +13,9 @@ import org.springframework.test.annotation.DirtiesContext;
 import javax.transaction.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+/**
+ * @author Sarah Chrzanowska-Buth
+ */
 @SpringBootTest
 public class TestUserController {
 
