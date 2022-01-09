@@ -1,6 +1,8 @@
 package nl.hva.backend.rest.security;
 
 import nl.hva.backend.rest.exception.UnAuthorizedExeption;
+import org.apache.tomcat.websocket.AuthenticationException;
+import org.hibernate.service.spi.InjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -52,14 +54,14 @@ public class JWTRequerstFilter extends OncePerRequestFilter {
                 throw new UnAuthorizedExeption("Authentication problem");
             }
 
-            encodedToken = encodedToken.replace("Bearer","");
+            encodedToken = encodedToken.replace("Bearer "," ");
 
-            jwToken= tokenUtils.decode(encodedToken);
+            jwToken= tokenUtils.decode(encodedToken,false);
 
             request.setAttribute(JWTokenInfo.KEY, jwToken);
 
             filterChain.doFilter(request, response);
-        }catch(UnAuthorizedExeption e ) {
+        }catch(UnAuthorizedExeption | AuthenticationException e ) {
             // aborting the chain
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authentication error");
 

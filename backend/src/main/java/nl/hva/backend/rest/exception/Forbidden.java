@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @author Mohamad Hassan
  */
 @ResponseStatus(HttpStatus.FORBIDDEN)
-public class WrongPassword extends RuntimeException {
-    public WrongPassword(String message) {
+public class Forbidden extends RuntimeException {
+    public Forbidden(String message) {
         super(message);
     }
 }

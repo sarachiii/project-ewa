@@ -11,11 +11,11 @@
     <!-- Login Form -->
     <form>
 
-      <!-- Error Message -->
-      <p *ngIf="loginErrorMessage.length>0">
-        {{loginErrorMessage}}
-      </p>
-      <input type="text" id="login" class="fadeIn second" name="login" placeholder="login" [(ngModel)]="username">
+        <!-- Error Message -->
+        <p *ngIf="loginErrorMessage.length>0">
+          {{loginErrorMessage}}
+        </p>
+        <input type="text" id="login" class="fadeIn second" name="login" placeholder="login" [(ngModel)]="email">
 
       <input type="password" id="password" class="fadeIn third" name="login" placeholder="password"
              [(ngModel)]="password">
