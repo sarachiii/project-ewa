@@ -3,8 +3,8 @@ package nl.hva.backend.rest;
 import nl.hva.backend.models.Preferences;
 import nl.hva.backend.models.forms.AccountForm;
 import nl.hva.backend.models.forms.Login;
-import nl.hva.backend.repositories.interfaces.SettingsRepository;
 import nl.hva.backend.rest.exception.*;
+import nl.hva.backend.rest.security.JWTokenUtils;
 import nl.hva.backend.services.EmailService;
 import nl.hva.backend.services.FileService;
 import nl.hva.backend.services.UserService;
@@ -34,9 +34,6 @@ public class UserController {
     private UserRepository userRepository;
 
     @Autowired
-    private SettingsRepository settingsRepository;
-
-    @Autowired
     private UserService userService;
 
     @Autowired
@@ -44,6 +41,10 @@ public class UserController {
 
     @Autowired
     private FileService fileService;
+
+    @Autowired
+    JWTokenUtils jwTokenUtils;
+
 
     @GetMapping("users")
     public List<User> getUsersList() {
@@ -59,11 +60,19 @@ public class UserController {
         return user;
     }
 
-    @GetMapping(value = "users", params = "username")
-    public User getUserByUsername(@RequestParam String username) {
-        User user = this.userRepository.findByEmailAddress(username);
+    @GetMapping(value = "users", params = "email")
+    public User getUserByEmail(@RequestParam String email) {
+        User user = this.userRepository.findByEmailAddress(email);
         if (user == null) {
-            throw new ResourceNotFound("username does not exist");
+            throw new ResourceNotFound("No user with this email-address");
+        }
+        return user;
+    }
+    @GetMapping(value = "users", params = "firstname")
+    public User getUserByFirstName(@RequestParam String firstname) {
+        User user = this.userRepository.findByFirstName(firstname);
+        if (user == null) {
+            throw new ResourceNotFound("no user with this firstname");
         }
         return user;
     }
@@ -103,8 +112,8 @@ public class UserController {
     @DeleteMapping("users/{id}")
     public ResponseEntity<Boolean> deleteUser(@PathVariable Long id) {
         if (this.userRepository.existsById(id)) {
+            this.fileService.delete(this.userRepository.findUserById(id).getProfilePicture());
             this.userRepository.deleteById(id);
-            this.fileService.delete(String.format("users/%d/avatar/%s", id, FileService.DEFAULT_IMAGE_NAME));
             return ResponseEntity.ok(true);
         } else {
             throw new ResourceNotFound("no user with this id exist to be deleted");
@@ -149,7 +158,7 @@ public class UserController {
         }
 
         // If the user somehow has empty string or whitespace as profile picture
-        if (user.getProfilePicture().isBlank()) {
+        if (user.getProfilePicture() != null && user.getProfilePicture().isBlank()) {
             user.setProfilePicture(null);
         }
 
@@ -178,17 +187,6 @@ public class UserController {
         this.userRepository.save(user);
 
         return ResponseEntity.ok(true);
-    }
-
-    @PostMapping("login")
-    public Long authenticateLogin(@RequestBody Login login) {
-        User user = this.userRepository.findByEmailAddress(login.getUsername());
-
-        if (user == null) {
-            throw new ResourceNotFound("username does not exist");
-        }
-
-        return this.userService.matches(login.getPassword(), user.getPassword()) ? user.getId() : null;
     }
 
 }

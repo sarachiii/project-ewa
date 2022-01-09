@@ -101,8 +101,7 @@ public class SensorController {
             SensorData sd = new SensorData(
                     ZonedDateTime.parse(sensorNode.get("date_time").asText()),
                     sensorNode.get("gh_id").asLong(), sensor.getId(),
-                    value,
-                    sensorNode.get("user_id").asLong());
+                    value);
             sensorData.add(sd);
         }
 
@@ -111,7 +110,7 @@ public class SensorController {
 
     @PostMapping("data")
     public ResponseEntity<?> postSensorData(@RequestBody ObjectNode sensorNode,
-                                            @RequestParam(required = false) String view) throws ResourceNotFound, BadRequestException{
+                                            @RequestParam(required = false) String view) throws ResourceNotFound, BadRequestException {
         if (sensorNode == null) throw new BadRequestException("Empty body");
         if (view != null && !view.equals("db"))
             throw new BadRequestException(String.format("Parameter view=%s is unacceptable, accepted values: db", view));
@@ -146,8 +145,7 @@ public class SensorController {
                     sensor.getId(),
                     sensor.getName().equals(Sensor.Name.LIGHTING_RGB.toString()) ?
                             SensorData.fromHexColor(sensorNode.get(sensor.getName()).asText()) :
-                            sensorNode.get(sensor.getName()).asDouble(),
-                    sensorNode.get("user_id").asLong()
+                            sensorNode.get(sensor.getName()).asDouble()
                     );
 
             sensorData.add(sd);
@@ -163,16 +161,11 @@ public class SensorController {
 
         // Return the API result
         return ResponseEntity.ok(savedSensorData);
-
-        // TODO: Sometimes the recent activity is off by one second
-        // return ResponseEntity.ok(getSensorDataDB(sensorNode.get("gh_id").asText(), String.valueOf(sensorData.size())))
     }
 
-    @PostMapping("add")
-    public ResponseEntity<Sensor> saveSensor(@RequestBody Sensor sensor){
+    @PostMapping()
+    public ResponseEntity<Sensor> saveSensor(@RequestBody Sensor sensor) {
         Sensor savedSensor = sensorRepository.save(sensor);
         return ResponseEntity.ok().body(savedSensor);
     }
-
-
 }

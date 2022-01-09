@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EditNotesComponent } from './edit-notes.component';
+import { HttpClientTestingModule } from "@angular/common/http/testing";
+import { RouterTestingModule } from "@angular/router/testing";
+import { routes } from "../../app-routing.module";
+import { ReactiveFormsModule } from "@angular/forms";
 
 describe('EditNotesComponent', () => {
   let component: EditNotesComponent;
@@ -8,7 +12,12 @@ describe('EditNotesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EditNotesComponent ]
+      declarations: [ EditNotesComponent ],
+      imports: [
+        HttpClientTestingModule,
+        RouterTestingModule.withRoutes(routes),
+        ReactiveFormsModule
+      ]
     })
     .compileComponents();
   });

@@ -77,8 +77,9 @@ export class AccountComponent implements OnInit, OnDestroy {
 
   private accountFormInit(): void {
     this.accountForm = new FormGroup({
-      firstName: new FormControl('', Validators.required),
-      lastName: new FormControl('', Validators.required),
+      firstName: new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-Z- .]+$/)]),
+      lastName: new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-Z- .]+$/)]
+      ),
       file: new FormControl(''),
       emailAddress: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('')

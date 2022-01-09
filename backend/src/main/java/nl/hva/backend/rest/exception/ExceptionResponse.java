@@ -5,8 +5,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
 
 /**
- * Doel:
- *
  * @author Mohamad Hassan
  */
 public class ExceptionResponse {

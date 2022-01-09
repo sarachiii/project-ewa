@@ -14,9 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This method creates an arraylist of all the sensors
- *
- * @author Jechillo Huang
+ * @author Hashim
  */
 
 @Repository
@@ -98,6 +96,13 @@ public class SensorRepository {
             savedSensorData.add(saveData(sd));
         }
         return savedSensorData;
+    }
+
+    //Deletes a sensor
+    public void deleteById(long id) {
+        this.entityManager.createNamedQuery("Sensor.deleteById")
+                .setParameter("id", id)
+                .executeUpdate();
     }
 }
 

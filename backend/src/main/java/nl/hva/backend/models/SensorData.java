@@ -2,15 +2,12 @@ package nl.hva.backend.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
 
 /**
- * This class <description of functionality>
- *
  * @author hashim.mohammad@hva.nl
  */
 
@@ -51,24 +48,15 @@ public class SensorData {
 
     private double value;
 
-    @Column(name = "user_id")
-    private long userId;
-
-    @ManyToOne
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @Transient
-    private User user;
-
-    public SensorData(ZonedDateTime timestamp, long ghId, long sensorId, double value, long userId) {
+    public SensorData(ZonedDateTime timestamp, long ghId, long sensorId, double value) {
         this.timestamp = timestamp;
         this.ghId = ghId;
         this.sensorId = sensorId;
         this.value = value;
-        this.userId = userId;
     }
 
     protected SensorData() {
-        this(null, 0, 0, 0, 0);
+        this(null, 0, 0, 0);
     }
 
     public ZonedDateTime getTimestamp() {
@@ -121,14 +109,6 @@ public class SensorData {
         this.value = value;
     }
 
-    public long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(long userId) {
-        this.userId = userId;
-    }
-
     @JsonIgnore
     public String getHexColor() {
         return String.format("#%06x", (long) this.value);
@@ -137,13 +117,5 @@ public class SensorData {
     @JsonIgnore
     public static double fromHexColor(String hexColor) throws NumberFormatException, IndexOutOfBoundsException {
         return Integer.parseInt(hexColor.substring(1, 7), 16);
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 }

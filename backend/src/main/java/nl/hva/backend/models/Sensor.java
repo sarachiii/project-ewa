@@ -12,7 +12,8 @@ import java.util.List;
 @Entity
 @NamedQueries({
         @NamedQuery(name = "Sensor.findAll", query = "SELECT s FROM Sensor s"),
-        @NamedQuery(name = "Sensor.findByName", query = "SELECT s FROM Sensor s WHERE s.name = :name")
+        @NamedQuery(name = "Sensor.findByName", query = "SELECT s FROM Sensor s WHERE s.name = :name"),
+        @NamedQuery(name = "Sensor.deleteById", query = "DELETE FROM Sensor s WHERE s.id = :id")
 })
 public class Sensor {
 
@@ -48,23 +49,23 @@ public class Sensor {
         LIGHTING_RGB("lighting_rgb"),
         DAILY_EXPOSURE("daily_exposure");
 
-        private final String string;
+        private final String STRING;
         private static final List<Name> NAMES = List.of(values());
 
         Name(String string) {
-            this.string = string;
+            this.STRING = string;
         }
 
         public static boolean has(String name) {
             for (Name n : NAMES) {
-                if(n.string.equalsIgnoreCase(name)) return true;
+                if(n.STRING.equalsIgnoreCase(name)) return true;
             }
             return false;
         }
 
         @Override
         public String toString() {
-            return this.string;
+            return this.STRING;
         }
     }
 

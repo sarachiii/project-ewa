@@ -1,6 +1,6 @@
 <div *ngIf="sensors as sensors" class="container-fluid container-lg pt-4">
   <div class="d-flex">
-    <ng-container *ngIf="sensors.length && controlledSensor">
+    <ng-container *ngIf="sensors.length && controlledSensor && sensorsData.get(controlledSensor.name)?.length">
       <div class="flex-grow-1 min-w-0">
         <app-history-data class="fade-in"
                           [(page)]="page" (pageChange)="setTimer($event)" [pageCount]="pageCount"

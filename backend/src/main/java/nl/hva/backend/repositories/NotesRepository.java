@@ -14,16 +14,12 @@ public class NotesRepository {
     @PersistenceContext
     EntityManager entityManager;
 
-    public List<Note> notes;
-
-
     public List<Note> findAll() {
         TypedQuery<Note> namedQuery = entityManager.createNamedQuery("find_all_notes", Note.class);
-        notes = namedQuery.getResultList();
-        return notes;
+        return namedQuery.getResultList();
     }
 
-    public Note findNoteById(int noteId) {
+    public Note findNoteById(long noteId) {
         return entityManager.find(Note.class, noteId);
     }
 
@@ -33,7 +29,7 @@ public class NotesRepository {
         return entityManager.merge(note);
     }
 
-    public boolean deleteNoteById(int noteId) {
+    public boolean deleteNoteById(long noteId) {
         Note note = findNoteById(noteId);
         if (note != null) {
             entityManager.remove(note);

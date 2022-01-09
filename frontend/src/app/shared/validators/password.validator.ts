@@ -4,16 +4,15 @@ export function passwordValidator(password?: string): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     let passwordsMatch: boolean;
     if (control instanceof FormControl) {
-      // if (typeof password != "string") throw new TypeError('No password supplied for FormControl');
       let password2 = control.value;
       passwordsMatch = password == password2;
     } else if (control instanceof FormGroup) {
-      passwordsMatch = Object.keys(control.controls).every((key, i , keys) => control.get(key).value === control.get(keys[0]).value);
-    } else { // object keys every same as array[0]
+      passwordsMatch = Object.keys(control.controls).every((key, i, keys) => control.get(key).value === control.get(keys[0]).value);
+    } else {
       // FormArray
       return null;
     }
-    return passwordsMatch ? null : { mismatch: true };
+    return passwordsMatch ? null : {mismatch: true};
   };
 }
 

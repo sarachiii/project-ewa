@@ -29,7 +29,7 @@ public class NotesController {
     }
 
     //Add a note
-    @PostMapping("add")
+    @PostMapping()
     public ResponseEntity<Note> saveNote(@RequestBody Note note) {
         if (note.getNoteText().length() <= 0 && note.getTitle().length() <= 0) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -40,8 +40,8 @@ public class NotesController {
     }
 
     //Delete a note by id from the note list
-    @DeleteMapping("delete/{id}")
-    public ResponseEntity<ObjectNode> deleteNoteById(@PathVariable int id) {
+    @DeleteMapping("{id}")
+    public ResponseEntity<ObjectNode> deleteNoteById(@PathVariable long id) {
         if (!notesRepository.deleteNoteById(id)) throw new ResourceNotFound("id-" + id);
         ObjectNode response = mapper.createObjectNode();
         response.put("message", "Note with id " + id + " was deleted.");

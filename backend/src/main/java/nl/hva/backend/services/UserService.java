@@ -4,13 +4,8 @@ import net.bytebuddy.utility.RandomString;
 import nl.hva.backend.models.User;
 import nl.hva.backend.rest.exception.InternalServerErrorException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.codec.Hex;
 import org.springframework.stereotype.Service;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Random;
 

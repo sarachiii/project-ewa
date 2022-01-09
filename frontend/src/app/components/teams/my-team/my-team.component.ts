@@ -27,7 +27,7 @@ export class MyTeamComponent implements OnInit, OnDestroy {
       .pipe(skipWhile(value => Object.keys(value).length === 0))
       .subscribe(user => {
         this.user = user;
-        this.teamService.getTeamById(user.teamId).toPromise().then(team => {
+        this.teamService.getMembersByTeamId(user.teamId).toPromise().then(team => {
           this.team = team.map(u => Object.assign(new User(), u));
         });
       });

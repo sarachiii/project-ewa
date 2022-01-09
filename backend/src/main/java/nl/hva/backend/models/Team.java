@@ -13,14 +13,14 @@ import java.util.List;
 public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
     @Column(name = "gh_id")
-    private Long ghId;
+    private long ghId;
 
     @OneToMany(mappedBy = "team", targetEntity = User.class, cascade = CascadeType.REMOVE)
     private List<User> users = new ArrayList<>();
 
-    public Team(Long ghId) {
+    public Team(long ghId) {
         this.ghId = ghId;
     }
 
@@ -28,19 +28,19 @@ public class Team {
 
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public Long getGhId() {
+    public long getGhId() {
         return ghId;
     }
 
-    public void setGhId(Long ghId) {
+    public void setGhId(long ghId) {
         this.ghId = ghId;
     }
 }

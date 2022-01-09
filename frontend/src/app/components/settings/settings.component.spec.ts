@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SettingsComponent } from './settings.component';
+import { HttpClientTestingModule } from "@angular/common/http/testing";
+import { RouterTestingModule } from "@angular/router/testing";
+import { routes } from "../../app-routing.module";
 
 describe('SettingsComponent', () => {
   let component: SettingsComponent;
@@ -8,7 +11,11 @@ describe('SettingsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SettingsComponent ]
+      declarations: [ SettingsComponent ],
+      imports: [
+        HttpClientTestingModule,
+        RouterTestingModule.withRoutes(routes)
+      ]
     })
     .compileComponents();
   });

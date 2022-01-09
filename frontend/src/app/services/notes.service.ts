@@ -6,6 +6,7 @@ import {Note} from "../models/note";
 import {Observable, throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
 import {PostNote} from "../models/postNote";
+import {WebStorageService} from "./storage/web-storage.service";
 
 /**
  * This is the notes service.
@@ -13,14 +14,13 @@ import {PostNote} from "../models/postNote";
  * @author Sarah Chrzanowska-Buth & Nazlıcan Eren
  */
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class NotesService {
   resourceUrl: string;
   private _notes$: BehaviorSubject<Note[]>;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+              protected webStorage:WebStorageService) {
     this.resourceUrl = environment.apiUrl + "/notes";
     this._notes$ = new BehaviorSubject<Note[]>([]);
     this.allNotes();
@@ -67,11 +67,11 @@ export class NotesService {
   }
 
   restPostNote(note): Observable<Note> {
-    return this.http.post<Note>(this.resourceUrl + "/add", note);
+    return this.http.post<Note>(this.resourceUrl, note);
   }
 
   deleteNote(noteId): void {
-    this.http.delete<Note>(`${this.resourceUrl}/delete/${noteId}`).subscribe(() => {
+    this.http.delete<Note>(`${this.resourceUrl}/${noteId}`).subscribe(() => {
       let notes = this._notes$.getValue();
       let noteIndex = notes.findIndex(n => n.noteId == noteId);
       if (noteIndex > -1) notes.splice(noteIndex, 1);
