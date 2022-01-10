@@ -15,9 +15,9 @@
         <p *ngIf="loginErrorMessage.length>0">
           {{loginErrorMessage}}
         </p>
-        <input type="text" id="login" class="fadeIn second" name="login" placeholder="login" [(ngModel)]="email">
+        <input type="text" id="login" class="fadeIn second" name="login" placeholder="Email" [(ngModel)]="email">
 
-      <input type="password" id="password" class="fadeIn third" name="login" placeholder="password"
+      <input type="password" id="password" class="fadeIn third" name="login" placeholder="Password"
              [(ngModel)]="password">
       <input type="submit" class="fadeIn fourth" value="Log In" (click)="checkLoginToken()">
       <br>
