@@ -2,7 +2,6 @@ package nl.hva.backend.rest.security;
 
 import nl.hva.backend.rest.exception.UnAuthorizedExeption;
 import org.apache.tomcat.websocket.AuthenticationException;
-import org.hibernate.service.spi.InjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -22,7 +21,7 @@ import java.util.Set;
  * @author Mohamad Hassan
  */
 @Component
-public class JWTRequerstFilter extends OncePerRequestFilter {
+public class JWTRequestFilter extends OncePerRequestFilter {
 
     @Autowired
     private JWTokenUtils tokenUtils;
