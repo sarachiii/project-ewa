@@ -32,7 +32,7 @@ public class Note {
     protected Note() {
     }
 
-    public Note(int noteId, User user, ZonedDateTime timestamp, String title, String noteText) {
+    public Note(long noteId, User user, ZonedDateTime timestamp, String title, String noteText) {
         super();
         this.noteId = noteId;
         this.user = user;
@@ -41,7 +41,7 @@ public class Note {
         this.noteText = noteText;
     }
 
-    public Note(int noteId, long userId, ZonedDateTime timestamp, String title, String noteText) {
+    public Note(long noteId, long userId, ZonedDateTime timestamp, String title, String noteText) {
         super();
         this.noteId = noteId;
         this.userId = userId;
