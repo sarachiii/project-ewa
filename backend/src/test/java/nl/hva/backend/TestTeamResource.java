@@ -2,6 +2,7 @@ package nl.hva.backend;
 
 import nl.hva.backend.models.Team;
 import nl.hva.backend.rest.security.JWTokenUtils;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,9 +12,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 
+import java.util.Objects;
+
 import static org.junit.jupiter.api.Assertions.*;
 /**
- * @author Sarah Chrzanowska-Buth
+ * @author Sarah Chrzanowska-Buth, Hashim Mohammad
  */
 @TestConfiguration
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -27,17 +30,23 @@ public class TestTeamResource {
     @Autowired
     private JWTokenUtils jwTokenUtils;
 
-    @Test
+    @BeforeEach
     @DirtiesContext
-    void testCreateTeamShouldSucceed() {
-
+    void setUp() {
         String token = jwTokenUtils.encode(STUB_EMAIL_ID,false);
 
         restTemplate.getRestTemplate().getInterceptors().add((req, body, execution) -> {
             req.getHeaders().add("Authorization","Bearer " + token);
             return execution.execute(req, body);
         });
+    }
 
+    /**
+     * @author Sarah Chrzanowska-Buth
+     */
+    @Test
+    @DirtiesContext
+    void testCreateTeamShouldSucceed() {
         // Arrange: Create a new team
         Team team = new Team(2L);
 
@@ -57,5 +66,25 @@ public class TestTeamResource {
         assertEquals(HttpStatus.OK, queryResult.getStatusCode());
         assertEquals(queryResult.getBody().getId(), creationResult.getBody().getId());
         assertEquals(queryResult.getBody().getGhId(), creationResult.getBody().getGhId());
+    }
+
+    /**
+     * @author Hashim Mohammad
+     */
+    @Test
+    @DirtiesContext
+    void testDeleteTeamShouldSucceed() {
+        // Arrange: Create new team and get the id
+        Team team = new Team(2L);
+        ResponseEntity<Team> creationResult = restTemplate.postForEntity("/teams", team, Team.class);
+        assertEquals(HttpStatus.CREATED, creationResult.getStatusCode());
+        long teamId = Objects.requireNonNull(creationResult.getBody()).getId();
+
+        // Act: Delete team
+        restTemplate.delete("/teams/" + teamId);
+
+        // Assert: Team with id teamId should no longer exist
+        ResponseEntity<Team> deletionResult = restTemplate.getForEntity("/teams/" + teamId, Team.class);
+        assertEquals(HttpStatus.NOT_FOUND, deletionResult.getStatusCode());
     }
 }

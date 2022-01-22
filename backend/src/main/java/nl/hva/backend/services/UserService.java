@@ -15,7 +15,6 @@ public class UserService {
     private static final String DEFAULT_SUBJECT = "Welcome to Climate Cleanup!";
     private static final Random RANDOM = new Random();
     private static final int UPPERBOUND_INCREMENT = 1;
-    private static final String SHA_256 = "SHA-256";
     private static final BCryptPasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
     public HashMap<String, String> generateMail(User user){
