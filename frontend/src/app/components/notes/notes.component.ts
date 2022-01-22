@@ -18,17 +18,17 @@ import {Observable} from "rxjs";
 @Component({
   selector: 'app-notes',
   templateUrl: './notes.component.html',
-  styleUrls: ['./notes.component.css']
+  styleUrls: ['./notes.component.css'],
+  providers: [NotesService]
 })
 export class NotesComponent implements OnInit, OnChanges {
   createNote: boolean = false;
   editNote: boolean = false;
   selectedNote: Note = <Note>{};
-  test: boolean = false;
   user: User;
   notes$: Observable<Note[]>;
 
-  @Input() selectedWorkfieldFromNavbar: string;
+  @Input() selectedSpecialtyFromNavbar: string;
 
   @ViewChild(NgxMasonryComponent) masonry: NgxMasonryComponent;
   masonryOptions: NgxMasonryOptions;
@@ -53,8 +53,16 @@ export class NotesComponent implements OnInit, OnChanges {
         // The initial notes page is equal to the specialty of the user
         this.router.navigate([this.user.specialty.toLowerCase()], {relativeTo: this.activatedRoute})
           .catch(reason => console.error(reason));
-        this.selectedWorkfieldFromNavbar = this.user.specialty.toLowerCase();
+        this.selectedSpecialtyFromNavbar = this.user.specialty.toLowerCase();
       });
+
+    this.notes$ = this.notesService.notes$
+      .pipe(map(notes => {
+        return notes
+          .filter((note) =>
+            this.selectedSpecialtyFromNavbar == note.user.specialty.toLocaleLowerCase())
+          .sort((a, b) => new Date(b.timestamp).valueOf() - new Date(a.timestamp).valueOf());
+      }));
 
     this.notes$.subscribe(value => {
       if (value.length && this.masonry) this.reloadMasonry();
@@ -67,13 +75,13 @@ export class NotesComponent implements OnInit, OnChanges {
       horizontalOrder: true,
     };
 
-      this.notes$ = this.notesService.notes$
-        .pipe(map(notes => {
-          return notes
-            .filter((note) =>
-              this.selectedWorkfieldFromNavbar == note.user.specialty.toLocaleLowerCase())
-            .sort((a, b) => new Date(b.timestamp).valueOf() - new Date(a.timestamp).valueOf());
-        }));
+    this.notes$ = this.notesService.notes$
+      .pipe(map(notes => {
+        return notes
+          .filter((note) =>
+            this.selectedSpecialtyFromNavbar == note.user.specialty.toLocaleLowerCase())
+          .sort((a, b) => new Date(b.timestamp).valueOf() - new Date(a.timestamp).valueOf());
+      }));
   }
 
   reloadMasonry(): void {

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import {
-  ActivatedRoute,
   ActivatedRouteSnapshot,
   CanActivate,
   CanActivateChild,
@@ -19,7 +18,6 @@ export class AuthGuardService implements CanActivate, CanActivateChild {
 
 
   constructor(protected router: Router,
-              protected activatedRoute: ActivatedRoute,
               protected authenticationService: AuthenticationService,
               protected webStorageService: WebStorageService
   ) { }
@@ -29,8 +27,6 @@ export class AuthGuardService implements CanActivate, CanActivateChild {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
-    // User can just enter a value in localstorage and access website
-    // TODO: Switch over to JWT and cookies
     if (this.webStorageService.getUserId()) {
       if(state.url == '/login') {
         this.router.navigate(['home']).catch(reason => { console.log(reason); });

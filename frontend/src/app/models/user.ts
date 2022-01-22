@@ -1,6 +1,4 @@
-import { Preferences } from "./preferences";
 import {Specialty} from "./specialty";
-import {environment} from "../../environments/environment";
 
 export enum Role {
   SUPER_ADMIN = "Super Admin",

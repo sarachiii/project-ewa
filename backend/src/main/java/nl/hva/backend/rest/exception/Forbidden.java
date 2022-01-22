@@ -4,11 +4,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
+ * Doel:
+ *
  * @author Mohamad Hassan
  */
-@ResponseStatus(HttpStatus.PRECONDITION_FAILED)
-public class PreConditionFailed extends RuntimeException {
-    public PreConditionFailed(String message) {
+@ResponseStatus(HttpStatus.FORBIDDEN)
+public class Forbidden extends RuntimeException {
+    public Forbidden(String message) {
         super(message);
     }
 }

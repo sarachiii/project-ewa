@@ -11,6 +11,6 @@ export function isInList(list: any[]): ValidatorFn {
       // FormArray
       return null;
     }
-    return includes ? null : { excludes: true };
+    return includes ? null : {excludes: true};
   };
 }

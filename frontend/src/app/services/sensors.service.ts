@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
-import {Observable, of} from "rxjs";
+import {Observable} from "rxjs";
 import {Factor, Sensor} from "../models/sensor";
 import {map, shareReplay} from "rxjs/operators";
 import {SensorData} from "../models/sensor-data";
@@ -32,8 +32,6 @@ export class SensorsService {
 
   postSensorData(postData: any): Observable<SensorData[]> {
     //This method sends a Http request
-    console.log(postData)
-
     return this.http.post<SensorData[]>(new URL(`sensors/data`, this.resourceUrl).toString(), postData).pipe(
       map(sensorData => sensorData.map(sd => Object.assign(new SensorData(), sd)))
     );

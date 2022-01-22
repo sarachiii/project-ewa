@@ -25,7 +25,7 @@ export const routes: Routes = [
   { path: 'notes', component: NotesNavbarComponent, canActivate: [AuthGuardService], canActivateChild: [AuthGuardService],
     children: [
       {
-        path: ':field',
+        path: ':specialty',
         component: NotesComponent,
         children: [
           { path: 'add', component: ShareNotesComponent }

@@ -8,8 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * This class <description of functionality>
- *
  * @author hashim.mohammad@hva.nl
  */
 @RestController

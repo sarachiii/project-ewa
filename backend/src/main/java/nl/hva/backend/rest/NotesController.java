@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("notes")
-public class    NotesController {
+public class NotesController {
 
     @Autowired
     private NotesRepository notesRepository;
@@ -41,7 +41,7 @@ public class    NotesController {
 
     //Delete a note by id from the note list
     @DeleteMapping("{id}")
-    public ResponseEntity<ObjectNode> deleteNoteById(@PathVariable int id) {
+    public ResponseEntity<ObjectNode> deleteNoteById(@PathVariable long id) {
         if (!notesRepository.deleteNoteById(id)) throw new ResourceNotFound("id-" + id);
         ObjectNode response = mapper.createObjectNode();
         response.put("message", "Note with id " + id + " was deleted.");

@@ -27,8 +27,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
 
   constructor(private elementRef: ElementRef,
               private webStorageService: WebStorageService,
-              private userService: UserService,
-              private notesService: NotesService) {
+              private userService: UserService) {
     this.user = null;
     this._screenHeight = window.innerHeight;
     this._screenWidth = window.innerWidth;
@@ -87,7 +86,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
   }
 
   closeMenu(toggle: HTMLElement) {
-    if (toggle.getAttribute('aria-expanded') == 'true') toggle.click();
+    if (toggle?.getAttribute('aria-expanded') == 'true') toggle.click();
   }
 
 }

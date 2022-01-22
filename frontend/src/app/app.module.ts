@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { HttpClientModule } from "@angular/common/http";
+import { HttpClientModule,HTTP_INTERCEPTORS } from "@angular/common/http";
 import { FormsModule } from "@angular/forms";
 import { ReactiveFormsModule } from "@angular/forms";
 import { ChartsModule } from 'ng2-charts';
@@ -17,7 +17,6 @@ import { NotesNavbarComponent } from './components/notes-navbar/notes-navbar.com
 import { ShareNotesComponent } from './components/share-notes/share-notes.component';
 import { SensorComponent } from './components/mainpage/sensor/sensor.component';
 import { LoginComponent } from './components/mainpage/login/login.component';
-import { RegisterComponent } from './components/mainpage/register/register.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { AccountComponent } from './components/settings/account/account.component';
 import { PreferencesComponent } from './components/settings/preferences/preferences.component';
@@ -31,6 +30,7 @@ import { MembersComponent } from './components/teams/view-teams/members/members.
 import { AddUserComponent } from './components/teams/add-user/add-user.component';
 import { HistoryDataComponent } from './components/mainpage/home/history-data/history-data.component';
 import { ReversePipe } from './shared/pipes/reverse.pipe';
+import {AuthInterceptorService} from "./services/auth-interceptor.service";
 
 @NgModule({
   declarations: [
@@ -43,7 +43,6 @@ import { ReversePipe } from './shared/pipes/reverse.pipe';
     ShareNotesComponent,
     SensorComponent,
     LoginComponent,
-    RegisterComponent,
     SettingsComponent,
     AccountComponent,
     PreferencesComponent,
@@ -67,7 +66,8 @@ import { ReversePipe } from './shared/pipes/reverse.pipe';
     BrowserAnimationsModule,
     SimpleNotificationsModule.forRoot()
   ],
-  providers: [DatePipe],
+  providers: [DatePipe,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule {

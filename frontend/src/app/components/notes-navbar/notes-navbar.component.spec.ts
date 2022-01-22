@@ -30,7 +30,18 @@ describe('NotesNavbarComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create the notesNavbar component', () => {
+    let fixture = TestBed.createComponent(NotesNavbarComponent);
+    let component = fixture.debugElement.componentInstance;
     expect(component).toBeTruthy();
+  });
+
+  it('should go to Botany nav-item if clicked on it', () => {
+    let fixture = TestBed.createComponent(NotesNavbarComponent);
+    let component = fixture.debugElement.componentInstance;
+    const navitem: HTMLInputElement = component.querySelector('#navlink');
+    navitem.textContent = 'Botany';
+    navitem.dispatchEvent(new Event('click'));
+
   });
 });

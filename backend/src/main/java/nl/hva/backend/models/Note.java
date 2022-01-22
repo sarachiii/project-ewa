@@ -12,7 +12,7 @@ public class Note {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int noteId;
+    private long noteId;
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private ZonedDateTime timestamp;
     private String title;
@@ -27,7 +27,7 @@ public class Note {
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "user_id")
-    private Long userId;
+    private long userId;
 
     protected Note() {
     }
@@ -41,7 +41,7 @@ public class Note {
         this.noteText = noteText;
     }
 
-    public Note(int noteId, Long userId, ZonedDateTime timestamp, String title, String noteText) {
+    public Note(int noteId, long userId, ZonedDateTime timestamp, String title, String noteText) {
         super();
         this.noteId = noteId;
         this.userId = userId;
@@ -50,7 +50,7 @@ public class Note {
         this.noteText = noteText;
     }
 
-    public Note(Long userId, ZonedDateTime timestamp, String title, String noteText) {
+    public Note(long userId, ZonedDateTime timestamp, String title, String noteText) {
         super();
         this.userId = userId;
         this.timestamp = timestamp;
@@ -71,11 +71,11 @@ public class Note {
         return noteText;
     }
 
-    public int getNoteId() {
+    public long getNoteId() {
         return noteId;
     }
 
-    public void setNoteId(int noteId) {
+    public void setNoteId(long noteId) {
         this.noteId = noteId;
     }
 
@@ -103,11 +103,11 @@ public class Note {
         this.user = user;
     }
 
-    public Long getUserId() {
+    public long getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 }

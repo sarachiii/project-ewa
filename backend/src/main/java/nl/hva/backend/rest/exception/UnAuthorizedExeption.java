@@ -6,9 +6,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 /**
  * @author Mohamad Hassan
  */
-@ResponseStatus(HttpStatus.PRECONDITION_FAILED)
-public class PreConditionFailed extends RuntimeException {
-    public PreConditionFailed(String message) {
+
+@ResponseStatus(HttpStatus.UNAUTHORIZED)
+public class UnAuthorizedExeption extends RuntimeException {
+    public UnAuthorizedExeption(String message) {
         super(message);
     }
 }

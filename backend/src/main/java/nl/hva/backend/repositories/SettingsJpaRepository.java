@@ -9,8 +9,6 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
 /**
- * This class <description of functionality>
- *
  * @author hashim.mohammad@hva.nl
  */
 @Repository

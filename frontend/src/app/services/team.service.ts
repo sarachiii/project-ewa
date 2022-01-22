@@ -31,9 +31,14 @@ export class TeamService {
     return this.http.get<Team[]>(this.resourceUrl);
   }
 
+  // Request a team by team id
+  getTeamById(id: number): Observable<Team[]> {
+    return this.http.get<Team[]>(`${this.resourceUrl}/${id}`);
+  }
+
   // Request team members by id from backend
-  getTeamById(id: number): Observable<User[]> {
-    return this.http.get<User[]>(`${this.resourceUrl}/${id}`);
+  getMembersByTeamId(id: number): Observable<User[]> {
+    return this.http.get<User[]>(`${this.resourceUrl}/${id}/users`);
   }
 
   // Create a new team
@@ -56,7 +61,7 @@ export class TeamService {
     let index = this.teams.findIndex(member => member.id == id);
     this.teams.splice(index, 1);
   }
-  
+
   getGreenhouseByTeamId(id: number):Observable<Team> {
     return this.http.get<Team>(`${this.resourceUrl}/greenhouse/${id}`);
   }

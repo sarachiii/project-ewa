@@ -1,8 +1,9 @@
 <nav class="navbar navbar-expand-lg p-lg-0">
   <div class="container-lg px-0 px-lg-12">
     <div class="d-flex justify-content-between w-100 px-12">
-      <a class="navbar-brand" href="#" routerLink="home"><img class="white-filter pe-2" src="assets/logo.svg"
-                                                              alt="Climate Cleanup"><span class="align-middle">Climate Cleanup</span></a>
+      <a class="navbar-brand" href="#" routerLink="home">
+        <img class="pe-2" src="assets/images/logo_light.svg" alt="Climate Cleanup">
+        <span class="align-middle">Climate Cleanup</span></a>
       <button #mobileMenu *ngIf="isLoggedIn()" class="navbar-toggler navbar-dark" type="button"
               data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler"
               aria-expanded="false" aria-label="Toggle navigation">
@@ -35,7 +36,8 @@
              (click)="closeMobileMenu()">Dashboard</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#" routerLink="sensors" routerLinkActive="active" (click)="closeMobileMenu()">Sensors</a>
+          <a class="nav-link" href="#" routerLink="sensors" routerLinkActive="active"
+             (click)="closeMobileMenu()">Sensors</a>
         </li>
         <li class="nav-item">
           <a class="nav-link position-relative" href="#" routerLink="notes" routerLinkActive="active"
@@ -46,7 +48,8 @@
              (click)="closeMobileMenu()">Teams</a>
         </li>
         <li class="nav-item d-lg-none">
-          <a class="nav-link" href="#" routerLink="settings" routerLinkActive="active" (click)="closeMobileMenu()">Settings</a>
+          <a class="nav-link" href="#" routerLink="settings" routerLinkActive="active"
+             (click)="closeMobileMenu()">Settings</a>
         </li>
         <li class="nav-item d-lg-none">
           <a class="nav-link" href="#" routerLink="login" (click)="logOut()">Log Out</a>

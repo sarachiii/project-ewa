@@ -14,8 +14,6 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * This class <description of functionality>
- *
  * @author hashim.mohammad@hva.nl
  */
 @Service
