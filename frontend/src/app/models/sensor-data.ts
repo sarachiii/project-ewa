@@ -4,7 +4,7 @@ export class SensorData {
   public sensorId: number;
   public value: number;
 
-  constructor(timestamp?: Date, ghId?: number, sensorId?: number, value?: number, userId?: number) {
+  constructor(timestamp?: Date, ghId?: number, sensorId?: number, value?: number) {
     this.timestamp = timestamp || new Date();
     this.ghId = ghId || 0;
     this.sensorId = sensorId || 0;
