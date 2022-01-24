@@ -3,15 +3,14 @@ package nl.hva.backend;
 import nl.hva.backend.models.Team;
 import nl.hva.backend.repositories.TeamsRepository;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 /**
- * @author Sarah Chrzanowska-Buth
+ * @author Sarah Chrzanowska-Buth, Hashim Mohammad
  */
 @SpringBootTest
 public class TestTeamsRepository {
@@ -44,5 +43,30 @@ public class TestTeamsRepository {
         t = repository.findById(t.getId()); //Act
 
         assertEquals(2L, t.getGhId()); //Assert
+    }
+
+
+    /**
+     * @author Hashim Mohammad
+     */
+    @Test
+    @DirtiesContext
+    void testDeleteTeam() {
+        // Arrange
+        Team team = new Team(2L);
+        team = repository.save(team);
+
+        // Act
+        team = repository.findById(team.getId());
+
+        // Assert
+        assertNotNull(team); // Team should exist
+
+        // Act
+        long teamId = team.getId();
+        repository.deleteById(teamId);
+
+        // Assert
+        assertNull(repository.findById(teamId)); // Assert that the team no longer exists
     }
 }

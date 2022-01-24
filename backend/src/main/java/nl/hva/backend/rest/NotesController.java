@@ -47,4 +47,13 @@ public class NotesController {
         response.put("message", "Note with id " + id + " was deleted.");
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("{id}")
+    public ResponseEntity<Note> getNoteById(@PathVariable long id) {
+        Note note = this.notesRepository.findNoteById(id);
+        if (note == null) {
+            throw new ResourceNotFound("No note with this id ");
+        }
+        return ResponseEntity.ok(note);
+    }
 }

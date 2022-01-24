@@ -30,7 +30,7 @@ export class PreferencesComponent implements OnInit {
   }
 
   get language() {
-    return this.prefsForm.get('language');
+    return this.prefsForm.get('languageCode');
   }
 
   get colorblindness() {

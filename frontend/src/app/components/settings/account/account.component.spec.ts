@@ -37,6 +37,9 @@ describe('AccountComponent', () => {
     expect(componentHTML).toBeTruthy();
   });
 
+  /**
+   * @author Hashim Mohammad
+   */
   it('Test 1: Required fields', () => {
     // Arrange: Get UI elements
     const firstNameInput = componentHTML.querySelector('#firstName');
@@ -58,6 +61,9 @@ describe('AccountComponent', () => {
     expect(passwordInput).toHaveClass('is-invalid');
   });
 
+  /**
+   * @author Hashim Mohammad
+   */
   it('Test 2: Wrong password', (done) => {
     // Arrange
     // Get UI elements
@@ -114,6 +120,9 @@ describe('AccountComponent', () => {
     });
   });
 
+  /**
+   * @author Hashim Mohammad
+   */
   it('Test 3: Validate new password', () => {
     // Arrange: Get UI elements
     const newPasswordInput = componentHTML.querySelector('#newPassword') as HTMLInputElement;
