@@ -39,8 +39,7 @@ describe('PreferencesComponent', () => {
    * @author Nazlıcan Eren
    */
   it('Page should load with the user\'s preferences', () => {
-    // Arrange
-    // Get UI elements
+    // Arrange (getting UI components)
     const languagePicker: HTMLSelectElement = componentHtml.querySelector('#languagePicker');
     const colorblindnessInput: HTMLInputElement = componentHtml.querySelector('#colorblindness');
     const darkModeInput: HTMLInputElement = componentHtml.querySelector('#darkMode');

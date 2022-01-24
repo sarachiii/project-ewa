@@ -59,11 +59,14 @@ public class TestNotesRepository {
     @Test
     @DirtiesContext
     void testRemovingAnUnknownNote() {
-        long noteId = 1234567890; // a note with this id does not exists
+        long noteId = 1234567890; // a note with this id does not exist
+
         Note n = notesRepository.findNoteById(noteId);
+
         assertNull(n);
 
         boolean isDeleted = notesRepository.deleteNoteById(noteId);
+
         assertFalse(isDeleted);
     }
 

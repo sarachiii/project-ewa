@@ -53,7 +53,7 @@ describe('EditNotesComponent', () => {
     component.selectedNoteFromNotes = mockNote;
     fixture.detectChanges(); // Angular should be updated
 
-    // Get UI elements
+    // Arrange (getting UI components)
     const titleInput: HTMLInputElement = componentHtml.querySelector('#title');
     const textInput: HTMLInputElement = componentHtml.querySelector('#note');
 
