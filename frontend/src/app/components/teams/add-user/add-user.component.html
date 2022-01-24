@@ -2,8 +2,9 @@
   <div class="row mt-3">
 
     <div class="container">
-      <div *ngIf="showErrorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
-        <strong>Error!</strong> User with {{email}} already exists.
+      <div *ngIf="showErrorMessage" class="alert alert-danger alert-dismissible fade show" role="alert"
+           id="emailExists">
+        <span id="emailExistsMessage"><strong>Error!</strong> User with {{email}} already exists.</span>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
       <div *ngIf="showSuccessMessage" class="alert alert-success alert-dismissible fade show" role="alert">
@@ -20,7 +21,8 @@
                name="firstName" placeholder="Enter a first name here">
         <div class="invalid-feedback">
           <ng-container *ngIf="firstName.errors?.required">First name is required!</ng-container>
-          <ng-container *ngIf="firstName.errors?.pattern">Name may only contain alphabetical characters, a dash, a dot or
+          <ng-container *ngIf="firstName.errors?.pattern">Name may only contain alphabetical characters, a dash, a dot
+            or
             a space (A-z, -, ., )
           </ng-container>
         </div>

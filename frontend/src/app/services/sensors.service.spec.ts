@@ -22,6 +22,10 @@ describe('SensorsService', () => {
     expect(service).toBeTruthy();
   });
 
+
+  /**
+   * @author Nazlıcan Eren
+   */
   it('Get desired sensor values', () => {
     // Arrange
     // Mock the greenhouse id and limit

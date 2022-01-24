@@ -34,8 +34,12 @@ describe('ShareNotesComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+    expect(componentHtml).toBeTruthy();
   });
 
+  /**
+   * @author Nazlıcan Eren
+   */
   it('Writing the title and text of a note should be successfull when ' +
     'staying within the maximum number of characters', () => {
     // Arrange (getting UI components)
