@@ -96,7 +96,6 @@ This section contains an overview of the unit tests per author.
   - deleteById
 - SensorRepository:
   - findByGhId
-- SensorRepository:
   - getTimestampsByGhId
 - SensorController:
   - postSensorData
@@ -108,7 +107,6 @@ This section contains an overview of the unit tests per author.
   - change user password
 - Settings service: 
   - save user information
-- Settings service: 
   - get preferences
 
 
