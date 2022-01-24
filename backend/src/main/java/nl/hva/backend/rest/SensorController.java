@@ -55,7 +55,7 @@ public class SensorController {
             } catch (NumberFormatException e) {
                 throw new BadRequestException("Parameter id value is not a number!");
             }
-            return this.sensorRepository.findByGhIdLimited(ghId, lim);
+            return this.sensorRepository.findByGhId(ghId, lim);
         }
 
         return this.sensorRepository.findByGhId(ghId);

@@ -21,7 +21,7 @@ import java.util.List;
 @Transactional
 public class SensorRepository {
 
-    private static final int SENSOR_ACTIVITY_LIMIT = 10;
+    public static final int SENSOR_ACTIVITY_LIMIT = 10;
 
     @PersistenceContext
     EntityManager entityManager;
@@ -51,15 +51,14 @@ public class SensorRepository {
     }
 
     public List<SensorData> findByGhId(long id) {
-        TypedQuery<SensorData> namedQuery = entityManager.createNamedQuery("SensorData.findByGhId", SensorData.class);
-        namedQuery.setParameter("ghId", id);
-        return namedQuery.getResultList();
+        return findByGhId(id, null);
     }
 
-    public List<SensorData> findByGhIdLimited(long id, int limit) {
+    public List<SensorData> findByGhId(long id, Integer limit) {
         TypedQuery<SensorData> namedQuery = entityManager.createNamedQuery("SensorData.findByGhId", SensorData.class);
         namedQuery.setParameter("ghId", id);
-        return namedQuery.setMaxResults(limit).getResultList();
+        if (limit != null) namedQuery.setMaxResults(limit);
+        return namedQuery.getResultList();
     }
 
     public SensorData findDataById(ZonedDateTime timestamp, long greenhouseId, long sensorId) {

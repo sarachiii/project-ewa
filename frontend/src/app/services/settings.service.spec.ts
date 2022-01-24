@@ -26,6 +26,9 @@ describe('SettingsService', () => {
     expect(service).toBeTruthy();
   });
 
+  /**
+   * @author Hashim Mohammad
+   */
   it('Test 1: Update account information', () => {
     // Arrange
     // Mock the user id
@@ -66,6 +69,9 @@ describe('SettingsService', () => {
     req.flush(true);
   });
 
+  /**
+   * @author Hashim Mohammad
+   */
   it('Test 2: Get user preferences', () => {
     // Arrange
     // Mock the user id
