@@ -16,8 +16,8 @@ import {PostNote} from "../../models/postNote";
 export class ShareNotesComponent implements OnInit, OnDestroy {
 
   @Output() unselectedEvent = new EventEmitter();
-  title: string;
-  text: string;
+  title: string = "";
+  text: string = "";
   note: Note;
   user: User | null;
   private userSubscription: Subscription;
@@ -44,14 +44,14 @@ export class ShareNotesComponent implements OnInit, OnDestroy {
     this.userSubscription.unsubscribe();
   }
 
-  onReturnToNotes(title: string, text: string) {
-    if (title.trim() === "" && text.trim() === "") this.unselectedEvent.emit(true);
-    else if (confirm("Are you sure you want to discard unsaved changes?")) this.unselectedEvent.emit(true);
+  onReturnToNotes() {
+    if (this.title.trim() === "" && this.text.trim() === "" ||
+      confirm("Are you sure you want to discard unsaved changes?")) this.unselectedEvent.emit(true);
   }
 
-  onSaveNote(title: string, text: string) {
-    let note = new Note(0, this.user, new Date(), title, text);
-    let postNote = new PostNote(0, this.user.id, new Date(), title, text);
+  onSaveNote() {
+    let note = new Note(0, this.user, new Date(), this.title, this.text);
+    let postNote = new PostNote(0, this.user.id, new Date(), this.title, this.text);
     this.notesService.addNote(note, postNote);
     this.unselectedEvent.emit(true);
   }

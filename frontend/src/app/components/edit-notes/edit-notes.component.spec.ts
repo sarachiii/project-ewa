@@ -5,6 +5,7 @@ import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { RouterTestingModule } from "@angular/router/testing";
 import { routes } from "../../app-routing.module";
 import { ReactiveFormsModule } from "@angular/forms";
+import {NotesService} from "../../services/notes.service";
 
 describe('EditNotesComponent', () => {
   let component: EditNotesComponent;
@@ -17,7 +18,8 @@ describe('EditNotesComponent', () => {
         HttpClientTestingModule,
         RouterTestingModule.withRoutes(routes),
         ReactiveFormsModule
-      ]
+      ],
+      providers: [NotesService]
     })
     .compileComponents();
   });

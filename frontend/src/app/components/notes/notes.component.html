@@ -17,7 +17,7 @@
               <img src="assets/images/edit.svg" alt="edit" height="22" width="22">
             </button>
             <button type="button" class="deleteButton d-inline-flex align-items-center px-0"
-                    *ngIf="note.user.id == this.user.id"
+                    *ngIf="note.user.id == this.user.id" id="deleteButton"
                     data-bs-toggle="modal" [attr.data-bs-target]="'#deleteNoteModal'+ note.noteId">
               <img src="assets/images/delete_red.svg" alt="deleteNote">
             </button>

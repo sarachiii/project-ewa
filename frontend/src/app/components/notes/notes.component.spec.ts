@@ -13,7 +13,7 @@ import {Specialty} from "../../models/specialty";
 import {NgxMasonryModule} from "ngx-masonry";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
-fdescribe('NotesComponent', () => {
+describe('NotesComponent', () => {
   let component: NotesComponent;
   let componentHtml: HTMLElement;
   let fixture: ComponentFixture<NotesComponent>;
@@ -28,7 +28,8 @@ fdescribe('NotesComponent', () => {
         BrowserAnimationsModule,
         HttpClientTestingModule,
         RouterTestingModule.withRoutes(routes)
-      ]
+      ],
+      providers: [NotesService]
     })
       .compileComponents();
     fixture = TestBed.createComponent(NotesComponent);
@@ -62,7 +63,7 @@ fdescribe('NotesComponent', () => {
     expect(compiled.querySelector('span').textContent).toContain("There are no notes yet! :(");
   });
 
-  it('should display the ngx-masonry if there are notes',  waitForAsync(() => {
+  it('should display the ngx-masonry if there are notes', waitForAsync(() => {
     let componentHTML = fixture.debugElement.nativeElement;
     let specialties = Object.values(Specialty);
     let users: User[] = [];
@@ -91,4 +92,13 @@ fdescribe('NotesComponent', () => {
   //     expect(value).toEqual(mockUser);
   //   })
   // });
+
+
+  // it('Delete a note', () => {
+  //   let userService = fixture.debugElement.injector.get(UserService);
+  //   let mockUser = new User(123, 1, Role.MEMBER, "Agronomy", "Ian", "Bradford");
+  //   let spy = spyOnProperty(userService, 'loggedUser$', "get").and.returnValue(of(mockUser));
+  //   console.log(spy)
+  //   const deleteButton: HTMLButtonElement = componentHtml.querySelector('#deleteButton');
+  // })
 });

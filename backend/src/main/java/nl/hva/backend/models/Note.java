@@ -25,7 +25,7 @@ public class Note {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private User user;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(access = JsonProperty.Access.READ_WRITE)
     @Column(name = "user_id")
     private long userId;
 
