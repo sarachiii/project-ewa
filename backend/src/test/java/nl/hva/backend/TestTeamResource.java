@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 
+import javax.transaction.Transactional;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -46,13 +47,13 @@ public class TestTeamResource {
      */
     @Test
     @DirtiesContext
+    @Transactional
     void testCreateTeamShouldSucceed() {
         // Arrange: Create a new team
         Team team = new Team(2L);
 
         // Act: Post the new team
-        ResponseEntity<Team> creationResult
-                = restTemplate.postForEntity("/teams", team, Team.class);
+        ResponseEntity<Team> creationResult = restTemplate.postForEntity("/teams", team, Team.class);
 
         // Assert: Checking if the response is correct
         assertEquals(HttpStatus.CREATED, creationResult.getStatusCode());
@@ -73,6 +74,7 @@ public class TestTeamResource {
      */
     @Test
     @DirtiesContext
+    @Transactional
     void testDeleteTeamShouldSucceed() {
         // Arrange: Create new team and get the id
         Team team = new Team(2L);

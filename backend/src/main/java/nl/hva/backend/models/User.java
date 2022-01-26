@@ -91,18 +91,19 @@ public class User {
     }
 
     public User(String emailAddress, String firstName, String lastName, String password,
-                Specialty specialty, String profilePicture, long teamId) {
+                Specialty specialty, Role role, String profilePicture, long teamId) {
         this.emailAddress = emailAddress;
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
         this.specialty = specialty;
+        this.role = role;
         this.profilePicture = profilePicture;
         this.teamId = teamId;
     }
 
     public User(String emailAddress, String password) {
-        this(emailAddress, "", "", password, null, null, 0L);
+        this(emailAddress, "", "", password, null, null, null, 0L);
     }
 
     public User() {
