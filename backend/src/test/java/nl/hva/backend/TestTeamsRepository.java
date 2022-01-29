@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 
+import javax.transaction.Transactional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -19,30 +21,47 @@ public class TestTeamsRepository {
     private TeamsRepository repository;
 
     @Test
+    @DirtiesContext
+    @Transactional
     /**
      * @author Sarah
      */
     void testFindTeamById() {
-        Team t = repository.findById(1L);
-        assertEquals(1L, t.getId()); //team id should equal 1
+
+        // Arrange: create team
+        Team team = new Team(2L);
+        team = repository.save(team);
+
+        // Act: search the team by id
+        Team t = repository.findById(team.getId());
+
+        // Assert
+        assertEquals(team.getId(), t.getId()); //team id should equal t id
         assertEquals(2L, t.getGhId()); //greenhouse id (ghId) should equal 2
     }
 
     @Test
     @DirtiesContext
+    @Transactional
     /**
      * @author Sarah
      */
     void testAddTeam() {
-        Team t = new Team(2L); //Arrange
 
-        t = repository.save(t); //Act
+        // Arrange: create team
+        Team t = new Team(2L);
 
-        assertNotNull(t.getId()); //Assert
+        // Act: save the team
+        t = repository.save(t);
 
-        t = repository.findById(t.getId()); //Act
+        // Assert: assert that the team is created
+        assertNotNull(t);
 
-        assertEquals(2L, t.getGhId()); //Assert
+        // Act: find the team
+        t = repository.findById(t.getId());
+
+        // Assert: that the team id equals 2
+        assertEquals(2L, t.getGhId());
     }
 
 

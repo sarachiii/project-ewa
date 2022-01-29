@@ -19,7 +19,7 @@ import {NotesService} from "../../services/notes.service";
 export class NotesNavbarComponent implements OnInit {
 
   selectedSpecialty: string = <Specialty>{};
-  private _specialties: Specialty[] = [];
+  private _specialties: String[] = [];
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute) {
     this._specialties = Object.values(Specialty);
@@ -53,5 +53,9 @@ export class NotesNavbarComponent implements OnInit {
 
   get specialties(): string[] {
     return this._specialties.map(item => item.toLowerCase());
+  }
+
+  set specialties(specialty: String[]) {
+    this._specialties = specialty;
   }
 }
