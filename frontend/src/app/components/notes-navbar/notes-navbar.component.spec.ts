@@ -41,41 +41,41 @@ describe('NotesNavbarComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  // it('should create the notesNavbar with the nav-link in uppercase', () => {
-  //
-  //   // Arrange: mock the specialty
-  //   component.specialties = ["Botany"];
-  //
-  //   // Act
-  //   fixture.detectChanges();
-  //
-  //   // Arrange: get UI component
-  //   const navlink: HTMLAnchorElement = componentHtml.querySelector('#navlink');
-  //
-  //   // Assert: check if nav-link shows the correct text
-  //   expect(navlink.innerText).toEqual("BOTANY");
-  //   expect(component).toBeTruthy();
-  // });
+  it('should create the notesNavbar with the nav-link in uppercase', () => {
 
-  // it('navigates to /botany when the botany nav-item is clicked', () => {
-  //
-  //   // Arrange: mock the specialty
-  //   component.specialties = ["Botany"];
-  //
-  //   // Act
-  //   fixture.detectChanges();
-  //
-  //   // Arrange: get UI component
-  //   const navSpy = spyOn(router, 'navigate');
-  //   const navitem: HTMLAnchorElement = componentHtml.querySelector('#navitem');
-  //
-  //   // Act: click on the nav-item
-  //   navitem.click();
-  //   fixture.detectChanges();
-  //
-  //   //Assert: check if the path is correct
-  //   expect(navSpy).toHaveBeenCalledWith(
-  //     ['botany'],jasmine.anything()
-  //   );
-  // });
+    // Arrange: mock the specialty
+    component.specialties = ["Botany"];
+
+    // Act
+    fixture.detectChanges();
+
+    // Arrange: get UI component
+    const navlink: HTMLAnchorElement = componentHtml.querySelector('#navlink');
+
+    // Assert: check if nav-link shows the correct text
+    expect(navlink.innerText).toEqual("BOTANY");
+    expect(component).toBeTruthy();
+  });
+
+  it('navigates to /botany when the botany nav-item is clicked', () => {
+
+    // Arrange: mock the specialty
+    component.specialties = ["Botany"];
+
+    // Act
+    fixture.detectChanges();
+
+    // Arrange: get UI component
+    const navSpy = spyOn(router, 'navigate');
+    const navitem: HTMLAnchorElement = componentHtml.querySelector('#navitem');
+
+    // Act: click on the nav-item
+    navitem.click();
+    fixture.detectChanges();
+
+    //Assert: check if the path is correct
+    expect(navSpy).toHaveBeenCalledWith(
+      ['botany'],jasmine.anything()
+    );
+  });
 });

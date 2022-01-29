@@ -53,7 +53,7 @@ public class TestUserController {
     void testDeleteUnknownUser() throws ResourceNotFound {
 
         // Arrange: Create a userId to be deleted
-        long notExistingUserId = 100000L;
+        long notExistingUserId = Long.MAX_VALUE;
 
         // Act: Delete the user
         ResourceNotFound thrown = assertThrows(ResourceNotFound.class, () -> {

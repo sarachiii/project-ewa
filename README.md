@@ -134,7 +134,28 @@ This section contains an overview of the unit tests per author.
  - Sensor service: 
    - get desired sensor values
 
-
+### Sarah Chrzanowska-Buth
+#### Backend
+ - UserController:
+   - delete user
+   - delete unknown user
+ - TeamRepository:
+   - find team by id
+   - add team
+ - TeamResource:
+   - create team should succeed
+   
+#### Frontend
+ - Notes-navbar component:
+   - should create the notesNavbar with the nav-link in uppercase
+   - navigates to /botany when the botany nav-item is clicked
+ - Notes service:
+   - should get all notes available
+ - Notes component:
+   - should display the text "There are no notes yet! :(" if there are no notes
+   - should display the ngx-masonry if there are notes
+   - the initial selected nav-item is the same as the user's specialty
+   
 ### Mohamad Hassan
 #### Backend
 

@@ -72,7 +72,7 @@ describe('NotesComponent', () => {
     expect(componentHTML.querySelector('ngx-masonry')).toBeTruthy();
   }));
 
-  it('highlights the botany nav-item when the logged in user\'s specialty is botany', () => {
+  it('the initial selected nav-item is the same as the user\'s specialty', () => {
 
     // Arrange: mock the user and it's specialty
     let mockUser = new User(0, 0, Role.MEMBER, "Agronomy", "Mark", "Smith");
