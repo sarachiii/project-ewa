@@ -66,7 +66,7 @@ describe('NotesNavbarComponent', () => {
     fixture.detectChanges();
 
     // Arrange: get UI component
-    const navSpy = spyOn(router, 'navigate');
+    const navSpy = spyOn(router, 'navigate').and.callThrough();
     const navitem: HTMLAnchorElement = componentHtml.querySelector('#navitem');
 
     // Act: click on the nav-item
