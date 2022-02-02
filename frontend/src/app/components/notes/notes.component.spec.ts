@@ -32,7 +32,6 @@ describe('NotesComponent', () => {
     })
       .compileComponents();
     fixture = TestBed.createComponent(NotesComponent);
-    // await fixture.whenStable();
   });
 
   beforeEach(() => {

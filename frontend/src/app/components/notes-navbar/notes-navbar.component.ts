@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Params, Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Specialty} from "../../models/specialty";
 import {NotesService} from "../../services/notes.service";
 
@@ -27,19 +27,6 @@ export class NotesNavbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.selectedSpecialty = this.activatedRoute.snapshot.params['specialty'];
-    this.activatedRoute.params
-      .subscribe(
-        (params: Params) => {
-          this.selectedSpecialty = params['specialty'];
-        }
-      );
-
-    this.activatedRoute
-      .firstChild?.params
-      .subscribe((params: Params) => {
-        this.selectedSpecialty =
-          this.specialties.find(specialty => specialty == params.specialty)
-      });
   }
 
   onSelect(specialty: string): void {
@@ -47,7 +34,6 @@ export class NotesNavbarComponent implements OnInit {
       this.router.navigate([specialty], {relativeTo: this.activatedRoute})
         .catch(reason => console.error(reason));
     }
-
     this.selectedSpecialty = specialty;
   }
 
@@ -55,7 +41,7 @@ export class NotesNavbarComponent implements OnInit {
     return this._specialties.map(item => item.toLowerCase());
   }
 
-  set specialties(specialty: String[]) {
-    this._specialties = specialty;
+  set specialties(specialties: String[]) {
+    this._specialties = specialties;
   }
 }

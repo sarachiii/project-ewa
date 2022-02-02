@@ -6,7 +6,6 @@ import {Note} from "../models/note";
 import {Observable, throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
 import {PostNote} from "../models/postNote";
-import {WebStorageService} from "./storage/web-storage.service";
 
 /**
  * This is the notes service.
@@ -19,8 +18,7 @@ export class NotesService {
   resourceUrl: string;
   private _notes$: BehaviorSubject<Note[]>;
 
-  constructor(private http: HttpClient,
-              protected webStorage:WebStorageService) {
+  constructor(private http: HttpClient) {
     this.resourceUrl = environment.apiUrl + "/notes";
     this._notes$ = new BehaviorSubject<Note[]>([]);
     this.allNotes();
@@ -30,19 +28,19 @@ export class NotesService {
     return this._notes$.asObservable();
   }
 
-  restGetNotes(): Observable<Note[]> {
-    return this.http.get<Note[]>(this.resourceUrl + "/all").pipe(catchError(this.handleError));
-  }
-
   allNotes(): void {
     this.restGetNotes().subscribe((notes: Note[]) => {
       this._notes$.next(notes.map(note => Note.copyConstructor(note)));
     });
   }
 
+  restGetNotes(): Observable<Note[]> {
+    return this.http.get<Note[]>(this.resourceUrl + "/all").pipe(catchError(this.handleError));
+  }
+
   private handleError(error: HttpErrorResponse) {
     if (error.status === 0) {
-      console.error('An error occurred:', error.error);
+      console.error('An error occurred on the client-side:', error.error);
     } else {
       console.error(`Backend returned code ${error.status}, body was: `, error.error);
     }

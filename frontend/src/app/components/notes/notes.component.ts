@@ -50,10 +50,10 @@ export class NotesComponent implements OnInit, OnChanges {
       .pipe(skipWhile(value => Object.keys(value).length === 0), first())
       .subscribe(value => {
         this.user = value;
-        // The initial notes page is equal to the specialty of the user
-        this.router.navigate([this.user.specialty.toLowerCase()], {relativeTo: this.activatedRoute})
-          .catch(reason => console.error(reason));
         this.selectedSpecialtyFromNavbar = this.user.specialty.toLowerCase();
+        // The initial notes page is equal to the specialty of the user
+        this.router.navigate([this.selectedSpecialtyFromNavbar], {relativeTo: this.activatedRoute})
+          .catch(reason => console.error(reason));
       });
 
     this.notes$ = this.notesService.notes$
