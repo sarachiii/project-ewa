@@ -4,8 +4,7 @@ import {environment} from "../../environments/environment";
 import {Observable, of} from 'rxjs';
 import {Role, User} from "../models/user";
 import {JwtHelperService} from "@auth0/angular-jwt";
-import {catchError, share} from 'rxjs/operators';
-import {LoginComponent} from "../components/mainpage/login/login.component";
+import {share} from 'rxjs/operators';
 import {WebStorageService} from "./storage/web-storage.service";
 
 
@@ -22,22 +21,28 @@ export class AuthenticationService {
               protected webStorage: WebStorageService) {
   }
 
-
-
   authenticateToken(email, password) {
-    const observable = this.http.post(environment.apiUrl + "/auth/login",
+    //do the login request to the backend and store the token in the webStorage
+    const observable = this.http.post(
+      environment.apiUrl + "/auth/login",
       {email: email, password: password},
       {observe: 'response'}).pipe(share());
-    observable.subscribe((data) => {
 
+
+    observable.subscribe((data) => {
+      //read the token from the header
       let token = data?.headers.get('Authorization')
       if (token == null) {
         throw new Error('not token present in the response')
       }
 
+      //remove the bearer word from the token
       token.replace('Bearer ', '');
-      this.webStorage.set("token",token);
-      // sessionStorage.setItem('token', token);
+
+      //add the token to the webStorage
+      this.webStorage.set("token", token);
+
+      //read the role of the user from the token
       this.updateUserInformation();
     });
     return observable;
@@ -48,13 +53,16 @@ export class AuthenticationService {
     return this.webStorage.get('token');
   }
 
+
   private updateUserInformation(): void {
     if (this.currentToken) {
-
+      //decode the token to make the payload readable
       const decodedToken = this.jwtService.decodeToken(this.currentToken);
 
       this.currentUser = new User();
+
       this.currentUser.emailAddress = decodedToken.email;
+      //set the role to admin if true(the default is MEMBER)
       if (decodedToken.admin) {
         this.currentUser.role = Role.ADMIN;
       }
@@ -66,6 +74,7 @@ export class AuthenticationService {
 
   refreshToken(): Observable<any> {
 
+    //Do the request to extend the expiration time of an valid token
     const observable = this.http.post(`${environment.apiUrl}/auth/refresh-token`, {},
       {headers: new HttpHeaders({Authorization: this.currentToken}), observe: 'response'}).pipe(share());
 
@@ -76,6 +85,7 @@ export class AuthenticationService {
         if (refreshedToken == null) {
           throw new Error('token was not present in the response');
         }
+
         refreshedToken = refreshedToken.replace('Bearer ', '');
 
         this.webStorage.set('token', refreshedToken);
@@ -93,8 +103,6 @@ export class AuthenticationService {
   logOut() {
     this.webStorage.remove('token')
   }
-
-
 
 
 }

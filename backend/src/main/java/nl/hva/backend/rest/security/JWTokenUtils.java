@@ -21,6 +21,7 @@ import java.util.Date;
 @Component
 public class JWTokenUtils {
 
+    // Claims
     private static final String JWT_EMAIL_CLAIM = "Email";
     private static final String JWT_ADMIN_CLAIM = "Admin";
 
@@ -33,22 +34,25 @@ public class JWTokenUtils {
     @Value("${jwt.duration-of-validity}")
     private int expiration;
 
-
+    //Genareate a Json Web Token
     public String encode(String email, boolean isAdmin) {
         Key key = getKey(passphrase);
 
+        //the token representation
         return Jwts.builder()
-                .claim(JWT_EMAIL_CLAIM, email)
-                .claim(JWT_ADMIN_CLAIM, isAdmin)
-                .setIssuer(issuer)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + (long) expiration * 10000))
+                .claim(JWT_EMAIL_CLAIM, email)//Public claim
+                .claim(JWT_ADMIN_CLAIM, isAdmin)//Public claim
+                .setIssuer(issuer)//Registered claim
+                .setIssuedAt(new Date())//Registered claim
+                .setExpiration(new Date(System.currentTimeMillis() + (long) expiration * 10000))//Registered claim
                 .signWith(key, SignatureAlgorithm.HS512).compact();
 
     }
 
+    //Decode the given token,
     public JWTokenInfo decode(String token, boolean expirationLenient) throws UnAuthorizedExeption, AuthenticationException {
         try {
+            //Validate the token
             Key key = getKey(passphrase);
             Jws<Claims> jws = Jwts.parserBuilder()
                     .setSigningKey(passphrase.getBytes())
@@ -86,6 +90,8 @@ public class JWTokenUtils {
         return tokenInfo;
 
     }
+
+    //Get the secret key
     public static Key getKey(String passphrase) {
         byte[] hamcKey = passphrase.getBytes(StandardCharsets.UTF_8);
         return new SecretKeySpec(hamcKey, SignatureAlgorithm.HS512.getJcaName());

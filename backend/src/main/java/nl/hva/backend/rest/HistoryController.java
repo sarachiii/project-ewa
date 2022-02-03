@@ -101,10 +101,11 @@ public class HistoryController {
         return ResponseEntity.ok().body(savedHistoryRecord);
     }
 
+    //Making a request to the simulator api an git a record of 9 sensors value
     @GetMapping("simulator")
     public ResponseEntity<JsonNode> getHistoryFromSimulator(@RequestParam(required = false) String gh) {
         ResponseEntity<JsonNode> response;
-
+        // this param is necessary  to make the request to the api
         int greenHouseId;
 
         if (gh == null) {
@@ -116,6 +117,7 @@ public class HistoryController {
         } catch (NumberFormatException exception) {
             throw new PreConditionFailed("Parameter gh value is not a number");
         }
+
 
         response = ccuApiClient.get()
                 .uri(uriBuilder -> uriBuilder
@@ -133,7 +135,7 @@ public class HistoryController {
      * Periodically saves data to the history
      * Period = 60 seconds
      */
-    @Scheduled(fixedRate = 60000)
+//    @Scheduled(fixedRate = 60000)
     public void scheduleSaveSensorData() {
         // Populate query parameters
         MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();

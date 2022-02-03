@@ -62,7 +62,7 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-end mt-0 w-auto" aria-labelledby="userDropdown">
             <li class="dropdown-item-text text-nowrap">
-              <span>{{user.firstName || 'First name'}}</span>&nbsp;<span>{{user.lastName || 'Last name'}}</span>
+              <span id="firstname">{{user.firstName || 'First name'}}</span>&nbsp;<span id="lastname">{{user.lastName || 'Last name'}}</span>
               <div class="fs-14">
                 <span id="expertise">{{user.specialist || 'Specialty'}}</span>&nbsp;&#183;&nbsp;<span
                 id="userRole">{{user.role || 'Role'}}</span>

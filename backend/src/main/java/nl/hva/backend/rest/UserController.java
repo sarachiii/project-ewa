@@ -46,11 +46,13 @@ public class UserController {
     JWTokenUtils jwTokenUtils;
 
 
+    //get list of all users
     @GetMapping("users")
     public List<User> getUsersList() {
         return this.userRepository.findAll();
     }
 
+    //Get a user by the ID with a url parameter ID
     @GetMapping(value = "users", params = "id")
     public User getUserById(@RequestParam Long id) {
         User user = this.userRepository.findUserById(id);
@@ -60,6 +62,7 @@ public class UserController {
         return user;
     }
 
+    //Get a user by the email with a url parameter email
     @GetMapping(value = "users", params = "email")
     public User getUserByEmail(@RequestParam String email) {
         User user = this.userRepository.findByEmailAddress(email);
@@ -68,6 +71,8 @@ public class UserController {
         }
         return user;
     }
+
+    //Get a user by the firstName with a url parameter firstName
     @GetMapping(value = "users", params = "firstname")
     public User getUserByFirstName(@RequestParam String firstname) {
         User user = this.userRepository.findByFirstName(firstname);
@@ -77,6 +82,7 @@ public class UserController {
         return user;
     }
 
+    //Create a new user
     @PostMapping("users")
     public ResponseEntity<User> createUser(@RequestBody User user)
             throws ConflictException, BadGatewayException, InternalServerErrorException {
@@ -109,8 +115,10 @@ public class UserController {
         return ResponseEntity.created(location).body(savedUser);
     }
 
+    //Delete a user
     @DeleteMapping("users/{id}")
     public ResponseEntity<Boolean> deleteUser(@PathVariable Long id) {
+        //check if the user exist then delete the profile foto and the user
         if (this.userRepository.existsById(id)) {
             this.fileService.delete(this.userRepository.findUserById(id).getProfilePicture());
             this.userRepository.deleteById(id);
@@ -126,6 +134,7 @@ public class UserController {
         if (this.userRepository.existsById(id)) {
             user.setId(id);
             this.userRepository.save(user);
+            //send the user after updated with the response
             URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                     .path("{id}")
                     .buildAndExpand(userToUpdate.getId())

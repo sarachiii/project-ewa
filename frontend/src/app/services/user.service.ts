@@ -9,7 +9,7 @@ import {shareReplay} from "rxjs/operators";
 @Injectable({
   providedIn: 'root'
 })
-export class UserService implements CRUDService<User> {
+export class  UserService implements CRUDService<User> {
   protected resourceUrl: URL;
   protected users: User[];
   private _loggedUser$: BehaviorSubject<User>;

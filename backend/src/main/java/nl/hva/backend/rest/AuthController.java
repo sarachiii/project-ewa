@@ -40,9 +40,11 @@ public class AuthController {
     @Autowired
     private JWTokenUtils tokenUtils;
 
+    //Log in request to add token in the header response
     @PostMapping(path = "login", produces = "application/json")
     public ResponseEntity<User> logInForAuth(@RequestBody ObjectNode LogInForm)
             throws Forbidden, ResourceNotFound{
+
 
         String email = LogInForm.get("email").asText();
         String password = LogInForm.get("password").asText();
@@ -60,8 +62,9 @@ public class AuthController {
             throw new Forbidden("Wrong password, try another password");
         }
 
+        //Generate a token for the user
         String tokenString = tokenUtils.encode(user.getEmailAddress(), user.isAdmin());
-        System.out.println(tokenString);
+        //set the token to the authorization field and send the response back
         return ResponseEntity.accepted()
                 .header(HttpHeaders.AUTHORIZATION,"Bearer " + tokenString)
                 .body(user);

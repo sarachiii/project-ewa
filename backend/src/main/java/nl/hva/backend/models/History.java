@@ -6,7 +6,6 @@ import javax.persistence.*;
 import java.time.ZonedDateTime;
 
 @Entity
-
 @NamedQueries({
         @NamedQuery(name = "History.findAll", query = "SELECT h FROM History h ORDER BY h.timestamp DESC"),
         @NamedQuery(name = "History.findByGreenHouseId", query = "SELECT h FROM History h WHERE h.ghId = :ghId ORDER BY h.timestamp DESC"),

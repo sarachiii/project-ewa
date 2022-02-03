@@ -27,7 +27,7 @@ public class JWTRequestFilter extends OncePerRequestFilter {
     private JWTokenUtils tokenUtils;
 
 
-
+    // path prefixes that will be protected by the authentication filter
     private static final Set<String> SECURED_PATHS =
             Set.of("/sensors", "/notes", "/users", "/teams");
 
@@ -35,35 +35,39 @@ public class JWTRequestFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain)
-                                    throws ServletException, IOException {
-
-        String servletPath = request.getServletPath();
-
-        if (HttpMethod.OPTIONS.matches(request.getMethod()) || SECURED_PATHS.stream().
-                noneMatch(servletPath::startsWith)) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-        JWTokenInfo jwToken;
+            throws ServletException, IOException {
         try {
+            //get requested path
+            String servletPath = request.getServletPath();
 
-
-            String encodedToken = request.getHeader(HttpHeaders.AUTHORIZATION);
-            if (encodedToken == null){
-                throw new UnAuthorizedExeption("Authentication problem");
+            // OPTIONS requests and non-secured area should pass through without check
+            if (HttpMethod.OPTIONS.matches(request.getMethod()) || SECURED_PATHS.stream().
+                    noneMatch(servletPath::startsWith)) {
+                filterChain.doFilter(request, response);
+                return;
             }
 
+            JWTokenInfo jwToken;
+
+            // get the encoded token string from the authorization request header
+            String encodedToken = request.getHeader(HttpHeaders.AUTHORIZATION);
+
+            if (encodedToken == null) {
+                //if there is no token present in the request header
+                throw new UnAuthorizedExeption("Authentication problem");
+            }
+            // remove the bearer initial string
             encodedToken = encodedToken.replace("Bearer ", "");
 
-            jwToken= tokenUtils.decode(encodedToken,false);
+            // get a representation of the token for future usage
+            jwToken = tokenUtils.decode(encodedToken, false);
 
             request.setAttribute(JWTokenInfo.KEY, jwToken);
 
             filterChain.doFilter(request, response);
-        }catch(UnAuthorizedExeption | AuthenticationException e ) {
+        } catch (UnAuthorizedExeption | AuthenticationException e) {
             // aborting the chain
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authentication error");
-
         }
     }
 }

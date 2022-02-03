@@ -22,8 +22,9 @@ export class AuthInterceptorService implements HttpInterceptor {
     if (req.url.endsWith('auth/login')) {
       return next.handle(req);
     } else {
-      if(this.authenticationService.currentToken){
-        req = this.addToken(req, "Bearer "+this.authenticationService.currentToken)
+      //if token exists in the webstorage add it to every request
+      if (this.authenticationService.currentToken) {
+        req = this.addToken(req, "Bearer " + this.authenticationService.currentToken)
       }
       return next.handle(req).pipe(
         catchError((error: HttpErrorResponse) => {
@@ -34,6 +35,7 @@ export class AuthInterceptorService implements HttpInterceptor {
               this.forceLogoff();
               return throwError(error);
             } else {
+              //try to extent the time expiration of an existed token by making a request to the backend
               return this.authenticationService.refreshToken().pipe(
                 switchMap((data) => {
                   // getting the returned token
@@ -52,9 +54,8 @@ export class AuthInterceptorService implements HttpInterceptor {
     }
 
 
-
   }
-
+  //clone the request an add a token to the header
   private addToken(request: HttpRequest<any>, token: string) {
     return request.clone({
       setHeaders: {
